@@ -1,0 +1,22 @@
+{
+  "name": "asia-parliamentary-openness-index",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "web/**/*.{js,ts,svelte,css,html,json,md}": "pnpm --dir web exec prettier --write",
+    "data/**/*.py": [
+      "uv run --project data ruff format",
+      "uv run --project data ruff check --fix"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.1.0",
+    "prettier": "^3.9.6"
+  }
+}

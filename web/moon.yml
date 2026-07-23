@@ -1,0 +1,27 @@
+language: 'typescript'
+layer: 'application'
+
+tasks:
+  dev:
+    command: 'pnpm dev'
+    preset: 'server'
+    deps:
+      - 'data:build'
+  build:
+    command: 'pnpm build'
+    deps:
+      - 'data:build'
+    inputs:
+      - '/data/output/**/*'
+      - 'src/**/*'
+      - 'static/**/*'
+      - '*.config.*'
+      - 'package.json'
+    outputs:
+      - '.svelte-kit'
+  check:
+    command: 'pnpm check'
+  lint:
+    command: 'pnpm lint'
+  format:
+    command: 'pnpm format'

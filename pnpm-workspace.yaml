@@ -1,0 +1,4 @@
+packages:
+  - web
+allowBuilds:
+  '@tailwindcss/oxide': true
