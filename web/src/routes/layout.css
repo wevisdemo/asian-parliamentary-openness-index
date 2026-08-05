@@ -1,1 +1,120 @@
 @import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Spline Sans', sans-serif;
+
+	--text-*: initial;
+
+	--color-black: #191919;
+	--color-white: #fcfcfc;
+
+	--color-gray-*: initial;
+	--color-gray-1: #edf2f3;
+	--color-gray-2: #ced9db;
+	--color-gray-3: #b6c4c7;
+	--color-gray-4: #a5b4b7;
+	--color-gray-5: #919fa2;
+	--color-gray-6: #859194;
+	--color-gray-7: #6e7779;
+	--color-gray-8: #5f6769;
+	--color-gray-9: #4c5153;
+	--color-gray-10: #35393a;
+
+	--color-purple-*: initial;
+	--color-purple-1: #d1daff;
+	--color-purple-2: #bfc7ff;
+	--color-purple-3: #948df2;
+	--color-purple-4: #7256df;
+	--color-purple-5: #5437cc;
+
+	--color-data-achieved: #00bdda;
+	--color-data-partly-achieved: #fcff9f;
+	--color-data-not-achieved: #ff5335;
+	--color-data-na: #cecece;
+}
+
+@layer base {
+	body {
+		@apply b4 text-black;
+	}
+}
+
+@utility h1 {
+	font-size: 3rem;
+	line-height: 1.25;
+	@variant md {
+		font-size: 5rem;
+	}
+}
+
+@utility h2 {
+	font-size: 2.25rem;
+	line-height: 1.25;
+	@variant md {
+		font-size: 3.75rem;
+	}
+}
+
+@utility h3 {
+	font-size: 2rem;
+	line-height: 1.25;
+	@variant md {
+		font-size: 3rem;
+	}
+}
+
+@utility h4 {
+	font-size: 1.75rem;
+	line-height: 1.25;
+	@variant md {
+		font-size: 2.25rem;
+	}
+}
+
+@utility h5 {
+	font-size: 1.5rem;
+	line-height: 1.25;
+	@variant md {
+		font-size: 2rem;
+	}
+}
+
+@utility b1 {
+	font-size: 1.5rem;
+	line-height: 1.4;
+	@variant md {
+		font-size: 2rem;
+	}
+}
+
+@utility b2 {
+	font-size: 1.3125rem;
+	line-height: 1.4;
+	@variant md {
+		font-size: 1.5rem;
+	}
+}
+
+@utility b3 {
+	font-size: 1.125rem;
+	line-height: 1.4;
+	@variant md {
+		font-size: 1.3125rem;
+	}
+}
+
+@utility b4 {
+	font-size: 1rem;
+	line-height: 1.4;
+	@variant md {
+		font-size: 1.125rem;
+	}
+}
+
+@utility b5 {
+	font-size: 0.875rem;
+	line-height: 1.4;
+	@variant md {
+		font-size: 1rem;
+	}
+}
