@@ -1,6 +1,6 @@
-# Asia Parliament Openness Index
+# Asian Parliamentary Openness Index (APOI)
 
-Data pipeline and website for the Asia Parliament Openness Index.
+Data pipeline and website for the Asian Parliamentary Openness Index.
 
 ## Stack
 
