@@ -2,6 +2,7 @@
   "name": "asia-parliamentary-openness-index",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.18.0",
   "scripts": {
     "prepare": "husky"
   },

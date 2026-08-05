@@ -19,6 +19,7 @@ tasks:
       - 'package.json'
     outputs:
       - '.svelte-kit'
+      - 'build'
   check:
     command: 'pnpm check'
   lint:

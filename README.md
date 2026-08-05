@@ -2,6 +2,13 @@
 
 Data pipeline and website for the Asian Parliamentary Openness Index.
 
+## Environments
+
+| Environment | URL                                                            | Deploy                                        |
+| ----------- | -------------------------------------------------------------- | --------------------------------------------- |
+| Staging     | https://wevisdemo.github.io/asian-parliamentary-openness-index | GitHub Pages, auto-deployed on push to `main` |
+| Production  | _Pending_                                                      | TBD                                           |
+
 ## Stack
 
 - [moon](https://moonrepo.dev) — monorepo task runner, wires `data` → `web` build dependency
