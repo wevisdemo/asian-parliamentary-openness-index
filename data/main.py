@@ -25,7 +25,6 @@ MOCK_INDEX = [
 
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    output_file = OUTPUT_DIR / "index.csv"
 
     # Load sheet links from json
     with open(f"{Path(__file__).resolve().parent}/sheet_links.json", "r") as fj:
@@ -59,10 +58,6 @@ def main() -> None:
         [cos.get_respondent_info() for cos in countries_data], ignore_index=True
     )
     respondents.to_csv(os.path.join(OUTPUT_DIR, "respondents.csv"), index=False)
-
-    # Construct index csv
-    # TODO: calculate score
-    pd.DataFrame(MOCK_INDEX).to_csv(output_file, index=False)
 
 
 if __name__ == "__main__":
