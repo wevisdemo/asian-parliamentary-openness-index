@@ -48,4 +48,39 @@ class OpennessScore:
         self.country_context_df = normalize_info_df(country_context_df)
 
     def get_country_info(self) -> pd.DataFrame:
-        return pd.concat([self.respondent_info_df, self.country_context_df], axis=1)
+
+        DEFAULT_COLUMNS = [
+            "Is the Parliament unicameral or bicameral?",
+            "How is the system of government classified in this jurisdiction?",
+            "What is the name of the Parliament you will be assessing?",
+            "Provide the link to the Parliament’s official website",
+            "Key findings",
+        ]
+
+        if self.country_context_df is not None:
+            country_context_df = self.country_context_df[DEFAULT_COLUMNS]
+            country_context_df["Country"] = self.country
+            return country_context_df[["Country"] + DEFAULT_COLUMNS]
+
+        return pd.DataFrame(
+            [{"Country": self.country}], columns=["Country"] + DEFAULT_COLUMNS
+        )
+
+    def get_respondent_info(self) -> pd.DataFrame:
+
+        DEFAULT_COLUMNS = [
+            "Name of respondent",
+            "Email of respondent to correspond with",
+            "Representative Parliament Monitoring Organization (PMO) of respondent",
+            "Years of experience of parliament monitoring by the organization",
+            "About the Respondent",
+        ]
+
+        if self.respondent_info_df is not None:
+            respondent_info_df = self.respondent_info_df[DEFAULT_COLUMNS]
+            respondent_info_df["Country"] = self.country
+            return respondent_info_df[["Country"] + DEFAULT_COLUMNS]
+
+        return pd.DataFrame(
+            [{"Country": self.country}], columns=["Country"] + DEFAULT_COLUMNS
+        )

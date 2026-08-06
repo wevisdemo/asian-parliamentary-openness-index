@@ -52,8 +52,13 @@ def main() -> None:
     countries = pd.concat(
         [cos.get_country_info() for cos in countries_data], ignore_index=True
     )
-
     countries.to_csv(os.path.join(OUTPUT_DIR, "countries.csv"), index=False)
+
+    # Constrct `respondents` csv
+    respondents = pd.concat(
+        [cos.get_respondent_info() for cos in countries_data], ignore_index=True
+    )
+    respondents.to_csv(os.path.join(OUTPUT_DIR, "respondents.csv"), index=False)
 
     # Construct index csv
     # TODO: calculate score
