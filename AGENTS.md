@@ -16,6 +16,13 @@
   - Format code with `moon run :format` before declaring task as done
 - Human will get in the loop and edit some file along the way. If you spot it, please respect those changes
 
+## Routing
+
+- The site is deployed to GitHub Pages under a base path, so never hardcode internal links
+- Always build internal URLs with `resolve()` from `$app/paths`, e.g. `resolve('/')`, `resolve('/countries/[country]', { country })`
+- Hardcoded `href="/..."` passes a local build but fails prerendering in CI with `does not begin with 'base'`
+- To reproduce CI locally, build with the base path: `BASE_PATH=/asian-parliamentary-openness-index moon run web:build`
+
 ## Git Commit Message Style
 
 - Do not commit unless explicitly asked

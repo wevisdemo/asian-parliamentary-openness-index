@@ -5,8 +5,8 @@
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 
 	const breadcrumbItems = [
-		{ label: 'Home', href: '/' },
-		{ label: 'Explore by Country', href: '/countries' }
+		{ label: 'Home', href: resolve('/') },
+		{ label: 'Explore by Country', href: resolve('/countries') }
 	];
 </script>
 
