@@ -37,7 +37,7 @@
 					<li>
 						<a
 							{href}
-							class={['b3 whitespace-nowrap hover:text-purple-4', isActive(href) && 'font-bold']}
+							class={['whitespace-nowrap hover:text-purple-4', isActive(href) && 'font-bold']}
 						>
 							{label}
 						</a>
@@ -69,7 +69,7 @@
 			<ul class="flex flex-col gap-4">
 				{#each links as { label, href } (href)}
 					<li>
-						<a {href} class={['block b3', isActive(href) && 'font-bold']}>{label}</a>
+						<a {href} class={['block', isActive(href) && 'font-bold']}>{label}</a>
 					</li>
 				{/each}
 			</ul>

@@ -35,7 +35,7 @@
 
 @layer base {
 	body {
-		@apply b4 text-black;
+		@apply b3 text-black;
 	}
 }
 
@@ -80,14 +80,6 @@
 }
 
 @utility b1 {
-	font-size: 1.5rem;
-	line-height: 1.4;
-	@variant md {
-		font-size: 2rem;
-	}
-}
-
-@utility b2 {
 	font-size: 1.3125rem;
 	line-height: 1.4;
 	@variant md {
@@ -95,7 +87,7 @@
 	}
 }
 
-@utility b3 {
+@utility b2 {
 	font-size: 1.125rem;
 	line-height: 1.4;
 	@variant md {
@@ -103,7 +95,7 @@
 	}
 }
 
-@utility b4 {
+@utility b3 {
 	font-size: 1rem;
 	line-height: 1.4;
 	@variant md {
@@ -111,10 +103,18 @@
 	}
 }
 
-@utility b5 {
+@utility b4 {
 	font-size: 0.875rem;
 	line-height: 1.4;
 	@variant md {
 		font-size: 1rem;
+	}
+}
+
+@utility b5 {
+	font-size: 0.75rem;
+	line-height: 1.4;
+	@variant md {
+		font-size: 0.875rem;
 	}
 }

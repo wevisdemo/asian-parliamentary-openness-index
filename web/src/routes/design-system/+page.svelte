@@ -8,11 +8,11 @@
 	];
 
 	const bodies = [
-		{ name: 'B1', class: 'b1', size: '24 / 32' },
-		{ name: 'B2', class: 'b2', size: '21 / 24' },
-		{ name: 'B3', class: 'b3', size: '18 / 21' },
-		{ name: 'B4', class: 'b4', size: '16 / 18' },
-		{ name: 'B5', class: 'b5', size: '14 / 16' }
+		{ name: 'B1', class: 'b1', size: '21 / 24' },
+		{ name: 'B2', class: 'b2', size: '18 / 21' },
+		{ name: 'B3', class: 'b3', size: '16 / 18' },
+		{ name: 'B4', class: 'b4', size: '14 / 16' },
+		{ name: 'B5', class: 'b5', size: '12 / 14' }
 	];
 
 	const swatchGroups = [
@@ -67,7 +67,7 @@
 <main class="mx-auto max-w-5xl bg-white px-6 py-16">
 	<header class="mb-16">
 		<h1 class="h2 font-bold">Design System</h1>
-		<p class="mt-2 b3 text-gray-8">Asian Parliamentary Openness Index</p>
+		<p class="mt-2 text-gray-8">Asian Parliamentary Openness Index</p>
 	</header>
 
 	<section class="mb-16">
@@ -109,7 +109,7 @@
 	<section>
 		<h2 class="mb-6 h4 font-bold">Colors</h2>
 		{#each swatchGroups as { title, swatches } (title)}
-			<h3 class="mt-8 mb-3 b3 font-bold text-gray-8">{title}</h3>
+			<h3 class="mt-8 mb-3 font-bold text-gray-8">{title}</h3>
 			<div class="grid grid-cols-2 gap-4 md:grid-cols-5">
 				{#each swatches as { name, class: className, hex } (name)}
 					<div>
