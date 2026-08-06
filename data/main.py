@@ -33,17 +33,27 @@ def main() -> None:
     # Construct OpennessScore for every country
     countries_data: List[OpennessScore] = []
     for country, links in sheet_links.items():
+        # About the Respondent
         respondent_info_df = get_data_from_google_sheet(
             links.get("About the Respondent", "")
         )
+
+        # Country Context
         country_context_df = get_data_from_google_sheet(
             links.get("Country Context", "")
         )
+
+        # APOI - Lower Chamber
+        lower_chamber_df = get_data_from_google_sheet(
+            links.get("APOI - Lower Chamber", "")
+        )
+
         countries_data.append(
             OpennessScore(
                 country=country,
                 respondent_info_df=respondent_info_df,
                 country_context_df=country_context_df,
+                lower_chamber_df=lower_chamber_df,
             )
         )
 
@@ -58,6 +68,10 @@ def main() -> None:
         [cos.get_respondent_info() for cos in countries_data], ignore_index=True
     )
     respondents.to_csv(os.path.join(OUTPUT_DIR, "respondents.csv"), index=False)
+
+    # Construct `indicators` csv
+    indicators = countries_data[0].get_indicator_data()
+    indicators.to_csv(os.path.join(OUTPUT_DIR, "indicators.csv"), index=False)
 
 
 if __name__ == "__main__":

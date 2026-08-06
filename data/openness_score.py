@@ -84,3 +84,31 @@ class OpennessScore:
         return pd.DataFrame(
             [{"Country": self.country}], columns=["Country"] + DEFAULT_COLUMNS
         )
+
+    def get_indicator_data(self) -> pd.DataFrame:
+
+        DEFAULT_COLUMNS = [
+            "Section Name",
+            "Dimension",
+            "Dimension Relevance",
+            "Section",
+        ]
+
+        TRANSFORM_COLUMNS = [
+            "Dimension",
+            "Dimension Relevance",
+            "Indicator Number",
+            "Indicator",
+        ]
+
+        if self.lower_chamber_df is not None:
+            grouped_df = self.lower_chamber_df.groupby(
+                DEFAULT_COLUMNS, as_index=False
+            ).size()
+            grouped_df.rename(
+                columns={"Section Name": "Indicator", "Section": "Indicator Number"},
+                inplace=True,
+            )
+            return grouped_df[TRANSFORM_COLUMNS].sort_values("Indicator Number")
+
+        return pd.DataFrame(columns=TRANSFORM_COLUMNS)
