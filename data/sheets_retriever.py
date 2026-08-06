@@ -29,6 +29,4 @@ def get_data_from_google_sheet(sheet_url: str) -> pd.DataFrame:
     df = pd.read_csv(csv_url, engine="python", on_bad_lines="warn")
     df = clean_empty_margins(df)
 
-    df.to_csv(f"{gid}.csv", index=False)
-
     return df
