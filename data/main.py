@@ -4,8 +4,13 @@ Real implementation will fetch and populate data from online sources.
 For now it emits mock CSV files so the web app has data to render.
 """
 
-import csv
+from typing import List
+import os
+import json
 from pathlib import Path
+from sheets_retriever import get_data_from_google_sheet
+from openness_score import OpennessScore
+import pandas as pd
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 
@@ -20,14 +25,35 @@ MOCK_INDEX = [
 
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    output_file = OUTPUT_DIR / "index.csv"
+    # output_file = OUTPUT_DIR / "index.csv"
 
-    with output_file.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=MOCK_INDEX[0].keys())
-        writer.writeheader()
-        writer.writerows(MOCK_INDEX)
+    # Load sheet links from json
+    with open(f"{Path(__file__).resolve().parent}/sheet_links.json", "r") as fj:
+        sheet_links = json.load(fj)
 
-    print(f"Wrote {len(MOCK_INDEX)} rows to {output_file}")
+    # Construct OpennessScore for every country
+    countries_data: List[OpennessScore] = []
+    for country, links in sheet_links.items():
+        respondent_info_df = get_data_from_google_sheet(
+            links.get("About the Respondent", "")
+        )
+        country_context_df = get_data_from_google_sheet(
+            links.get("Country Context", "")
+        )
+        countries_data.append(
+            OpennessScore(
+                country=country,
+                respondent_info_df=respondent_info_df,
+                country_context_df=country_context_df,
+            )
+        )
+
+    # Constrct `countries` csv
+    countries = pd.concat(
+        [cos.get_country_info() for cos in countries_data], ignore_index=True
+    )
+
+    countries.to_csv(os.path.join(OUTPUT_DIR, "countries.csv"), index=False)
 
 
 if __name__ == "__main__":
