@@ -22,7 +22,9 @@ def normalize_info_df(df: pd.DataFrame | None):
     # Clean character prefix from respondent_info_df's columns
     old_columns = _df.columns
     _df = _df.rename(
-        columns={col: re.sub(r"^[a-z]{1}\.\s+|\:$", "", col) for col in old_columns}
+        columns={
+            col: re.sub(r"^[a-z]{1}\.\s+|\:$", "", col).strip() for col in old_columns
+        }
     )
     return _df
 
