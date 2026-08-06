@@ -38,6 +38,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.3.0
         version: 4.3.3(vite@8.1.5(@types/node@26.1.1)(jiti@2.7.0)(yaml@2.9.0))
+      carbon-icons-svelte:
+        specifier: ^13.14.0
+        version: 13.14.0
       prettier:
         specifier: ^3.8.3
         version: 3.9.6
@@ -484,6 +487,9 @@ packages:
   callsites@3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
+
+  carbon-icons-svelte@13.14.0:
+    resolution: {integrity: sha512-f87lVi1tb7SRXOx8ADTugW9R73j+sqEpxL9XTG0c5jamPNFGgenUFOAFS/wq50FwBdApZ1Epir0um8+DUEP/2A==}
 
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
@@ -1470,6 +1476,8 @@ snapshots:
   axobject-query@4.1.0: {}
 
   callsites@3.1.0: {}
+
+  carbon-icons-svelte@13.14.0: {}
 
   chokidar@4.0.3:
     dependencies:

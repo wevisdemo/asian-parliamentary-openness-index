@@ -1,6 +1,7 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import Navbar from '$lib/components/navbar.svelte';
 
 	let { children } = $props();
 </script>
@@ -13,5 +14,7 @@
 		rel="stylesheet"
 	/></svelte:head
 >
+
+<Navbar />
 
 {@render children()}
