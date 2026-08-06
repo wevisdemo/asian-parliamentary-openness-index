@@ -69,7 +69,7 @@
 					</ul>
 					<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4 b3">
 						<span class="font-bold">Key findings</span>
-						<p>
+						<p class="b3">
 							Thailand scores 60% overall. Its strongest dimension is Transparency (62%), while
 							Accountability (56%) lags furthest behind. There is a notable gap between chambers,
 							with the House of Senate scoring higher.
@@ -82,7 +82,7 @@
 </div>
 
 <Modal open={openModal === 'about'} title="About the Index" onclose={() => (openModal = undefined)}>
-	<p>
+	<p class="b3">
 		The index assesses how openly national parliaments across Asia-Pacific operate, so citizens,
 		media, and reformers can see exactly where each parliament stands. Every parliament is scored
 		against the same set of questions, organized into three dimensions of openness: Transparency,
