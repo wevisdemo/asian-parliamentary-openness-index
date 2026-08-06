@@ -11,3 +11,6 @@ __pycache__/
 
 # generated data
 /data/output/
+
+# os - macOS
+.DS_Store
