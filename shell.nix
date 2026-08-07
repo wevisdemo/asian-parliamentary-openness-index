@@ -6,6 +6,11 @@ pkgs.mkShell {
     nodejs_24
     pnpm
     uv
-    python313
+    python314
+  ];
+
+  LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+    pkgs.stdenv.cc.cc.lib
+    pkgs.zlib
   ];
 }
