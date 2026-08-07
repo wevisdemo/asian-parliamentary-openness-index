@@ -1,0 +1,62 @@
+import answersCsv from '$data/answers.csv?raw';
+import {
+	asNumber,
+	asOneOf,
+	asString,
+	Column,
+	createTransformer,
+	Object,
+	parseCsv,
+	type StaticDecode
+} from 'sheethuahua';
+import { chambers } from './enums';
+
+const optionStates: Record<string, boolean | undefined> = {
+	yes: true,
+	no: false,
+	'n/a': undefined
+};
+
+/** Decodes `a=yes;b=no` into `{ a: true, b: false }`, `a` into `{ a: true }`, with all n/a omitted */
+const asAnswer = createTransformer({
+	decode: (value: string) =>
+		value
+			.split(';')
+			.map((option) => {
+				const parts = option.split('=').map((part) => part.trim());
+
+				if (parts.length > 2) {
+					throw new Error(`Option "${option}" has more than one "="`);
+				}
+
+				const [key, state = 'yes'] = parts;
+
+				if (!key) {
+					throw new Error(`Option "${option}" has an empty key`);
+				}
+
+				if (!(state in optionStates)) {
+					throw new Error(`Option "${option}" has an unknown value "${state}"`);
+				}
+
+				return [key, optionStates[state]] as const;
+			})
+			.reduce<Record<string, boolean>>(
+				(options, [key, state]) => (state === undefined ? options : { ...options, [key]: state }),
+				{}
+			),
+	emptyValues: ['', 'n/a']
+});
+
+export const answerSchema = Object({
+	country: Column('Country', asString()),
+	chamber: Column('Chamber', asOneOf(chambers)),
+	questionNumber: Column('Question Number', asString()),
+	answer: Column('Answer', asAnswer.optional()),
+	score: Column('Score', asNumber()),
+	totalApplicableScore: Column('Total Applicable Score', asNumber())
+});
+
+export type Answer = StaticDecode<typeof answerSchema>;
+
+export const answers: Answer[] = parseCsv(answersCsv, answerSchema);

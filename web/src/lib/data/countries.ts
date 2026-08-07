@@ -8,6 +8,7 @@ import {
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
+import { parliamentTypes } from './enums';
 
 const asSlug = createTransformer({
 	decode: (value: string) => value.toLowerCase().replaceAll(' ', '-')
@@ -16,10 +17,7 @@ const asSlug = createTransformer({
 export const countrySchema = Object({
 	slug: Column('Country', asSlug),
 	name: Column('Country', asString()),
-	parliamentType: Column(
-		'Is the Parliament unicameral or bicameral?',
-		asOneOf(['unicameral', 'bicameral'])
-	),
+	parliamentType: Column('Is the Parliament unicameral or bicameral?', asOneOf(parliamentTypes)),
 	governmentSystem: Column(
 		'How is the system of government classified in this jurisdiction?',
 		asString()
