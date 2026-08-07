@@ -9,7 +9,7 @@
 	import Modal from '$lib/components/modal.svelte';
 	import CountryOverview from '$lib/components/country/country-overview.svelte';
 	import Respondent from '$lib/components/country/respondent.svelte';
-	import QuestionAnswer from '$lib/components/questionair/question-answer.svelte';
+	import Indicator from '$lib/components/questionair/indicator.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
 	import { chamberOptions, dimensionOptions } from '$lib/data/enums';
 
@@ -29,15 +29,16 @@
 
 	let openModal = $state<'about' | 'methodology'>();
 
-	const dimensionQuestions = $derived.by(() => {
-		const indicatorNumbers = new Set(
-			data.indicators
-				.filter(({ dimension }) => dimension === selectedDimension)
-				.map(({ number }) => number)
-		);
-
-		return data.questions.filter(({ indicatorNumber }) => indicatorNumbers.has(indicatorNumber));
-	});
+	const dimensionIndicators = $derived(
+		data.indicators
+			.filter(({ dimension }) => dimension === selectedDimension)
+			.map((indicator) => ({
+				indicator,
+				questions: data.questions.filter(
+					({ indicatorNumber }) => indicatorNumber === indicator.number
+				)
+			}))
+	);
 
 	const chamberAnswers = $derived(
 		data.answers.filter(({ chamber }) => chamber === selectedChamber)
@@ -106,13 +107,11 @@
 			/>
 		</div>
 
-		<div class="flex flex-col gap-5 bg-white p-5">
-			{#each dimensionQuestions as question, index (question.number)}
-				<QuestionAnswer
-					{question}
-					answer={chamberAnswers.find(({ questionNumber }) => questionNumber === question.number)}
-					class={index > 0 ? 'border-t border-gray-2 pt-5' : undefined}
-				/>
+		<div class="flex flex-col gap-5">
+			<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
+			<!-- TODO: Keyed by index since indicator numbers are duplicated in the source sheet -->
+			{#each dimensionIndicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${index}`)}
+				<Indicator {indicator} {questions} answers={chamberAnswers} />
 			{/each}
 		</div>
 	</section>
