@@ -1,6 +1,6 @@
 import pandas as pd
 from enum import Enum
-from utilities import normalize_info_df, normalize_answer
+from utilities import normalize_info_df, normalize_answer, calculate_score
 from constants import (
     COUNTRIES_DEFAULT_COLUMNS,
     RESPONDENTS_DEFAULT_COLUMNS,
@@ -125,8 +125,9 @@ class OpennessScore:
 
         # TODO: calculate score
         # Calcualte & Add Score
-        answer_df["Score"] = 0
-        answer_df["Total Applicable Score"] = 0
+        answer_df[["Score", "Total Applicable Score"]] = answer_df.apply(
+            lambda row: calculate_score(row), axis=1, result_type="expand"
+        )
 
         answer_df = answer_df[ANSWERS_TRANSFORM_COLUMNS]
         return answer_df
