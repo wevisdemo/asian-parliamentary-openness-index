@@ -73,6 +73,10 @@ def main() -> None:
     indicators = countries_data[0].get_indicator_data()
     indicators.to_csv(os.path.join(OUTPUT_DIR, "indicators.csv"), index=False)
 
+    # Construct `questions` csv
+    questions = countries_data[0].get_questions_data()
+    questions.to_csv(os.path.join(OUTPUT_DIR, "questions.csv"), index=False)
+
 
 if __name__ == "__main__":
     main()

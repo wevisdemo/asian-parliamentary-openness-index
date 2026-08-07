@@ -91,3 +91,30 @@ class OpennessScore:
             )
 
         return pd.DataFrame(columns=INDICATORS_TRANSFORM_COLUMNS)
+
+    def get_questions_data(self) -> pd.DataFrame:
+
+        if self.lower_chamber_df is not None:
+            grouped_df = self.lower_chamber_df.groupby(
+                ["Question"], as_index=False
+            ).sum()
+            grouped_df.rename(
+                columns={
+                    "Section Name": "Indicator",
+                    "Section": "Indicator Number",
+                    "Indicator": "Question Number",
+                    "answer_type": "Answer Type",
+                },
+                inplace=True,
+            )
+            return grouped_df[
+                [
+                    "Indicator Number",
+                    "Question Number",
+                    "Question",
+                    "Answer Type",
+                    "Answer Options",
+                ]
+            ].sort_values("Question Number")
+
+        return pd.DataFrame(columns=INDICATORS_TRANSFORM_COLUMNS)
