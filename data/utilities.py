@@ -41,6 +41,11 @@ def normalize_answer(row: pd.Series) -> str:
 
     # Multiple choices
     selected_options_str = row["Answer"]
+
+    # Check if this question is n/a
+    if str(selected_options_str).lower() == "n/a":
+        return "n/a"
+
     # Get all possible options
     possible_options = [
         str(op).lower() for op in re.findall(r"([a-zA-Z])\)\s", row["Answer Options"])

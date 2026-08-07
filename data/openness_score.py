@@ -122,6 +122,7 @@ class OpennessScore:
         answer_df["Chamber"] = None  # Add after processed
 
         # Normalize answer
+        answer_df["Answer"] = answer_df["Answer"].fillna("")
         answer_df["Answer"] = answer_df.apply(lambda row: normalize_answer(row), axis=1)
 
         # TODO: calculate score
