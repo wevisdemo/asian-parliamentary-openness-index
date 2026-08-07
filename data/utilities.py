@@ -112,8 +112,8 @@ def calculate_score(row: pd.Series) -> Tuple[float, float]:
             selected_opt.split("=")[0] + r"\)(.|\n)+?\d\)", answer_options_str
         ).group(0)  # type: ignore
         option_score = float(
-            re.search(r"\((\d+(\.\d+)?)\)", _option_score_str).group(1)
-        )  # type: ignore
+            re.search(r"\((\d+(\.\d+)?)\)", _option_score_str).group(1)  # type: ignore
+        )
 
         if re.search(r"=no", selected_opt):
             # Add to `applicable_score`
