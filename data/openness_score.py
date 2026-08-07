@@ -1,5 +1,11 @@
 import re
 import pandas as pd
+from constants import (
+    COUNTRIES_DEFAULT_COLUMNS,
+    RESPONDENTS_DEFAULT_COLUMNS,
+    INDICATORS_DEFAULT_COLUMNS,
+    INDICATORS_TRANSFORM_COLUMNS,
+)
 
 
 def transpose_df(df: pd.DataFrame | None) -> pd.DataFrame | None:
@@ -49,66 +55,39 @@ class OpennessScore:
 
     def get_country_data(self) -> pd.DataFrame:
 
-        DEFAULT_COLUMNS = [
-            "Is the Parliament unicameral or bicameral?",
-            "How is the system of government classified in this jurisdiction?",
-            "What is the name of the Parliament you will be assessing?",
-            "Provide the link to the Parliament’s official website",
-            "Key findings",
-        ]
-
         if self.country_context_df is not None:
-            country_context_df = self.country_context_df[DEFAULT_COLUMNS]
+            country_context_df = self.country_context_df[COUNTRIES_DEFAULT_COLUMNS]
             country_context_df["Country"] = self.country
-            return country_context_df[["Country"] + DEFAULT_COLUMNS]
+            return country_context_df[["Country"] + COUNTRIES_DEFAULT_COLUMNS]
 
         return pd.DataFrame(
-            [{"Country": self.country}], columns=["Country"] + DEFAULT_COLUMNS
+            [{"Country": self.country}], columns=["Country"] + COUNTRIES_DEFAULT_COLUMNS
         )
 
     def get_respondent_data(self) -> pd.DataFrame:
 
-        DEFAULT_COLUMNS = [
-            "Name of respondent",
-            "Email of respondent to correspond with",
-            "Representative Parliament Monitoring Organization (PMO) of respondent",
-            "Years of experience of parliament monitoring by the organization",
-            "About the Respondent",
-        ]
-
         if self.respondent_info_df is not None:
-            respondent_info_df = self.respondent_info_df[DEFAULT_COLUMNS]
+            respondent_info_df = self.respondent_info_df[RESPONDENTS_DEFAULT_COLUMNS]
             respondent_info_df["Country"] = self.country
-            return respondent_info_df[["Country"] + DEFAULT_COLUMNS]
+            return respondent_info_df[["Country"] + RESPONDENTS_DEFAULT_COLUMNS]
 
         return pd.DataFrame(
-            [{"Country": self.country}], columns=["Country"] + DEFAULT_COLUMNS
+            [{"Country": self.country}],
+            columns=["Country"] + RESPONDENTS_DEFAULT_COLUMNS,
         )
 
     def get_indicator_data(self) -> pd.DataFrame:
 
-        DEFAULT_COLUMNS = [
-            "Section Name",
-            "Dimension",
-            "Dimension Relevance",
-            "Section",
-        ]
-
-        TRANSFORM_COLUMNS = [
-            "Dimension",
-            "Dimension Relevance",
-            "Indicator Number",
-            "Indicator",
-        ]
-
         if self.lower_chamber_df is not None:
             grouped_df = self.lower_chamber_df.groupby(
-                DEFAULT_COLUMNS, as_index=False
+                INDICATORS_DEFAULT_COLUMNS, as_index=False
             ).size()
             grouped_df.rename(
                 columns={"Section Name": "Indicator", "Section": "Indicator Number"},
                 inplace=True,
             )
-            return grouped_df[TRANSFORM_COLUMNS].sort_values("Indicator Number")
+            return grouped_df[INDICATORS_TRANSFORM_COLUMNS].sort_values(
+                "Indicator Number"
+            )
 
-        return pd.DataFrame(columns=TRANSFORM_COLUMNS)
+        return pd.DataFrame(columns=INDICATORS_TRANSFORM_COLUMNS)
