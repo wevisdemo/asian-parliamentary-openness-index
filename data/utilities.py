@@ -33,6 +33,9 @@ def normalize_answer(row: pd.Series) -> str:
     # Check question type
     # If single; normalize to lower case
     if row["Answer Type"] == "single":
+        # Check for n/a
+        if not re.search(str(row["Answer"]) + r"\)\s", row["Answer Options"]):
+            return "n/a"
         return str(row["Answer"]).lower()
 
     # Multiple choices
