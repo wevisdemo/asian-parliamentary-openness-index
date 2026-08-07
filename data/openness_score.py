@@ -5,6 +5,7 @@ from constants import (
     RESPONDENTS_DEFAULT_COLUMNS,
     INDICATORS_DEFAULT_COLUMNS,
     INDICATORS_TRANSFORM_COLUMNS,
+    QUESTIONS_TRANSFORM_COLUMNS,
 )
 
 
@@ -80,14 +81,8 @@ class OpennessScore:
                 },
                 inplace=True,
             )
-            return grouped_df[
-                [
-                    "Indicator Number",
-                    "Question Number",
-                    "Question",
-                    "Answer Type",
-                    "Answer Options",
-                ]
-            ].sort_values("Question Number")
+            return grouped_df[QUESTIONS_TRANSFORM_COLUMNS].sort_values(
+                "Question Number"
+            )
 
-        return pd.DataFrame(columns=INDICATORS_TRANSFORM_COLUMNS)
+        return pd.DataFrame(columns=QUESTIONS_TRANSFORM_COLUMNS)

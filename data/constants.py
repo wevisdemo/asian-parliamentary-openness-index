@@ -27,3 +27,11 @@ INDICATORS_TRANSFORM_COLUMNS = [
     "Indicator Number",
     "Indicator",
 ]
+
+QUESTIONS_TRANSFORM_COLUMNS = [
+    "Indicator Number",
+    "Question Number",
+    "Question",
+    "Answer Type",
+    "Answer Options",
+]
