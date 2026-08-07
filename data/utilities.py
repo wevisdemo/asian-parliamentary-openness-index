@@ -27,3 +27,45 @@ def normalize_info_df(df: pd.DataFrame | None):
         }
     )
     return _df
+
+
+def normalize_answer(row: pd.Series) -> str:
+    # Check question type
+    # If single; normalize to lower case
+    if row["Answer Type"] == "single":
+        return str(row["Answer"]).lower()
+
+    # Multiple choices
+    selected_options_str = row["Answer"]
+    # Get all possible options
+    possible_options = [
+        str(op).lower() for op in re.findall(r"([a-zA-Z])\)\s", row["Answer Options"])
+    ]
+    # Check if answer if not in option
+    if not any(
+        re.search(r"(^" + option + r"|\;" + option + r")", selected_options_str)
+        for option in possible_options
+    ):
+        selected_options_str = ""
+
+    # Get seleced options
+    selected_options = [op.lower() for op in str(selected_options_str).split(";")]
+
+    # Normalize Answer
+    normalized_answer = ""
+    for option in possible_options:
+        # Check if option is not selected
+        if not any(re.search(r"^" + option, ans) for ans in selected_options):
+            normalized_answer += option + "=no;"
+            continue
+
+        # Check variant of n/a in options
+        if re.search(
+            r"(^" + option + r"|\;" + option + r")\(n/a\)", selected_options_str
+        ):
+            normalized_answer += option + "=n/a;"
+            continue
+
+        normalized_answer += option + "=yes;"
+
+    return normalized_answer.strip(";")

@@ -35,3 +35,12 @@ QUESTIONS_TRANSFORM_COLUMNS = [
     "Answer Type",
     "Answer Options",
 ]
+
+ANSWERS_TRANSFORM_COLUMNS = [
+    "Country",
+    "Chamber",
+    "Question Number",
+    "Answer",
+    "Score",
+    "Total Applicable Score",
+]

@@ -48,12 +48,18 @@ def main() -> None:
             links.get("APOI - Lower Chamber", "")
         )
 
+        # APOI - Upper Chamber
+        upper_chamber_df = get_data_from_google_sheet(
+            links.get("APOI - Upper Chamber", "")
+        )
+
         countries_data.append(
             OpennessScore(
                 country=country,
                 respondent_info_df=respondent_info_df,
                 country_context_df=country_context_df,
                 lower_chamber_df=lower_chamber_df,
+                upper_chamber_df=upper_chamber_df,
             )
         )
 
@@ -76,6 +82,12 @@ def main() -> None:
     # Construct `questions` csv
     questions = countries_data[0].get_questions_data()
     questions.to_csv(os.path.join(OUTPUT_DIR, "questions.csv"), index=False)
+
+    # Constrct `answers` csv
+    answers = pd.concat(
+        [cos.get_answers_data() for cos in countries_data], ignore_index=True
+    )
+    answers.to_csv(os.path.join(OUTPUT_DIR, "answers.csv"), index=False)
 
 
 if __name__ == "__main__":
