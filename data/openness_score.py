@@ -47,7 +47,7 @@ class OpennessScore:
         self.respondent_info_df = normalize_info_df(respondent_info_df)
         self.country_context_df = normalize_info_df(country_context_df)
 
-    def get_country_info(self) -> pd.DataFrame:
+    def get_country_data(self) -> pd.DataFrame:
 
         DEFAULT_COLUMNS = [
             "Is the Parliament unicameral or bicameral?",
@@ -66,7 +66,7 @@ class OpennessScore:
             [{"Country": self.country}], columns=["Country"] + DEFAULT_COLUMNS
         )
 
-    def get_respondent_info(self) -> pd.DataFrame:
+    def get_respondent_data(self) -> pd.DataFrame:
 
         DEFAULT_COLUMNS = [
             "Name of respondent",
