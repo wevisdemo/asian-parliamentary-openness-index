@@ -8,6 +8,7 @@ from constants import (
     INDICATORS_TRANSFORM_COLUMNS,
     QUESTIONS_TRANSFORM_COLUMNS,
     ANSWERS_TRANSFORM_COLUMNS,
+    INDICATOR_CONTEXTS_DEFAULT_COLUMNS,
 )
 
 
@@ -161,3 +162,53 @@ class OpennessScore:
             )
 
         return answers_df
+
+    def get_processedd_context(self, df: pd.DataFrame) -> pd.DataFrame:
+        chamber_df = df.copy()
+
+        # Fill empty from merge cell in `Country context for section`
+        # chamber_df['Country context for section'] = chamber_df['Country context for section'].replace('', None).ffill()
+        # chamber_df['Evidence Sources (URLs)'] = chamber_df['Evidence Sources (URLs)'].replace('', None).ffill()
+        grouped_df = chamber_df.groupby(["Section"], as_index=False).first()
+        # print(chamber_df.head(3))
+        grouped_df.rename(
+            columns={
+                "Section": "Indicator Number",
+                "Country context for section": "Context",
+                "Evidence Sources (URLs)": "Evidences",
+            },
+            inplace=True,
+        )
+        grouped_df["Country"] = self.country
+
+        return grouped_df
+
+    def get_indicato_contexts_data(self) -> pd.DataFrame:
+
+        contexts_df = pd.DataFrame(columns=INDICATOR_CONTEXTS_DEFAULT_COLUMNS)
+
+        if self.lower_chamber_df is not None:
+            lower_chamb_answer_df = self.get_processedd_context(self.lower_chamber_df)
+            lower_chamb_answer_df["Chamber"] = "Lower"
+
+            contexts_df = lower_chamb_answer_df[
+                INDICATOR_CONTEXTS_DEFAULT_COLUMNS
+            ].sort_values("Indicator Number")
+
+        if (
+            self.upper_chamber_df is not None
+            and self.parliament_type == ParliamentStructuralType.BICAMERAL
+        ):
+            upper_chamb_answer_df = self.get_processedd_context(self.upper_chamber_df)
+            upper_chamb_answer_df["Chamber"] = "Upper"
+            contexts_df = pd.concat(
+                [
+                    contexts_df,
+                    upper_chamb_answer_df[
+                        INDICATOR_CONTEXTS_DEFAULT_COLUMNS
+                    ].sort_values("Indicator Number"),
+                ],
+                ignore_index=True,
+            )
+
+        return contexts_df
