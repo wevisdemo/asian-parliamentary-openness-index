@@ -15,11 +15,15 @@
 		{ label: 'Explore by Country', href: resolve('/countries') }
 	];
 
+	const countryOptions = $derived(
+		data.countries.map(({ name, slug }) => ({ label: name, value: slug }))
+	);
+
 	let openModal = $state<'about' | 'methodology'>();
 </script>
 
 <svelte:head>
-	<title>{data.country.label} · Asian Parliamentary Openness Index</title>
+	<title>{data.country.name} · Asian Parliamentary Openness Index</title>
 </svelte:head>
 
 <div class="relative overflow-clip bg-gray-2">
@@ -34,8 +38,8 @@
 		<Breadcrumb items={breadcrumbItems}>
 			{#snippet trailing()}
 				<Dropdown
-					options={data.countries}
-					value={data.country.value}
+					options={countryOptions}
+					value={data.country.slug}
 					onselect={(country) => goto(resolve('/countries/[country]', { country }))}
 				/>
 			{/snippet}
@@ -55,25 +59,24 @@
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-2">
 				<div class="flex flex-col gap-6">
-					<h1 class="h2 font-bold">{data.country.label}</h1>
+					<h1 class="h2 font-bold">{data.country.name}</h1>
 					<ul class="b4 text-gray-8">
-						<li><strong>Government System:</strong> Constitutional Monarchy</li>
-						<li><strong>Parliamentary type:</strong> Bicameral</li>
-						<li><strong>Parliament Name:</strong> National Assembly of Thailand</li>
+						<li><strong>Government System:</strong> {data.country.governmentSystem}</li>
+						<li>
+							<strong>Parliamentary type:</strong>
+							<span class="capitalize">{data.country.parliamentType}</span>
+						</li>
+						<li><strong>Parliament Name:</strong> {data.country.parliamentName}</li>
 						<li>
 							<strong>Parliament Official Website:</strong>
-							<Hyperlink href="https://www.parliament.go.th/" target="_blank" color="gray">
-								https://www.parliament.go.th/
+							<Hyperlink href={data.country.parliamentWebsite} target="_blank" color="gray">
+								{data.country.parliamentWebsite}
 							</Hyperlink>
 						</li>
 					</ul>
 					<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4">
 						<span class="font-bold">Key findings</span>
-						<p>
-							Thailand scores 60% overall. Its strongest dimension is Transparency (62%), while
-							Accountability (56%) lags furthest behind. There is a notable gap between chambers,
-							with the House of Senate scoring higher.
-						</p>
+						<p>{data.country.keyFindings}</p>
 					</div>
 				</div>
 			</div>

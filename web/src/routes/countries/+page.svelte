@@ -18,9 +18,9 @@
 	<Breadcrumb items={breadcrumbItems} />
 
 	<ul class="mt-6 flex flex-col gap-2">
-		{#each countries as { label, value } (value)}
+		{#each countries as { name, slug } (slug)}
 			<li>
-				<Hyperlink href={resolve('/countries/[country]', { country: value })}>{label}</Hyperlink>
+				<Hyperlink href={resolve('/countries/[country]', { country: slug })}>{name}</Hyperlink>
 			</li>
 		{/each}
 	</ul>
