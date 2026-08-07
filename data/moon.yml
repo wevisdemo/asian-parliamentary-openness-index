@@ -4,11 +4,11 @@ layer: "application"
 tasks:
   build:
     command: "uv run main.py"
-    inputs:
-      - "main.py"
-      - "pyproject.toml"
     outputs:
       - "output"
+    # Data is fetched from Google Sheets, so local inputs can't tell when it is stale
+    options:
+      cache: false
   lint:
     command: "uv run ruff check ."
   format:
