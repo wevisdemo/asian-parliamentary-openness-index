@@ -7,7 +7,11 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Modal from '$lib/components/modal.svelte';
-	import Respondent from '$lib/components/countries/respondent.svelte';
+	import CountryOverview from '$lib/components/country/country-overview.svelte';
+	import Respondent from '$lib/components/country/respondent.svelte';
+	import QuestionAnswer from '$lib/components/questionair/question-answer.svelte';
+	import Tabs from '$lib/components/tabs.svelte';
+	import { chamberOptions, dimensionOptions } from '$lib/data/enums';
 
 	const { data } = $props();
 
@@ -20,7 +24,24 @@
 		data.countries.map(({ name, slug }) => ({ label: name, value: slug }))
 	);
 
+	let selectedChamber = $state(chamberOptions[0].value);
+	let selectedDimension = $state(dimensionOptions[0].value);
+
 	let openModal = $state<'about' | 'methodology'>();
+
+	const dimensionQuestions = $derived.by(() => {
+		const indicatorNumbers = new Set(
+			data.indicators
+				.filter(({ dimension }) => dimension === selectedDimension)
+				.map(({ number }) => number)
+		);
+
+		return data.questions.filter(({ indicatorNumber }) => indicatorNumbers.has(indicatorNumber));
+	});
+
+	const chamberAnswers = $derived(
+		data.answers.filter(({ chamber }) => chamber === selectedChamber)
+	);
 </script>
 
 <svelte:head>
@@ -48,8 +69,11 @@
 
 		<div class="mx-auto flex w-full max-w-5xl flex-col gap-6 py-12 md:py-16">
 			<div class="flex flex-col justify-between gap-2 md:flex-row">
-				<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
-				<div class="flex flex-row gap-6 md:gap-8">
+				<div>
+					<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
+					<p class="b5 text-gray-6">Assessment Date: August 2026</p>
+				</div>
+				<div class="flex flex-row items-start gap-6 md:gap-8">
 					<Hyperlink class="underline" onclick={() => (openModal = 'about')}>
 						About the Index
 					</Hyperlink>
@@ -58,34 +82,40 @@
 					</Hyperlink>
 				</div>
 			</div>
-			<div class="grid grid-cols-1 md:grid-cols-2">
-				<div class="flex flex-col gap-6">
-					<h1 class="h2 font-bold">{data.country.name}</h1>
-					<ul class="b4 text-gray-8">
-						<li><strong>Government System:</strong> {data.country.governmentSystem}</li>
-						<li>
-							<strong>Parliamentary type:</strong>
-							<span class="capitalize">{data.country.parliamentType}</span>
-						</li>
-						<li><strong>Parliament Name:</strong> {data.country.parliamentName}</li>
-						<li>
-							<strong>Parliament Official Website:</strong>
-							<Hyperlink href={data.country.parliamentWebsite} target="_blank" color="gray">
-								{data.country.parliamentWebsite}
-							</Hyperlink>
-						</li>
-					</ul>
-					<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4">
-						<span class="font-bold">Key findings</span>
-						<p>{data.country.keyFindings}</p>
-					</div>
-				</div>
-			</div>
+			<CountryOverview country={data.country} />
 		</div>
 	</div>
 </section>
 
-<div class="flex flex-col bg-gray-1 px-5 py-12 md:py-16">
+<div class="flex flex-col gap-12 bg-gray-1 px-5 py-12 md:py-16">
+	<section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+		{#if data.country.parliamentType === 'bicameral'}
+			<Tabs
+				options={chamberOptions}
+				value={selectedChamber}
+				onselect={(chamber) => (selectedChamber = chamber)}
+			/>
+		{/if}
+		<div class="-mx-5 flex flex-1 overflow-x-scroll px-5 md:mx-0 md:overflow-visible md:px-0">
+			<Tabs
+				class="flex-1 whitespace-nowrap"
+				options={dimensionOptions}
+				value={selectedDimension}
+				variant="secondary"
+				onselect={(dimension) => (selectedDimension = dimension)}
+			/>
+		</div>
+
+		<div class="flex flex-col gap-5 bg-white p-5">
+			{#each dimensionQuestions as question, index (question.number)}
+				<QuestionAnswer
+					{question}
+					answer={chamberAnswers.find(({ questionNumber }) => questionNumber === question.number)}
+					class={index > 0 ? 'border-t border-gray-2 pt-5' : undefined}
+				/>
+			{/each}
+		</div>
+	</section>
 	{#if data.respondents.length}
 		<section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the Respondent</h2>
