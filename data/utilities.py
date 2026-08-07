@@ -47,12 +47,10 @@ def normalize_answer(row: pd.Series) -> str:
         return "n/a"
 
     # Get all possible options
-    possible_options = [
-        str(op).lower() for op in re.findall(r"([a-zA-Z])\)\s", row["Answer Options"])
-    ]
+    possible_options = list(get_option_score_index(row["Answer Options"]).keys())
     # Check if answer if not in option
     if not any(
-        re.search(r"(^" + option + r"|\;" + option + r")", selected_options_str)
+        re.search(r"(^" + option + r"|\;" + option + r")", str(selected_options_str))
         for option in possible_options
     ):
         selected_options_str = ""
@@ -82,7 +80,7 @@ def normalize_answer(row: pd.Series) -> str:
 
 def get_option_score_index(answer_options_str: str) -> Dict[str, float]:
     options_str_list = [
-        _[0] for _ in re.findall(r"([a-z]\)(.|\n)+?\d\))", answer_options_str)
+        _[0] for _ in re.findall(r"((^|\n)[a-z]\)(.|\n)+?\d\))", answer_options_str)
     ]
     score_index = {}
     for option in options_str_list:
