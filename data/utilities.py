@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Dict
 import re
 import pandas as pd
 
@@ -75,12 +75,27 @@ def normalize_answer(row: pd.Series) -> str:
     return normalized_answer.strip(";")
 
 
+def get_option_score_index(answer_options_str: str) -> Dict[str, float]:
+    options_str_list = [
+        _[0] for _ in re.findall(r"([a-z]\)(.|\n)+?\d\))", answer_options_str)
+    ]
+    score_index = {}
+    for option in options_str_list:
+        option_prefix = re.search(r"([a-z])\)", option).group(1)  # type: ignore
+        option_score = float(re.search(r"\((\d+(\.\d+)?)\)", option).group(1))  # type: ignore
+        score_index[option_prefix] = option_score
+    return score_index
+
+
 def calculate_score(row: pd.Series) -> Tuple[float, float]:
 
     answer_str = row["Answer"]
     answer_options_str = row["Answer Options"]
     score = 0.0
     applicable_score = 0.0
+
+    # Get score index
+    score_index = get_option_score_index(answer_options_str)
 
     # Check question type
     # If single; normalize to lower case
@@ -89,41 +104,26 @@ def calculate_score(row: pd.Series) -> Tuple[float, float]:
         if str(answer_str).lower() == "n/a":
             return 0.0, 0.0  # TODO: recheck for answer with n/a
 
-        # Get selected answer & Extract score
-        if re.search(answer_str + r"\)(.|\n)+?\d\)", answer_options_str):
-            selected_answer = re.search(
-                answer_str + r"\)(.|\n)+?\d\)", answer_options_str
-            ).group(0)
-
-            # Extract score
-            score = float(re.search(r"\((\d+(\.\d+)?)\)", selected_answer).group(1))  # type: ignore
-
-        # Extract max applicable score
-        applicable_score = max(
-            [float(n[0]) for n in re.findall(r"\((\d+(\.\d+)?)\)", answer_options_str)]
-        )
+        # Extract score & applicable score
+        score = score_index.get(answer_str, 0.0)
+        applicable_score = max(score_index.values())
         return score, applicable_score
 
     # Multiple choices
     selected_options = [op.lower() for op in str(answer_str).split(";")]
     for selected_opt in selected_options:
-        # Get applicable score for this option
-        _option_score_str = re.search(
-            selected_opt.split("=")[0] + r"\)(.|\n)+?\d\)", answer_options_str
-        ).group(0)  # type: ignore
-        option_score = float(
-            re.search(r"\((\d+(\.\d+)?)\)", _option_score_str).group(1)  # type: ignore
-        )
+        # Extract prefix to get score from score_index
+        selected_prefix = re.search(r"([a-z])\=", selected_opt).group(1)  # type: ignore
 
         if re.search(r"=no", selected_opt):
             # Add to `applicable_score`
-            applicable_score += option_score
+            applicable_score += score_index.get(selected_prefix, 0.0)
             continue
         elif re.search(r"=n/a", selected_opt):
             continue  # Don't add `applicable_score`
 
         # Finally: option=yes
-        score += option_score
-        applicable_score += option_score
+        score += score_index.get(selected_prefix, 0.0)
+        applicable_score += score_index.get(selected_prefix, 0.0)
 
     return score, applicable_score
