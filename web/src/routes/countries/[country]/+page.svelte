@@ -7,6 +7,7 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Modal from '$lib/components/modal.svelte';
+	import Respondent from '$lib/components/countries/respondent.svelte';
 
 	const { data } = $props();
 
@@ -26,7 +27,7 @@
 	<title>{data.country.name} · Asian Parliamentary Openness Index</title>
 </svelte:head>
 
-<div class="relative overflow-clip bg-gray-2">
+<section class="relative overflow-clip bg-gray-2">
 	<img
 		src={mapIllustration}
 		alt=""
@@ -82,6 +83,18 @@
 			</div>
 		</div>
 	</div>
+</section>
+
+<div class="flex flex-col bg-gray-1 px-5 py-12 md:py-16">
+	{#if data.respondents.length}
+		<section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+			<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the Respondent</h2>
+
+			{#each data.respondents as respondent, index (respondent.organization)}
+				<Respondent {respondent} class={index > 0 ? 'border-t border-gray-2 pt-6' : undefined} />
+			{/each}
+		</section>
+	{/if}
 </div>
 
 <Modal open={openModal === 'about'} title="About the Index" onclose={() => (openModal = undefined)}>

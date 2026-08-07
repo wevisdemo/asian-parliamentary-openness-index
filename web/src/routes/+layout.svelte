@@ -15,6 +15,10 @@
 	/></svelte:head
 >
 
-<Navbar />
+<div class="flex min-h-screen w-full flex-col">
+	<Navbar />
 
-{@render children()}
+	<main class="flex flex-1 flex-col">
+		{@render children()}
+	</main>
+</div>
