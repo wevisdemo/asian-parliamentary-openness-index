@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 from enum import Enum
 from utilities import normalize_info_df, normalize_answer, calculate_score
 from constants import (
@@ -100,6 +101,12 @@ class OpennessScore:
                 },
                 inplace=True,
             )
+
+            # Clean `Question`
+            grouped_df["Question"] = grouped_df["Question"].apply(
+                lambda question_text: re.sub(r"\[.+?\]$", "", question_text).strip()
+            )
+
             return grouped_df[QUESTIONS_TRANSFORM_COLUMNS].sort_values(
                 "Question Number"
             )
