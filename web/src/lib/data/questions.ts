@@ -9,7 +9,7 @@ import {
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
-import { answerTypes } from './enums';
+import { answerTypes } from '$lib/constants/answer-types';
 
 const answerOptionPattern = /^([a-z])\)\s*(.*?)\s*\(([\d.]+)\)$/;
 

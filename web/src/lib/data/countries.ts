@@ -8,7 +8,7 @@ import {
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
-import { parliamentTypes } from './enums';
+import { parliamentTypes } from '$lib/constants/parliament-types';
 
 const asSlug = createTransformer({
 	decode: (value: string) => value.toLowerCase().replaceAll(' ', '-')

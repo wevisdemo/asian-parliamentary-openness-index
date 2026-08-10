@@ -8,7 +8,7 @@ import {
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
-import { dimensions } from './enums';
+import { dimensions } from '$lib/constants/dimensions';
 
 export const indicatorSchema = Object({
 	dimension: Column('Dimension', asOneOf(dimensions)),

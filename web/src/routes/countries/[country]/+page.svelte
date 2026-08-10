@@ -11,12 +11,10 @@
 	import Respondent from '$lib/components/country/respondent.svelte';
 	import Indicator from '$lib/components/questionair/indicator.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
-	import {
-		achievementLevelDescriptions,
-		achievementLevels,
-		getAchievementLevel
-	} from '$lib/data/achievements';
-	import { chamberOptions, dimensionOptions } from '$lib/data/enums';
+	import { achievementLevelDescriptions, achievementLevels } from '$lib/constants/achievements';
+	import { chamberOptions } from '$lib/constants/chambers';
+	import { dimensionDescriptions, dimensionOptions } from '$lib/constants/dimensions';
+	import { getAchievementLevel } from '$lib/data/answers';
 
 	const { data } = $props();
 
@@ -129,7 +127,7 @@
 </section>
 
 <div class="flex flex-col gap-12 bg-gray-1 px-5 py-12 md:py-16">
-	<section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+	<section class="mx-auto flex w-full max-w-5xl flex-col gap-6 md:gap-8">
 		{#if data.country.parliamentType === 'bicameral'}
 			<Tabs
 				options={chamberOptions}
@@ -137,6 +135,7 @@
 				onselect={(chamber) => (selectedChamber = chamber)}
 			/>
 		{/if}
+
 		<div class="-mx-5 flex flex-1 overflow-x-scroll px-5 md:mx-0 md:overflow-visible md:px-0">
 			<Tabs
 				class="flex-1 whitespace-nowrap"
@@ -146,6 +145,8 @@
 				onselect={(dimension) => (selectedDimension = dimension)}
 			/>
 		</div>
+
+		<p class="b3">{dimensionDescriptions[selectedDimension]}</p>
 
 		<div class="flex flex-col gap-5">
 			<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">

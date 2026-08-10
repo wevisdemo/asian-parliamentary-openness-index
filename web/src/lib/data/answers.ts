@@ -9,7 +9,8 @@ import {
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
-import { chambers } from './enums';
+import type { AchievementLevel } from '$lib/constants/achievements';
+import { chambers } from '$lib/constants/chambers';
 
 const optionStates: Record<string, boolean | undefined> = {
 	yes: true,
@@ -60,3 +61,17 @@ export const answerSchema = Object({
 export type Answer = StaticDecode<typeof answerSchema>;
 
 export const answers: Answer[] = parseCsv(answersCsv, answerSchema);
+
+export const getAchievementLevel = (answers: Answer[]): AchievementLevel => {
+	const applicable = answers.filter(({ totalApplicableScore }) => totalApplicableScore > 0);
+
+	if (!applicable.length) return 'N/A';
+
+	const achieved = applicable.filter(
+		({ score, totalApplicableScore }) => score === totalApplicableScore
+	);
+
+	if (!achieved.length) return 'Not achieved';
+
+	return achieved.length === applicable.length ? 'Achieved' : 'Partly achieved';
+};

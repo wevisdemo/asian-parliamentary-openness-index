@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Accordion from '$lib/components/accordion.svelte';
 	import QuestionAnswer from '$lib/components/questionair/question-answer.svelte';
-	import { getAchievementLevel, type AchievementLevel } from '$lib/data/achievements';
-	import type { Answer } from '$lib/data/answers';
+	import type { AchievementLevel } from '$lib/constants/achievements';
+	import { getAchievementLevel, type Answer } from '$lib/data/answers';
 	import type { Indicator } from '$lib/data/indicators';
 	import type { Question } from '$lib/data/questions';
 

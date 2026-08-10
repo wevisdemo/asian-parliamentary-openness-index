@@ -9,7 +9,7 @@ import {
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
-import { chambers } from './enums';
+import { chambers } from '$lib/constants/chambers';
 
 /** Splits newline-separated links, `asArray` can't be used since it treats newline as a row break */
 const asLines = createTransformer({
