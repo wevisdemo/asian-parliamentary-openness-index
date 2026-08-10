@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "requests", "pandas", "numpy"
+    "requests", "pandas==3.0.5", "numpy"
 ]
 
 [dependency-groups]
