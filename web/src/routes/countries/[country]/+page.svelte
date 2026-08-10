@@ -42,6 +42,10 @@
 		data.answers.filter(({ chamber }) => chamber === selectedChamber)
 	);
 
+	const chamberContexts = $derived(
+		data.indicatorContexts.filter(({ chamber }) => chamber === selectedChamber)
+	);
+
 	const dimensionIndicators = $derived(
 		data.indicators
 			.filter(({ dimension }) => dimension === selectedDimension)
@@ -179,7 +183,14 @@
 
 					<!-- TODO: Keyed by index since indicator numbers are duplicated in the source sheet -->
 					{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
-						<Indicator {indicator} {questions} answers={chamberAnswers} />
+						<Indicator
+							{indicator}
+							{questions}
+							answers={chamberAnswers}
+							context={chamberContexts.find(
+								({ indicatorNumber }) => indicatorNumber === indicator.number
+							)}
+						/>
 					{/each}
 				</div>
 			{/each}
