@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Answer } from '$lib/data/answers';
 	import type { Question } from '$lib/data/questions';
+	import Information from 'carbon-icons-svelte/lib/Information.svelte';
+	import Tooltip from '../tooltip.svelte';
 
 	interface Props {
 		question: Question;
@@ -30,7 +32,13 @@
 						{#if answer?.answer || (question.answerType === 'multiple' && selectedOption !== undefined)}
 							({option.score})
 						{:else}
-							N/A
+							<Tooltip>
+								{#snippet trigger()}
+									N/A
+									<Information size={16} class="text-purple-3" />
+								{/snippet}
+								This option is not applicable to the country context.
+							</Tooltip>
 						{/if}</span
 					>
 				</li>
