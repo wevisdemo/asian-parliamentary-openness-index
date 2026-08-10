@@ -15,7 +15,7 @@
 
 <div class={['grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-6', className]}>
 	<div class="flex flex-row gap-3">
-		<span class="font-bold text-gray-8">{question.number}</span>
+		<span class="font-bold text-gray-8">{question.number.split('.').at(-1)}</span>
 		<p>{question.question}</p>
 	</div>
 

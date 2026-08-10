@@ -11,6 +11,11 @@
 	import Respondent from '$lib/components/country/respondent.svelte';
 	import Indicator from '$lib/components/questionair/indicator.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
+	import {
+		achievementLevelDescriptions,
+		achievementLevels,
+		getAchievementLevel
+	} from '$lib/data/achievements';
 	import { chamberOptions, dimensionOptions } from '$lib/data/enums';
 
 	const { data } = $props();
@@ -20,28 +25,63 @@
 		{ label: 'Explore by Country', href: resolve('/countries') }
 	];
 
+	const groupByOptions = [
+		{ label: 'Achievement Level', value: 'achievement-level' },
+		{ label: 'Dimension Relevance', value: 'dimension-relevance' }
+	];
+
 	const countryOptions = $derived(
 		data.countries.map(({ name, slug }) => ({ label: name, value: slug }))
 	);
 
 	let selectedChamber = $state(chamberOptions[0].value);
 	let selectedDimension = $state(dimensionOptions[0].value);
+	let selectedGroupBy = $state(groupByOptions[0].value);
 
 	let openModal = $state<'about' | 'methodology'>();
+
+	const chamberAnswers = $derived(
+		data.answers.filter(({ chamber }) => chamber === selectedChamber)
+	);
 
 	const dimensionIndicators = $derived(
 		data.indicators
 			.filter(({ dimension }) => dimension === selectedDimension)
-			.map((indicator) => ({
-				indicator,
-				questions: data.questions.filter(
+			.map((indicator) => {
+				const questions = data.questions.filter(
 					({ indicatorNumber }) => indicatorNumber === indicator.number
-				)
-			}))
+				);
+
+				const answers = questions
+					.map((question) =>
+						chamberAnswers.find(({ questionNumber }) => questionNumber === question.number)
+					)
+					.filter((answer) => answer !== undefined);
+
+				return { indicator, questions, achievementLevel: getAchievementLevel(answers) };
+			})
 	);
 
-	const chamberAnswers = $derived(
-		data.answers.filter(({ chamber }) => chamber === selectedChamber)
+	const indicatorGroups = $derived.by(() =>
+		selectedGroupBy === 'achievement-level'
+			? achievementLevels
+					.map((level) => ({
+						name: level,
+						description: achievementLevelDescriptions[level],
+						indicators: dimensionIndicators.filter(
+							({ achievementLevel }) => achievementLevel === level
+						)
+					}))
+					.filter(({ indicators }) => indicators.length)
+			: [...new Set(dimensionIndicators.map(({ indicator }) => indicator.dimensionRelevance))].map(
+					(relevance) => ({
+						name: relevance,
+						description: undefined,
+						indicators: dimensionIndicators.filter(
+							({ indicator }) => indicator.dimensionRelevance === relevance
+						)
+					})
+				)
 	);
 </script>
 
@@ -108,10 +148,39 @@
 		</div>
 
 		<div class="flex flex-col gap-5">
-			<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
-			<!-- TODO: Keyed by index since indicator numbers are duplicated in the source sheet -->
-			{#each dimensionIndicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${index}`)}
-				<Indicator {indicator} {questions} answers={chamberAnswers} />
+			<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
+				<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
+				<div class="flex flex-row gap-2">
+					<span>Grouped by</span>
+					<Dropdown
+						options={groupByOptions}
+						value={selectedGroupBy}
+						color="gray"
+						onselect={(groupBy) => (selectedGroupBy = groupBy)}
+					/>
+				</div>
+			</div>
+
+			{#each indicatorGroups as group (group.name)}
+				<div class="flex flex-col gap-4 border-t-2 border-gray-6 pt-4">
+					<div class="flex flex-col b4 text-gray-6">
+						<h4>
+							<span class="font-bold text-gray-8">{group.name}</span>
+							<span>
+								({group.indicators.length}
+								{group.indicators.length === 1 ? 'Indicator' : 'Indicators'})
+							</span>
+						</h4>
+						{#if group.description}
+							<p class=" text-gray-6">{group.description}</p>
+						{/if}
+					</div>
+
+					<!-- TODO: Keyed by index since indicator numbers are duplicated in the source sheet -->
+					{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
+						<Indicator {indicator} {questions} answers={chamberAnswers} />
+					{/each}
+				</div>
 			{/each}
 		</div>
 	</section>

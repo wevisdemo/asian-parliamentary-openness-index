@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Accordion from '$lib/components/accordion.svelte';
 	import QuestionAnswer from '$lib/components/questionair/question-answer.svelte';
+	import { getAchievementLevel, type AchievementLevel } from '$lib/data/achievements';
 	import type { Answer } from '$lib/data/answers';
 	import type { Indicator } from '$lib/data/indicators';
 	import type { Question } from '$lib/data/questions';
@@ -14,7 +15,7 @@
 
 	const { indicator, questions, answers, class: className }: Props = $props();
 
-	const statusClasses = {
+	const statusClasses: Record<AchievementLevel, string> = {
 		'N/A': 'bg-data-na',
 		'Not achieved': 'bg-data-not-achieved',
 		'Partly achieved': 'bg-data-partly-achieved',
@@ -34,21 +35,7 @@
 		indicatorAnswers.reduce((sum, { totalApplicableScore }) => sum + totalApplicableScore, 0)
 	);
 
-	const status: keyof typeof statusClasses = $derived.by(() => {
-		const applicable = indicatorAnswers.filter(
-			({ totalApplicableScore }) => totalApplicableScore > 0
-		);
-
-		if (!applicable.length) return 'N/A';
-
-		const achieved = applicable.filter(
-			({ score, totalApplicableScore }) => score === totalApplicableScore
-		);
-
-		if (!achieved.length) return 'Not achieved';
-
-		return achieved.length === applicable.length ? 'Achieved' : 'Partly achieved';
-	});
+	const status = $derived(getAchievementLevel(indicatorAnswers));
 </script>
 
 <Accordion class={className}>

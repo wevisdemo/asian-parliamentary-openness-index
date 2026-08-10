@@ -66,7 +66,7 @@
 		type="button"
 		aria-expanded={isOpen}
 		class={[
-			'inline-flex w-full cursor-pointer items-center justify-between gap-2 border px-2 py-1 b4 leading-none font-bold transition-colors',
+			'inline-flex w-full cursor-pointer items-center justify-between gap-2 border px-2 py-1 b4 leading-none transition-colors',
 			isOpen ? styles.triggerOpen : styles.trigger
 		]}
 		onclick={() => (isOpen = !isOpen)}
