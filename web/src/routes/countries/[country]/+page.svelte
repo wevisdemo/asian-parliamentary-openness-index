@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import mapIllustration from '$lib/assets/images/map-illustration.png';
@@ -7,13 +8,18 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Modal from '$lib/components/modal.svelte';
+	import Pagination from '$lib/components/pagination.svelte';
 	import CountryOverview from '$lib/components/country/country-overview.svelte';
 	import Respondent from '$lib/components/country/respondent.svelte';
 	import Indicator from '$lib/components/questionair/indicator.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
 	import { achievementLevelDescriptions, achievementLevels } from '$lib/constants/achievements';
 	import { chamberOptions } from '$lib/constants/chambers';
-	import { dimensionDescriptions, dimensionOptions } from '$lib/constants/dimensions';
+	import {
+		dimensionDescriptions,
+		dimensionOptions,
+		type Dimension
+	} from '$lib/constants/dimensions';
 	import { getAchievementLevel } from '$lib/data/answers';
 
 	const { data } = $props();
@@ -37,6 +43,31 @@
 	let selectedGroupBy = $state(groupByOptions[0].value);
 
 	let openModal = $state<'about' | 'methodology'>();
+
+	let indicatorSection = $state<HTMLElement>();
+	let dimensionTabs = $state<HTMLElement>();
+	let dimensionDescription = $state<HTMLElement>();
+
+	const selectDimension = async (dimension: Dimension) => {
+		selectedDimension = dimension;
+
+		await tick();
+
+		if (!indicatorSection || !dimensionTabs || !dimensionDescription) return;
+
+		const stickyOffset = parseFloat(getComputedStyle(dimensionTabs).top) || 0;
+		const sectionGap = parseFloat(getComputedStyle(indicatorSection).rowGap) || 0;
+
+		window.scrollTo({
+			top:
+				dimensionDescription.getBoundingClientRect().top +
+				window.scrollY -
+				dimensionTabs.offsetHeight -
+				sectionGap -
+				stickyOffset,
+			behavior: 'smooth'
+		});
+	};
 
 	const chamberAnswers = $derived(
 		data.answers.filter(({ chamber }) => chamber === selectedChamber)
@@ -131,7 +162,10 @@
 </section>
 
 <div class="flex flex-col gap-12 bg-gray-1 px-5 py-12 md:py-16">
-	<section class="mx-auto flex w-full max-w-5xl flex-col gap-6 md:gap-8">
+	<section
+		bind:this={indicatorSection}
+		class="relative mx-auto flex w-full max-w-5xl flex-col gap-6 md:gap-8"
+	>
 		{#if data.country.parliamentType === 'bicameral'}
 			<Tabs
 				options={chamberOptions}
@@ -140,32 +174,35 @@
 			/>
 		{/if}
 
-		<div class="-mx-5 flex flex-1 overflow-x-scroll px-5 md:mx-0 md:overflow-visible md:px-0">
+		<div
+			bind:this={dimensionTabs}
+			class="sticky top-12 z-40 -mx-5 flex flex-1 overflow-x-scroll bg-gray-1 px-5 md:top-16 md:mx-0 md:overflow-visible md:px-0"
+		>
 			<Tabs
 				class="flex-1 whitespace-nowrap"
 				options={dimensionOptions}
 				value={selectedDimension}
 				variant="secondary"
-				onselect={(dimension) => (selectedDimension = dimension)}
+				onselect={selectDimension}
 			/>
 		</div>
 
-		<p class="b3">{dimensionDescriptions[selectedDimension]}</p>
+		<p bind:this={dimensionDescription} class="b3">{dimensionDescriptions[selectedDimension]}</p>
 
-		<div class="flex flex-col gap-5">
-			<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
-				<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
-				<div class="flex flex-row gap-2">
-					<span>Grouped by</span>
-					<Dropdown
-						options={groupByOptions}
-						value={selectedGroupBy}
-						color="gray"
-						onselect={(groupBy) => (selectedGroupBy = groupBy)}
-					/>
-				</div>
+		<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
+			<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
+			<div class="flex flex-row gap-2">
+				<span>Grouped by</span>
+				<Dropdown
+					options={groupByOptions}
+					value={selectedGroupBy}
+					color="gray"
+					onselect={(groupBy) => (selectedGroupBy = groupBy)}
+				/>
 			</div>
+		</div>
 
+		<div class="flex flex-col gap-6">
 			{#each indicatorGroups as group (group.name)}
 				<div class="flex flex-col gap-4 border-t-2 border-gray-6 pt-4">
 					<div class="flex flex-col b4 text-gray-6">
@@ -195,6 +232,13 @@
 				</div>
 			{/each}
 		</div>
+
+		<Pagination
+			options={dimensionOptions}
+			value={selectedDimension}
+			onselect={selectDimension}
+			class="mt-4"
+		/>
 	</section>
 	{#if data.respondents.length}
 		<section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
@@ -214,7 +258,6 @@
 		against the same set of questions, organized into three dimensions of openness: Transparency,
 		Accountability, and Citizen Participation.
 	</p>
-	<Button class="self-start">See more</Button>
 </Modal>
 
 <Modal
@@ -227,5 +270,4 @@
 		two years (first launched in 2026) by local PMOs or think tanks using only publicly available
 		information, with the findings verified by academic experts.
 	</p>
-	<Button class="self-start">See more</Button>
 </Modal>
