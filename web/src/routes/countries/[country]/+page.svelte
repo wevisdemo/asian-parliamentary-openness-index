@@ -134,6 +134,7 @@
 		<Breadcrumb items={breadcrumbItems}>
 			{#snippet trailing()}
 				<Dropdown
+					class="inline"
 					options={countryOptions}
 					value={data.country.slug}
 					onselect={(country) => goto(resolve('/countries/[country]', { country }))}
@@ -191,8 +192,8 @@
 
 		<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
 			<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
-			<div class="flex flex-row gap-2">
-				<span>Grouped by</span>
+			<div class="mt-1 flex flex-row items-center gap-2 text-gray-6">
+				<span class="b4 whitespace-nowrap">Grouped by</span>
 				<Dropdown
 					options={groupByOptions}
 					value={selectedGroupBy}
@@ -218,7 +219,6 @@
 						{/if}
 					</div>
 
-					<!-- TODO: Keyed by index since indicator numbers are duplicated in the source sheet -->
 					{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
 						<Indicator
 							{indicator}

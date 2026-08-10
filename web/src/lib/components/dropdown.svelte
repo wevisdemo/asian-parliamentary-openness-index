@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Select } from 'bits-ui';
 	import ChevronDown from 'carbon-icons-svelte/lib/ChevronDown.svelte';
 	import ChevronUp from 'carbon-icons-svelte/lib/ChevronUp.svelte';
 
@@ -41,35 +42,18 @@
 	};
 
 	let isOpen = $state(false);
-	let container = $state<HTMLDivElement>();
 
 	const selectedLabel = $derived(options.find((option) => option.value === value)?.label);
 	const styles = $derived(colorClasses[color]);
-
-	const select = (option: DropdownOption) => {
-		isOpen = false;
-		onselect?.(option.value);
-	};
-
-	const closeOnOutsideClick = ({ target }: MouseEvent) => {
-		if (isOpen && target instanceof Node && !container?.contains(target)) isOpen = false;
-	};
 </script>
 
-<svelte:document
-	onclick={closeOnOutsideClick}
-	onkeydown={({ key }) => key === 'Escape' && (isOpen = false)}
-/>
-
-<div bind:this={container} class={['relative inline-block', className]}>
-	<button
-		type="button"
-		aria-expanded={isOpen}
+<Select.Root type="single" items={options} {value} onValueChange={onselect} bind:open={isOpen}>
+	<Select.Trigger
 		class={[
-			'inline-flex w-full cursor-pointer items-center justify-between gap-2 border px-2 py-1 b4 leading-none transition-colors',
-			isOpen ? styles.triggerOpen : styles.trigger
+			'inline-flex cursor-pointer items-center justify-between gap-2 border px-2 py-1 b4 leading-none transition-colors',
+			isOpen ? styles.triggerOpen : styles.trigger,
+			className
 		]}
-		onclick={() => (isOpen = !isOpen)}
 	>
 		{selectedLabel ?? placeholder}
 		{#if isOpen}
@@ -77,29 +61,32 @@
 		{:else}
 			<ChevronDown size={16} />
 		{/if}
-	</button>
+	</Select.Trigger>
 
-	{#if isOpen}
-		<ul
+	<Select.Portal>
+		<Select.Content
+			sideOffset={4}
+			collisionPadding={8}
 			class={[
-				'absolute top-full left-0 z-10 mt-1 max-h-80 min-w-48 overflow-y-auto border bg-white',
+				'z-10 overflow-y-auto border bg-white',
+				'max-h-(--bits-select-content-available-height) min-w-(--bits-select-anchor-width)',
 				styles.panel
 			]}
 		>
-			{#each options as option (option.value)}
-				<li>
-					<button
-						type="button"
+			<Select.Viewport>
+				{#each options as option (option.value)}
+					<Select.Item
+						value={option.value}
+						label={option.label}
 						class={[
-							'w-full cursor-pointer px-2 py-1 text-left b4 hover:bg-gray-1 hover:text-black',
+							'cursor-pointer px-2 py-1 text-left b4 data-highlighted:bg-gray-1 data-highlighted:text-black',
 							styles.option
 						]}
-						onclick={() => select(option)}
 					>
 						{option.label}
-					</button>
-				</li>
-			{/each}
-		</ul>
-	{/if}
-</div>
+					</Select.Item>
+				{/each}
+			</Select.Viewport>
+		</Select.Content>
+	</Select.Portal>
+</Select.Root>
