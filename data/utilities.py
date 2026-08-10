@@ -97,16 +97,16 @@ def calculate_score(row: pd.Series) -> Tuple[float, float]:
     score = 0.0
     applicable_score = 0.0
 
+    # Check n/a question
+    if str(answer_str).lower() == "n/a":
+        return 0.0, 0.0
+
     # Get score index
     score_index = get_option_score_index(answer_options_str)
 
     # Check question type
     # If single; normalize to lower case
     if row["Answer Type"] == "single":
-        # Check for n/a answer
-        if str(answer_str).lower() == "n/a":
-            return 0.0, 0.0  # TODO: recheck for answer with n/a
-
         # Extract score & applicable score
         score = score_index.get(answer_str, 0.0)
         applicable_score = max(score_index.values())
