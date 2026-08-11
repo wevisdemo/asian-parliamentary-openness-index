@@ -24,7 +24,7 @@ export const countrySchema = Object({
 	),
 	parliamentName: Column('What is the name of the Parliament you will be assessing?', asString()),
 	parliamentWebsite: Column('Provide the link to the Parliament’s official website', asString()),
-	keyFindings: Column('Key findings', asString())
+	keyFindings: Column('Key findings', asString().optional())
 });
 
 export type Country = StaticDecode<typeof countrySchema>;

@@ -1,5 +1,7 @@
+PARLIAMENT_TYPE_COLUMN = "Is the Parliament unicameral or bicameral?"
+
 COUNTRIES_DEFAULT_COLUMNS = [
-    "Is the Parliament unicameral or bicameral?",
+    PARLIAMENT_TYPE_COLUMN,
     "How is the system of government classified in this jurisdiction?",
     "What is the name of the Parliament you will be assessing?",
     "Provide the link to the Parliament’s official website",

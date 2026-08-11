@@ -13,7 +13,9 @@
 	<div class="flex flex-col gap-4">
 		<div class="flex flex-col gap-1">
 			<h3 class="font-bold">{respondent.organization}</h3>
-			<p class="whitespace-pre-line">{respondent.about}</p>
+			{#if respondent.about}
+				<p class="whitespace-pre-line">{respondent.about}</p>
+			{/if}
 		</div>
 
 		<div class="flex flex-col gap-1">

@@ -15,10 +15,7 @@
 		<h1 class="h2 font-bold">{country.name}</h1>
 		<ul class="b4 text-gray-8">
 			<li><strong>Government System:</strong> {country.governmentSystem}</li>
-			<li>
-				<strong>Parliamentary type:</strong>
-				<span class="capitalize">{country.parliamentType}</span>
-			</li>
+			<li><strong>Parliamentary type:</strong> {country.parliamentType}</li>
 			<li><strong>Parliament Name:</strong> {country.parliamentName}</li>
 			<li>
 				<strong>Parliament Official Website:</strong>
@@ -27,9 +24,11 @@
 				</Hyperlink>
 			</li>
 		</ul>
-		<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4">
-			<span class="font-bold">Key findings</span>
-			<p>{country.keyFindings}</p>
-		</div>
+		{#if country.keyFindings}
+			<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4">
+				<span class="font-bold">Key findings</span>
+				<p>{country.keyFindings}</p>
+			</div>
+		{/if}
 	</div>
 </div>

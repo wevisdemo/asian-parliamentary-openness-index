@@ -30,6 +30,10 @@ def normalize_info_df(df: pd.DataFrame | None):
     return _df
 
 
+def normalize_parliament_type(value) -> str:
+    return str(value).strip().capitalize()
+
+
 def normalize_answer(row: pd.Series) -> str:
     # Check question type
     # If single; normalize to lower case

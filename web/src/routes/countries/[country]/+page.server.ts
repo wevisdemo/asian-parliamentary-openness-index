@@ -9,6 +9,13 @@ import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = () => countries.map(({ slug }) => ({ country: slug }));
 
+const countryOptions = countries.map(({ name, slug }) => ({ label: name, value: slug }));
+
+const indicatorQuestions = indicators.map((indicator) => ({
+	indicator,
+	questions: questions.filter(({ indicatorNumber }) => indicatorNumber === indicator.number)
+}));
+
 export const load: PageServerLoad = ({ params }) => {
 	const country = countries.find((c) => c.slug === params.country);
 
@@ -16,10 +23,9 @@ export const load: PageServerLoad = ({ params }) => {
 
 	return {
 		country,
-		countries,
+		countryOptions,
 		respondents: respondents.filter(({ country: name }) => name === country.name),
-		indicators,
-		questions,
+		indicatorQuestions,
 		answers: answers.filter(({ country: name }) => name === country.name),
 		indicatorContexts: indicatorContexts.filter(({ country: name }) => name === country.name)
 	};

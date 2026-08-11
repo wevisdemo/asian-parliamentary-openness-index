@@ -21,7 +21,7 @@ export const respondentSchema = Object({
 		'Years of experience of parliament monitoring by the organization',
 		asNumber()
 	),
-	about: Column('About the Respondent', asString())
+	about: Column('About the Respondent', asString().optional())
 });
 
 export type Respondent = StaticDecode<typeof respondentSchema>;

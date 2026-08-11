@@ -4,7 +4,6 @@
 	import { resolve } from '$app/paths';
 	import mapIllustration from '$lib/assets/images/map-illustration.png';
 	import Breadcrumb from '$lib/components/breadcrumb.svelte';
-	import Button from '$lib/components/button.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Modal from '$lib/components/modal.svelte';
@@ -33,10 +32,6 @@
 		{ label: 'Achievement Level', value: 'achievement-level' },
 		{ label: 'Dimension Relevance', value: 'dimension-relevance' }
 	];
-
-	const countryOptions = $derived(
-		data.countries.map(({ name, slug }) => ({ label: name, value: slug }))
-	);
 
 	let selectedChamber = $state(chamberOptions[0].value);
 	let selectedDimension = $state(dimensionOptions[0].value);
@@ -78,13 +73,9 @@
 	);
 
 	const dimensionIndicators = $derived(
-		data.indicators
-			.filter(({ dimension }) => dimension === selectedDimension)
-			.map((indicator) => {
-				const questions = data.questions.filter(
-					({ indicatorNumber }) => indicatorNumber === indicator.number
-				);
-
+		data.indicatorQuestions
+			.filter(({ indicator }) => indicator.dimension === selectedDimension)
+			.map(({ indicator, questions }) => {
 				const answers = questions
 					.map((question) =>
 						chamberAnswers.find(({ questionNumber }) => questionNumber === question.number)
@@ -135,7 +126,7 @@
 			{#snippet trailing()}
 				<Dropdown
 					class="inline"
-					options={countryOptions}
+					options={data.countryOptions}
 					value={data.country.slug}
 					onselect={(country) => goto(resolve('/countries/[country]', { country }))}
 				/>
@@ -167,7 +158,7 @@
 		bind:this={indicatorSection}
 		class="relative mx-auto flex w-full max-w-5xl flex-col gap-6 md:gap-8"
 	>
-		{#if data.country.parliamentType === 'bicameral'}
+		{#if data.country.parliamentType === 'Bicameral'}
 			<Tabs
 				options={chamberOptions}
 				value={selectedChamber}

@@ -1,8 +1,14 @@
 import pandas as pd
 import re
 from enum import Enum
-from utilities import normalize_info_df, normalize_answer, calculate_score
+from utilities import (
+    normalize_info_df,
+    normalize_parliament_type,
+    normalize_answer,
+    calculate_score,
+)
 from constants import (
+    PARLIAMENT_TYPE_COLUMN,
     COUNTRIES_DEFAULT_COLUMNS,
     RESPONDENTS_DEFAULT_COLUMNS,
     INDICATORS_DEFAULT_COLUMNS,
@@ -14,8 +20,8 @@ from constants import (
 
 
 class ParliamentStructuralType(Enum):
-    UNICAMERAL = 1
-    BICAMERAL = 2
+    UNICAMERAL = "Unicameral"
+    BICAMERAL = "Bicameral"
 
 
 class OpennessScore:
@@ -39,12 +45,12 @@ class OpennessScore:
         self.parliament_type = None
         # Check and Add ParliamentStructuralType with country_context_df
         if self.country_context_df is not None:
-            match self.country_context_df[
-                "Is the Parliament unicameral or bicameral?"
-            ].values[0]:
-                case "unicameral":
+            match normalize_parliament_type(
+                self.country_context_df[PARLIAMENT_TYPE_COLUMN].values[0]
+            ):
+                case ParliamentStructuralType.UNICAMERAL.value:
                     self.parliament_type = ParliamentStructuralType.UNICAMERAL
-                case "bicameral":
+                case ParliamentStructuralType.BICAMERAL.value:
                     self.parliament_type = ParliamentStructuralType.BICAMERAL
 
     def get_country_data(self) -> pd.DataFrame:
@@ -52,6 +58,9 @@ class OpennessScore:
         if self.country_context_df is not None:
             country_context_df = self.country_context_df[COUNTRIES_DEFAULT_COLUMNS]
             country_context_df["Country"] = self.country
+            country_context_df[PARLIAMENT_TYPE_COLUMN] = country_context_df[
+                PARLIAMENT_TYPE_COLUMN
+            ].apply(normalize_parliament_type)
             return country_context_df[["Country"] + COUNTRIES_DEFAULT_COLUMNS]
 
         return pd.DataFrame(
