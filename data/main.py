@@ -7,6 +7,7 @@ For now it emits mock CSV files so the web app has data to render.
 from typing import List
 import os
 import json
+import csv
 from pathlib import Path
 from sheets_retriever import get_data_from_google_sheet
 from openness_score import OpennessScore
@@ -67,13 +68,21 @@ def main() -> None:
     countries = pd.concat(
         [cos.get_country_data() for cos in countries_data], ignore_index=True
     )
-    countries.to_csv(os.path.join(OUTPUT_DIR, "countries.csv"), index=False)
+    countries.to_csv(
+        os.path.join(OUTPUT_DIR, "countries.csv"),
+        index=False,
+        quoting=csv.QUOTE_MINIMAL,
+    )
 
     # Constrct `respondents` csv
     respondents = pd.concat(
         [cos.get_respondent_data() for cos in countries_data], ignore_index=True
     )
-    respondents.to_csv(os.path.join(OUTPUT_DIR, "respondents.csv"), index=False)
+    respondents.to_csv(
+        os.path.join(OUTPUT_DIR, "respondents.csv"),
+        index=False,
+        quoting=csv.QUOTE_MINIMAL,
+    )
 
     # Construct `indicators` csv
     indicators = countries_data[0].get_indicator_data()
