@@ -153,7 +153,7 @@
 	</div>
 </section>
 
-<div class="flex flex-col gap-12 bg-gray-1 px-5 py-12 md:py-16">
+<div class="flex flex-col gap-16 bg-gray-1 px-5 py-12 md:gap-20 md:py-16">
 	<section
 		bind:this={indicatorSection}
 		class="relative content-container flex flex-col gap-6 md:gap-8"

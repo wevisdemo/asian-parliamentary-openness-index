@@ -31,10 +31,10 @@
 	{@const { label, icon: Icon, classes } = directions[direction]}
 	<button
 		type="button"
-		class={['group flex cursor-pointer flex-row items-center gap-2', classes]}
+		class={['group flex cursor-pointer flex-row items-start gap-1', classes]}
 		onclick={() => onselect?.(option.value)}
 	>
-		<Icon size={24} class="shrink-0 text-gray-6" />
+		<Icon size={18} class="shrink-0 text-gray-6 md:mt-0.5" />
 		<span class="flex flex-col">
 			<span class="b4 text-gray-6">{label}</span>
 			<span class="b2 font-bold text-purple-5 transition-colors group-hover:text-gray-8">

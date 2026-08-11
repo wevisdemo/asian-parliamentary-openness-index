@@ -24,7 +24,7 @@
 			/>
 		</a>
 
-		<ul class="flex flex-col gap-3">
+		<ul class="flex flex-col gap-2">
 			{#each links as { label, href } (href)}
 				<li><a {href} class="b4 font-bold hover:text-purple-3">{label}</a></li>
 			{/each}

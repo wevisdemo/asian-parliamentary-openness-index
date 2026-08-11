@@ -19,7 +19,7 @@
 			<li><strong>Parliament Name:</strong> {country.parliamentName}</li>
 			<li>
 				<strong>Parliament Official Website:</strong>
-				<Hyperlink href={country.parliamentWebsite} target="_blank" color="gray">
+				<Hyperlink href={country.parliamentWebsite} target="_blank" color="gray" class="break-all">
 					{country.parliamentWebsite}
 				</Hyperlink>
 			</li>

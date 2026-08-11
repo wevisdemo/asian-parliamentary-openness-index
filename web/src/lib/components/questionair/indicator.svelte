@@ -79,7 +79,7 @@
 				{#if context?.context}
 					<Accordion class="bg-purple-1" headerClass="hover:bg-purple-2">
 						{#snippet header()}
-							<h4 class="text-left b4 font-bold">Country Context</h4>
+							<h4 class="text-left b4 font-bold">Country context</h4>
 						{/snippet}
 
 						{#snippet content()}
@@ -91,7 +91,7 @@
 				{#if context?.evidences.length}
 					<Accordion class="bg-purple-1" headerClass="hover:bg-purple-2">
 						{#snippet header()}
-							<h4 class="text-left b4 font-bold">Evidence Sources</h4>
+							<h4 class="text-left b4 font-bold">Evidence sources</h4>
 						{/snippet}
 
 						{#snippet content()}
