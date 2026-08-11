@@ -118,3 +118,12 @@
 		font-size: 0.875rem;
 	}
 }
+
+@utility content-container {
+	margin-inline: auto;
+	width: 100%;
+	max-width: 75rem;
+	@variant md {
+		width: 80vw;
+	}
+}

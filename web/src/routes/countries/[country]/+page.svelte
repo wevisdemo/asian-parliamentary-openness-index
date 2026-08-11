@@ -133,7 +133,7 @@
 			{/snippet}
 		</Breadcrumb>
 
-		<div class="mx-auto flex w-full max-w-5xl flex-col gap-6 py-12 md:py-16">
+		<div class="content-container flex flex-col gap-6 py-12 md:py-16">
 			<div class="flex flex-col justify-between gap-2 md:flex-row">
 				<div>
 					<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
@@ -156,7 +156,7 @@
 <div class="flex flex-col gap-12 bg-gray-1 px-5 py-12 md:py-16">
 	<section
 		bind:this={indicatorSection}
-		class="relative mx-auto flex w-full max-w-5xl flex-col gap-6 md:gap-8"
+		class="relative content-container flex flex-col gap-6 md:gap-8"
 	>
 		{#if data.country.parliamentType === 'Bicameral'}
 			<Tabs
@@ -232,7 +232,7 @@
 		/>
 	</section>
 	{#if data.respondents.length}
-		<section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+		<section class="content-container flex flex-col gap-6">
 			<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the Respondent</h2>
 
 			{#each data.respondents as respondent, index (respondent.organization)}
