@@ -2,6 +2,7 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import Navbar from '$lib/components/navbar.svelte';
+	import Footer from '$lib/components/footer.svelte';
 
 	let { children } = $props();
 </script>
@@ -21,4 +22,6 @@
 	<main class="flex flex-1 flex-col">
 		{@render children()}
 	</main>
+
+	<Footer />
 </div>
