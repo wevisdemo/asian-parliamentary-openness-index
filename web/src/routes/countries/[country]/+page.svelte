@@ -4,13 +4,10 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import mapIllustration from '$lib/assets/images/map-illustration.png';
-	import Breadcrumb from '$lib/components/breadcrumb.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
+	import Hero from '$lib/components/hero.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
-	import Modal from '$lib/components/modal.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
-	import CountryOverview from '$lib/components/country/country-overview.svelte';
-	import Respondent from '$lib/components/country/respondent.svelte';
 	import Indicator from '$lib/components/questionair/indicator.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
 	import { achievementLevelDescriptions, achievementLevels } from '$lib/constants/achievements';
@@ -24,11 +21,6 @@
 
 	const { data } = $props();
 
-	const breadcrumbItems = [
-		{ label: 'Home', href: resolve('/') },
-		{ label: 'Explore by Country', href: resolve('/countries') }
-	];
-
 	const groupByOptions = [
 		{ label: 'Achievement Level', value: 'achievement-level' },
 		{ label: 'Dimension Relevance', value: 'dimension-relevance' }
@@ -37,8 +29,6 @@
 	let selectedChamber = $state(chamberOptions[0].value);
 	let selectedDimension = $state(dimensionOptions[0].value);
 	let selectedGroupBy = $state(groupByOptions[0].value);
-
-	let openModal = $state<'about' | 'methodology'>();
 
 	let indicatorSection = $state<HTMLElement>();
 	let dimensionTabs = $state<HTMLElement>();
@@ -122,36 +112,47 @@
 		class="pointer-events-none absolute top-30 left-1/2 w-[110vw] max-w-none min-w-15 -translate-x-1/2 select-none"
 	/>
 
-	<div class="relative flex flex-col px-5 py-4">
-		<Breadcrumb items={breadcrumbItems}>
-			{#snippet trailing()}
-				<Dropdown
-					class="inline"
-					options={data.countryOptions}
-					value={data.country.slug}
-					onselect={(country) => goto(resolve('/countries/[country]', { country }))}
-				/>
-			{/snippet}
-		</Breadcrumb>
+	<Hero
+		breadcrumbItems={[
+			{ label: 'Home', href: resolve('/') },
+			{ label: 'Explore by Country', href: resolve('/countries') }
+		]}
+	>
+		{#snippet breadcrumbTrailing()}
+			<Dropdown
+				class="inline"
+				options={data.countryOptions}
+				value={data.country.slug}
+				onselect={(country) => goto(resolve('/countries/[country]', { country }))}
+			/>
+		{/snippet}
 
-		<div class="content-container flex flex-col gap-6 py-12 md:py-16">
-			<div class="flex flex-col justify-between gap-2 md:flex-row">
-				<div>
-					<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
-					<p class="b5 text-gray-6">Assessment Date: August 2026</p>
-				</div>
-				<div class="flex flex-row items-start gap-6 md:gap-8">
-					<Hyperlink class="underline" onclick={() => (openModal = 'about')}>
-						About the Index
+		<div class="flex flex-col gap-6">
+			<h1 class="h2 font-bold">{data.country.name}</h1>
+			<ul class="b4 text-gray-8">
+				<li><strong>Government System:</strong> {data.country.governmentSystem}</li>
+				<li><strong>Parliamentary type:</strong> {data.country.parliamentType}</li>
+				<li><strong>Parliament Name:</strong> {data.country.parliamentName}</li>
+				<li>
+					<strong>Parliament Official Website:</strong>
+					<Hyperlink
+						href={data.country.parliamentWebsite}
+						target="_blank"
+						color="gray"
+						class="break-all"
+					>
+						{data.country.parliamentWebsite}
 					</Hyperlink>
-					<Hyperlink class="underline" onclick={() => (openModal = 'methodology')}>
-						Methodology
-					</Hyperlink>
+				</li>
+			</ul>
+			{#if data.country.keyFindings}
+				<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4">
+					<span class="font-bold">Key findings</span>
+					<p>{data.country.keyFindings}</p>
 				</div>
-			</div>
-			<CountryOverview country={data.country} />
+			{/if}
 		</div>
-	</div>
+	</Hero>
 </section>
 
 <div class="flex flex-col gap-16 bg-gray-1 px-5 py-12 md:gap-20 md:py-16">
@@ -238,34 +239,50 @@
 			class="mt-4"
 		/>
 	</section>
+
 	{#if data.respondents.length}
 		<section class="content-container flex flex-col gap-6">
 			<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the Respondent</h2>
 
 			{#each data.respondents as respondent, index (respondent.organization)}
-				<Respondent {respondent} class={index > 0 ? 'border-t border-gray-2 pt-6' : undefined} />
+				<div
+					class={[
+						'grid grid-cols-1 gap-4 text-gray-8 md:grid-cols-2 md:gap-8',
+						index > 0 && 'border-t border-gray-2 pt-6'
+					]}
+				>
+					<div class="flex flex-col gap-4">
+						<div class="flex flex-col gap-1">
+							<h3 class="font-bold">{respondent.organization}</h3>
+							{#if respondent.about}
+								<p class="whitespace-pre-line">{respondent.about}</p>
+							{/if}
+						</div>
+
+						<div class="flex flex-col gap-1">
+							<p class="b4 text-gray-6">
+								Years of experience of parliament monitoring by the organization
+							</p>
+							<p>{respondent.yearsOfExperience}</p>
+						</div>
+					</div>
+
+					<div class="flex flex-col gap-4">
+						<div class="flex flex-col gap-1">
+							<p class="b4 text-gray-6">Name of respondent</p>
+							<ul class="list-disc pl-5">
+								{#each respondent.names as name (name)}
+									<li>{name}</li>
+								{/each}
+							</ul>
+						</div>
+						<div class="flex flex-col gap-1">
+							<p class="b4 text-gray-6">Email of respondent to correspond with</p>
+							<p>{respondent.email}</p>
+						</div>
+					</div>
+				</div>
 			{/each}
 		</section>
 	{/if}
 </div>
-
-<Modal open={openModal === 'about'} title="About the Index" onclose={() => (openModal = undefined)}>
-	<p>
-		The index assesses how openly national parliaments across Asia-Pacific operate, so citizens,
-		media, and reformers can see exactly where each parliament stands. Every parliament is scored
-		against the same set of questions, organized into three dimensions of openness: Transparency,
-		Accountability, and Citizen Participation.
-	</p>
-</Modal>
-
-<Modal
-	open={openModal === 'methodology'}
-	title="Methodology"
-	onclose={() => (openModal = undefined)}
->
-	<p>
-		The assessment covers 31 indicators across three dimensions. It is conducted independently every
-		two years (first launched in 2026) by local PMOs or think tanks using only publicly available
-		information, with the findings verified by academic experts.
-	</p>
-</Modal>
