@@ -11,7 +11,10 @@
 		href: string;
 	}
 
-	const links: NavLink[] = [{ label: 'Explore by Country', href: resolve('/countries') }];
+	const links: NavLink[] = [
+		{ label: 'Insights', href: resolve('/insights') },
+		{ label: 'Explore by Country', href: resolve('/countries') }
+	];
 
 	let isMenuOpen = $state(false);
 
