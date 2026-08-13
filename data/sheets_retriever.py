@@ -3,13 +3,14 @@ import pandas as pd
 
 
 def clean_empty_margins(df) -> pd.DataFrame:
-    rows = df.dropna(how="all").index
-    cols = df.dropna(how="all", axis=1).columns
+    result_df = df.copy()
+    for col in df.columns:
+        if (col == "" or col.startswith("Unnamed:")) and (df[col] == "").all():
+            result_df = result_df.drop(col, axis=1)
 
-    if rows.empty or cols.empty:
-        return pd.DataFrame()
-    df = df.loc[:, ~(df == "").all()]  # remove column with entire empty string
-    return df.loc[rows[0] : rows[-1], cols[0] : cols[-1]]
+    if len(result_df.columns) == 1:
+        result_df.loc[:, ["Unnamed: -1"]] = ""
+    return result_df
 
 
 def get_data_from_google_sheet(sheet_url: str) -> pd.DataFrame:
