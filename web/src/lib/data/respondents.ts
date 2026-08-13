@@ -1,29 +1,24 @@
 import respondentsCsv from '$data/respondents.csv?raw';
-import {
-	asArray,
-	asNumber,
-	asString,
-	Column,
-	Object,
-	parseCsv,
-	type StaticDecode
-} from 'sheethuahua';
+import { asArray, asString, Column, Object, parseCsv, type StaticDecode } from 'sheethuahua';
 
 export const respondentSchema = Object({
 	country: Column('Country', asString()),
-	names: Column('Name of respondent', asArray(asString())),
-	email: Column('Email of respondent to correspond with', asString()),
+	names: Column('Name of respondent', asArray(asString()).optional()),
+	email: Column('Email of respondent to correspond with', asString().optional()),
 	organization: Column(
 		'Representative Parliament Monitoring Organization (PMO) of respondent',
-		asString()
+		asString().optional()
 	),
 	yearsOfExperience: Column(
 		'Years of experience of parliament monitoring by the organization',
-		asNumber()
+		asString().optional()
 	),
 	about: Column('About the Respondent', asString().optional())
 });
 
 export type Respondent = StaticDecode<typeof respondentSchema>;
 
-export const respondents: Respondent[] = parseCsv(respondentsCsv, respondentSchema);
+export const respondents: Respondent[] = parseCsv(respondentsCsv, respondentSchema).filter(
+	({ names, email, organization, yearsOfExperience, about }) =>
+		names || email || organization || yearsOfExperience || about
+);
