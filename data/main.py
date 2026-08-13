@@ -51,7 +51,7 @@ def main() -> None:
 
         # APOI - Upper Chamber
         upper_chamber_df = get_data_from_google_sheet(
-            links.get("APOI - Upper Chamber", "")
+            links.get("APOI - Upper Chamber", None)
         )
 
         countries_data.append(
