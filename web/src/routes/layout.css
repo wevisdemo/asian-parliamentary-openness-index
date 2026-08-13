@@ -123,7 +123,9 @@
 	margin-inline: auto;
 	width: 100%;
 	max-width: 75rem;
+	padding: --spacing(8) --spacing(5);
 	@variant md {
 		width: 80vw;
+		padding: --spacing(16) 0;
 	}
 }

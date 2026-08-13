@@ -31,7 +31,7 @@
 	</div>
 </Hero>
 
-<section class="bg-gray-2 px-5 py-7 md:py-16">
+<section class="bg-gray-2">
 	<div class="content-container grid grid-cols-1 md:grid-cols-2">
 		<h2 class="h4 font-bold">Overall Score</h2>
 		<div class="flex flex-col gap-4 border-gray-6 md:border-l-2 md:pl-8">
@@ -46,27 +46,28 @@
 	</div>
 </section>
 
-<section class="px-5 py-7 md:py-16">
-	<div class="content-container grid grid-cols-1 md:grid-cols-2">
-		<h2 class="h4 font-bold">Compare by Dimension</h2>
-		<div class="flex flex-col gap-4 border-gray-4 md:border-l-2 md:pl-8">
-			<span class="font-bold text-gray-10">Key finding:</span>
-			<p>
-				<strong>Transparency</strong> is the strongest-performing dimension, with many parliaments
-				publishing meeting agendas, parliamentary proceedings, and session broadcasts.
-				<strong>Accountability</strong>
-				is the weakest dimension across the region, particularly regarding asset declarations, conflict-of-interest
-				disclosure, and oversight of publicly funded staff.
-				<strong>Citizen Participation</strong> remains an area for improvement, with no parliament meeting
-				all participation indicators.
-			</p>
+<section>
+	<div class="content-container flex flex-col gap-8 md:gap-16">
+		<div class="grid grid-cols-1 md:grid-cols-2">
+			<h2 class="h4 font-bold">Compare by Dimension</h2>
+			<div class="flex flex-col gap-4 border-gray-4 md:border-l-2 md:pl-8">
+				<span class="font-bold text-gray-10">Key finding:</span>
+				<p>
+					<strong>Transparency</strong> is the strongest-performing dimension, with many parliaments
+					publishing meeting agendas, parliamentary proceedings, and session broadcasts.
+					<strong>Accountability</strong>
+					is the weakest dimension across the region, particularly regarding asset declarations, conflict-of-interest
+					disclosure, and oversight of publicly funded staff.
+					<strong>Citizen Participation</strong> remains an area for improvement, with no parliament meeting
+					all participation indicators.
+				</p>
+			</div>
 		</div>
-	</div>
 
-	<MoreActionCard
-		class="content-container mt-7 md:mt-16"
-		title="Go deeper into the data"
-		description="Explore every country's full profile, or browse the index indicator by indicator."
-		actions={[{ label: 'Explore by country', href: resolve('/countries') }]}
-	/>
+		<MoreActionCard
+			title="Go deeper into the data"
+			description="Explore every country's full profile, or browse the index indicator by indicator."
+			actions={[{ label: 'Explore by country', href: resolve('/countries') }]}
+		/>
+	</div>
 </section>

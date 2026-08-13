@@ -53,7 +53,7 @@
 	</div>
 </Hero>
 
-<section class="px-5 py-7 md:py-16">
+<section>
 	<div class="content-container flex flex-col">
 		<SearchInput
 			bind:value={searchQuery}

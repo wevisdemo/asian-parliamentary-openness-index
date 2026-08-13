@@ -155,7 +155,7 @@
 	</Hero>
 </section>
 
-<div class="flex flex-col gap-16 bg-gray-1 px-5 py-12 md:gap-20 md:py-16">
+<div class="flex flex-col bg-gray-1">
 	<section
 		bind:this={indicatorSection}
 		class="relative content-container flex flex-col gap-6 md:gap-8"
@@ -238,61 +238,61 @@
 			onselect={selectDimension}
 			class="mt-4"
 		/>
+
+		{#if data.respondents.length}
+			<div class="mt-8 flex flex-col gap-6 md:mt-16">
+				<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the Respondent</h2>
+
+				{#each data.respondents as respondent, index (index)}
+					<div
+						class={[
+							'grid grid-cols-1 gap-4 text-gray-8 md:grid-cols-2 md:gap-8',
+							index > 0 && 'border-t border-gray-2 pt-6'
+						]}
+					>
+						<div class="flex flex-col gap-4">
+							{#if respondent.organization || respondent.about}
+								<div class="flex flex-col gap-1">
+									{#if respondent.organization}
+										<h3 class="font-bold">{respondent.organization}</h3>
+									{/if}
+									{#if respondent.about}
+										<p class="whitespace-pre-line">{respondent.about}</p>
+									{/if}
+								</div>
+							{/if}
+
+							{#if respondent.yearsOfExperience}
+								<div class="flex flex-col gap-1">
+									<p class="b4 text-gray-6">
+										Years of experience of parliament monitoring by the organization
+									</p>
+									<p>{respondent.yearsOfExperience}</p>
+								</div>
+							{/if}
+						</div>
+
+						<div class="flex flex-col gap-4">
+							{#if respondent.names?.length}
+								<div class="flex flex-col gap-1">
+									<p class="b4 text-gray-6">Name of respondent</p>
+									<ul class="list-disc pl-5">
+										{#each respondent.names as name (name)}
+											<li>{name}</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
+							{#if respondent.email}
+								<div class="flex flex-col gap-1">
+									<p class="b4 text-gray-6">Email of respondent to correspond with</p>
+									<p>{respondent.email}</p>
+								</div>
+							{/if}
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</section>
-
-	{#if data.respondents.length}
-		<section class="content-container flex flex-col gap-6">
-			<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the Respondent</h2>
-
-			{#each data.respondents as respondent, index (index)}
-				<div
-					class={[
-						'grid grid-cols-1 gap-4 text-gray-8 md:grid-cols-2 md:gap-8',
-						index > 0 && 'border-t border-gray-2 pt-6'
-					]}
-				>
-					<div class="flex flex-col gap-4">
-						{#if respondent.organization || respondent.about}
-							<div class="flex flex-col gap-1">
-								{#if respondent.organization}
-									<h3 class="font-bold">{respondent.organization}</h3>
-								{/if}
-								{#if respondent.about}
-									<p class="whitespace-pre-line">{respondent.about}</p>
-								{/if}
-							</div>
-						{/if}
-
-						{#if respondent.yearsOfExperience}
-							<div class="flex flex-col gap-1">
-								<p class="b4 text-gray-6">
-									Years of experience of parliament monitoring by the organization
-								</p>
-								<p>{respondent.yearsOfExperience}</p>
-							</div>
-						{/if}
-					</div>
-
-					<div class="flex flex-col gap-4">
-						{#if respondent.names?.length}
-							<div class="flex flex-col gap-1">
-								<p class="b4 text-gray-6">Name of respondent</p>
-								<ul class="list-disc pl-5">
-									{#each respondent.names as name (name)}
-										<li>{name}</li>
-									{/each}
-								</ul>
-							</div>
-						{/if}
-						{#if respondent.email}
-							<div class="flex flex-col gap-1">
-								<p class="b4 text-gray-6">Email of respondent to correspond with</p>
-								<p>{respondent.email}</p>
-							</div>
-						{/if}
-					</div>
-				</div>
-			{/each}
-		</section>
-	{/if}
 </div>

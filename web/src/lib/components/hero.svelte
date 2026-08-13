@@ -21,10 +21,10 @@
 	let openModal = $state<'about' | 'methodology'>();
 </script>
 
-<div class={['relative flex flex-col px-5 py-4', className]}>
-	<Breadcrumb items={breadcrumbItems} trailing={breadcrumbTrailing} />
+<div class={['relative flex flex-col', className]}>
+	<Breadcrumb items={breadcrumbItems} trailing={breadcrumbTrailing} class="px-5 pt-4" />
 
-	<div class="content-container flex flex-col gap-6 py-8 md:py-16">
+	<div class="content-container flex flex-col gap-6">
 		<div class="flex flex-col justify-between gap-2 md:flex-row">
 			<div>
 				<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
