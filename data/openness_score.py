@@ -67,10 +67,25 @@ class OpennessScore:
             [{"Country": self.country}], columns=["Country"] + COUNTRIES_DEFAULT_COLUMNS
         )
 
+    def normalize_experience_text(self, text: str) -> str:
+        normalized_text = text.lower().capitalize().strip()
+        if not re.search(r"year(s)?$", normalized_text):
+            year_rgx_matched = re.search(r"(\d+)$", normalized_text)
+            if year_rgx_matched:
+                year = int(year_rgx_matched.group(1))
+                normalized_text += " year" + ("s" if year > 1 else "")
+        return normalized_text
+
     def get_respondent_data(self) -> pd.DataFrame:
 
         if self.respondent_info_df is not None:
             respondent_info_df = self.respondent_info_df[RESPONDENTS_DEFAULT_COLUMNS]
+
+            # Normalize `Years of experience of parliament monitoring by the organization:`
+            col = "Years of experience of parliament monitoring by the organization"
+            respondent_info_df[col] = respondent_info_df[col].apply(
+                lambda x: self.normalize_experience_text(str(x))
+            )
             respondent_info_df["Country"] = self.country
             return respondent_info_df[["Country"] + RESPONDENTS_DEFAULT_COLUMNS]
 
