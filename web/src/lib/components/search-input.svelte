@@ -1,0 +1,42 @@
+<script lang="ts">
+	import Close from 'carbon-icons-svelte/lib/Close.svelte';
+	import Search from 'carbon-icons-svelte/lib/Search.svelte';
+
+	interface Props {
+		value: string;
+		placeholder?: string;
+		class?: string;
+	}
+
+	let { value = $bindable(), placeholder = 'Search', class: className }: Props = $props();
+</script>
+
+<label class={['relative flex items-center text-purple-5', className]}>
+	<Search size={20} class="pointer-events-none absolute left-3" />
+	<input
+		type="search"
+		bind:value
+		{placeholder}
+		class={[
+			'w-full border border-purple-5 py-2.5 pr-10 pl-10 text-gray-8 transition-colors placeholder:text-purple-5 focus:outline-purple-5',
+			value && 'bg-purple-1'
+		]}
+	/>
+	{#if value}
+		<button
+			type="button"
+			aria-label="Clear search"
+			onclick={() => (value = '')}
+			class="absolute right-3 cursor-pointer"
+		>
+			<Close size={20} />
+		</button>
+	{/if}
+</label>
+
+<style>
+	input[type='search']::-webkit-search-cancel-button {
+		-webkit-appearance: none;
+		appearance: none;
+	}
+</style>
