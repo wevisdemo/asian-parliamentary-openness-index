@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { tick } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -8,7 +7,8 @@
 	import Hero from '$lib/components/hero.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
-	import Indicator from '$lib/components/questionair/indicator.svelte';
+	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
+	import IndicatorAccordion from '$lib/components/questionair/indicator-accordion.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
 	import { achievementLevelDescriptions, achievementLevels } from '$lib/constants/achievements';
 	import { chamberOptions } from '$lib/constants/chambers';
@@ -30,29 +30,11 @@
 	let selectedDimension = $state(dimensionOptions[0].value);
 	let selectedGroupBy = $state(groupByOptions[0].value);
 
-	let indicatorSection = $state<HTMLElement>();
-	let dimensionTabs = $state<HTMLElement>();
-	let dimensionDescription = $state<HTMLElement>();
+	let dimensionTabs = $state<ReturnType<typeof DimensionTabs>>();
 
-	const selectDimension = async (dimension: Dimension) => {
+	const selectDimension = (dimension: Dimension) => {
 		selectedDimension = dimension;
-
-		await tick();
-
-		if (!indicatorSection || !dimensionTabs || !dimensionDescription) return;
-
-		const stickyOffset = parseFloat(getComputedStyle(dimensionTabs).top) || 0;
-		const sectionGap = parseFloat(getComputedStyle(indicatorSection).rowGap) || 0;
-
-		window.scrollTo({
-			top:
-				dimensionDescription.getBoundingClientRect().top +
-				window.scrollY -
-				dimensionTabs.offsetHeight -
-				sectionGap -
-				stickyOffset,
-			behavior: 'smooth'
-		});
+		dimensionTabs?.scrollToContent();
 	};
 
 	const chamberAnswers = $derived(
@@ -156,10 +138,7 @@
 </section>
 
 <div class="flex flex-col bg-gray-1">
-	<section
-		bind:this={indicatorSection}
-		class="relative content-container flex flex-col gap-6 md:gap-8"
-	>
+	<section class="relative content-container flex flex-col gap-6 md:gap-8">
 		{#if data.country.parliamentType === 'Bicameral'}
 			<Tabs
 				options={chamberOptions}
@@ -168,22 +147,16 @@
 			/>
 		{/if}
 
-		<div
+		<DimensionTabs
 			bind:this={dimensionTabs}
-			class="sticky top-12 z-40 -mx-5 flex flex-1 overflow-x-scroll bg-gray-1 px-5 md:top-16 md:mx-0 md:overflow-visible md:px-0"
-		>
-			<Tabs
-				class="flex-1 whitespace-nowrap"
-				options={dimensionOptions}
-				value={selectedDimension}
-				variant="secondary"
-				onselect={selectDimension}
-			/>
-		</div>
+			value={selectedDimension}
+			onselect={selectDimension}
+			class="bg-gray-1"
+		/>
 
 		{#key `${selectedChamber}-${selectedDimension}`}
 			<div class="flex flex-col gap-6 md:gap-8" in:fade={{ duration: 150 }}>
-				<p bind:this={dimensionDescription} class="b3">
+				<p class="b3">
 					{dimensionDescriptions[selectedDimension]}
 				</p>
 
@@ -217,7 +190,7 @@
 							</div>
 
 							{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
-								<Indicator
+								<IndicatorAccordion
 									{indicator}
 									{questions}
 									answers={chamberAnswers}

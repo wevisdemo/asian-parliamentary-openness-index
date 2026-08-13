@@ -2,6 +2,13 @@ export const achievementLevels = ['Not achieved', 'Partly achieved', 'Achieved',
 
 export type AchievementLevel = (typeof achievementLevels)[number];
 
+export const achievementLevelColorClasses: Record<AchievementLevel, string> = {
+	'Not achieved': 'bg-data-not-achieved',
+	'Partly achieved': 'bg-data-partly-achieved',
+	Achieved: 'bg-data-achieved',
+	'N/A': 'bg-data-na'
+};
+
 export const achievementLevelDescriptions: Record<AchievementLevel, string> = {
 	Achieved:
 		'All questions within the indicator receive a score of 0, excluding those that are not applicable to the country context.',

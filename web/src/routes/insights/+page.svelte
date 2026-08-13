@@ -1,10 +1,37 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import { resolve } from '$app/paths';
 	import Hero from '$lib/components/hero.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
+	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
+	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
+	import IndicatorCard from '$lib/components/questionair/indicator-card.svelte';
+	import {
+		dimensionDescriptions,
+		dimensionOptions,
+		type Dimension
+	} from '$lib/constants/dimensions';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
+
+	let selectedDimension = $state(dimensionOptions[0].value);
+
+	let dimensionTabs = $state<ReturnType<typeof DimensionTabs>>();
+
+	const selectDimension = (dimension: Dimension) => {
+		selectedDimension = dimension;
+		dimensionTabs?.scrollToContent();
+	};
+
+	const insight = $derived(
+		data.dimensionInsights.find(({ dimension }) => dimension === selectedDimension)
+	);
+
+	const indicatorGroups = $derived([
+		{ title: 'Most achieved', indicators: insight?.mostAchieved ?? [] },
+		{ title: 'Least achieved', indicators: insight?.leastAchieved ?? [] }
+	]);
 </script>
 
 <svelte:head>
@@ -22,7 +49,7 @@
 		<h1 class="h2 font-bold">Insights</h1>
 		<div class="flex flex-col gap-2">
 			<p class="b3 font-bold">{data.countryCount} Countries were assessed</p>
-			<p class="b5">
+			<p class="b5 text-gray-8">
 				As this is the inaugural assessment cycle, it includes only the {data.countryCount} founding member
 				countries of the AAPO network. The assessment will expand to include more countries in future
 				cycles.
@@ -32,9 +59,9 @@
 </Hero>
 
 <section class="bg-gray-2">
-	<div class="content-container grid grid-cols-1 md:grid-cols-2">
+	<div class="content-container grid grid-cols-1 gap-6 md:grid-cols-2">
 		<h2 class="h4 font-bold">Overall Score</h2>
-		<div class="flex flex-col gap-4 border-gray-6 md:border-l-2 md:pl-8">
+		<div class="flex flex-col gap-2 border-l-2 border-gray-6 pl-4 md:pl-8">
 			<span class="font-bold text-gray-10">Key finding:</span>
 			<p>
 				Parliamentary openness varies widely across the Asia-Pacific. <strong
@@ -47,11 +74,11 @@
 </section>
 
 <section>
-	<div class="content-container flex flex-col gap-8 md:gap-16">
-		<div class="grid grid-cols-1 md:grid-cols-2">
+	<div class="content-container flex flex-col gap-6 md:gap-8">
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<h2 class="h4 font-bold">Compare by Dimension</h2>
-			<div class="flex flex-col gap-4 border-gray-4 md:border-l-2 md:pl-8">
-				<span class="font-bold text-gray-10">Key finding:</span>
+			<div class="flex flex-col gap-2 border-l-2 border-gray-4 pl-4 md:pl-8">
+				<span class="font-bold text-gray-8">Key finding:</span>
 				<p>
 					<strong>Transparency</strong> is the strongest-performing dimension, with many parliaments
 					publishing meeting agendas, parliamentary proceedings, and session broadcasts.
@@ -64,7 +91,42 @@
 			</div>
 		</div>
 
+		<DimensionTabs
+			bind:this={dimensionTabs}
+			value={selectedDimension}
+			onselect={selectDimension}
+			class="bg-white"
+		/>
+
+		{#key selectedDimension}
+			<div in:fade={{ duration: 150 }} class="flex flex-col gap-2 text-gray-8">
+				<p class="font-bold">
+					{selectedDimension} contributes [{insight?.points}] out of {data.totalPoints} points to the
+					overall score.
+				</p>
+				<p>
+					{dimensionDescriptions[selectedDimension]}
+				</p>
+			</div>
+
+			<div in:fade={{ duration: 150 }} class="flex flex-col gap-4 bg-gray-1 p-5 md:gap-6 md:p-8">
+				<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
+					<h3 class="b1 font-bold">Top indicators in this dimension:</h3>
+					<AchievementLegend class="shrink-0" />
+				</div>
+
+				{#each indicatorGroups as group (group.title)}
+					<h4 class="border-t-2 border-t-gray-6 pt-3 b4 font-bold text-gray-8">{group.title}</h4>
+
+					{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
+						<IndicatorCard {...summary} />
+					{/each}
+				{/each}
+			</div>
+		{/key}
+
 		<MoreActionCard
+			class="mt-6 md:mt-12"
 			title="Go deeper into the data"
 			description="Explore every country's full profile, or browse the index indicator by indicator."
 			actions={[{ label: 'Explore by country', href: resolve('/countries') }]}
