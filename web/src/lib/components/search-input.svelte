@@ -12,13 +12,13 @@
 </script>
 
 <label class={['relative flex items-center text-purple-5', className]}>
-	<Search size={20} class="pointer-events-none absolute left-3" />
+	<Search size={16} class="pointer-events-none absolute left-4" />
 	<input
 		type="search"
 		bind:value
 		{placeholder}
 		class={[
-			'w-full border border-purple-5 py-2.5 pr-10 pl-10 text-gray-8 transition-colors placeholder:text-purple-5 focus:outline-purple-5',
+			'w-full border border-purple-5 px-10 py-2.5 text-gray-8 transition-colors placeholder:text-purple-5 focus:outline-purple-5',
 			value && 'bg-purple-1'
 		]}
 	/>
