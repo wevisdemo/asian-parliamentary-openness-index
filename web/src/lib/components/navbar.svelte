@@ -66,7 +66,7 @@
 
 	{#if isMenuOpen}
 		<div
-			class="absolute inset-x-0 top-full border-b border-gray-1 bg-gray-1 px-6 py-4 md:hidden"
+			class="absolute inset-x-0 top-full border-b border-gray-2 bg-gray-1 px-6 py-4 md:hidden"
 			transition:slide={{ duration: 200 }}
 		>
 			<ul class="flex flex-col gap-4">

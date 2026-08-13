@@ -19,7 +19,7 @@
 <div class="flex min-h-screen w-full flex-col">
 	<Navbar />
 
-	<main class="flex flex-1 flex-col">
+	<main class="flex flex-1 flex-col bg-white">
 		{@render children()}
 	</main>
 
