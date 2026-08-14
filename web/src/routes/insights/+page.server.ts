@@ -52,18 +52,25 @@ export const load: PageServerLoad = () => {
 			questionNumbers.has(questionNumber)
 		);
 
+		const countryCountByLevel = countCountriesByLevel(indicatorAnswers);
+
 		return {
 			indicator,
 			questionCount: indicatorQuestions.length,
-			countryCountByLevel: countCountriesByLevel(indicatorAnswers),
-			achievedPercentage: getScorePercentage(indicatorAnswers)
+			countryCountByLevel,
+			achievedPercentage: (countryCountByLevel['Achieved'] / countries.length) * 100
 		};
 	});
 
 	const dimensionInsights = dimensions.map((dimension) => {
 		const ranked = indicatorSummaries
 			.filter(({ indicator }) => indicator.dimension === dimension)
-			.sort((a, b) => b.achievedPercentage - a.achievedPercentage);
+			.sort(
+				(a, b) =>
+					b.achievedPercentage - a.achievedPercentage ||
+					b.countryCountByLevel['Partly achieved'] - a.countryCountByLevel['Partly achieved'] ||
+					b.countryCountByLevel['N/A'] - a.countryCountByLevel['N/A']
+			);
 
 		const questionNumbers = new Set(
 			questions

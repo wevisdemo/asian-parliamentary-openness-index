@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import ScoreComparison from '$lib/components/country/score-comparison.svelte';
 	import Hero from '$lib/components/hero.svelte';
+	import ListGroupHeader from '$lib/components/list-group-header.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
 	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
 	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
@@ -30,8 +31,16 @@
 	);
 
 	const indicatorGroups = $derived([
-		{ title: 'Most achieved', indicators: insight?.mostAchieved ?? [] },
-		{ title: 'Least achieved', indicators: insight?.leastAchieved ?? [] }
+		{
+			title: 'Most achieved',
+			description: 'Indicator with the most countries achieving it',
+			indicators: insight?.mostAchieved ?? []
+		},
+		{
+			title: 'Least achieved',
+			description: 'Indicator with the least countries achieving it',
+			indicators: insight?.leastAchieved ?? []
+		}
 	]);
 </script>
 
@@ -123,7 +132,7 @@
 			</div>
 
 			{#each indicatorGroups as group (group.title)}
-				<h4 class="border-t-2 border-t-gray-6 pt-3 b4 font-bold text-gray-8">{group.title}</h4>
+				<ListGroupHeader name={group.title} description={group.description} />
 
 				{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
 					<div in:fade={{ duration: 150 }}>

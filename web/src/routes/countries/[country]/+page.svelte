@@ -6,6 +6,7 @@
 	import CountryContext from '$lib/components/country/country-context.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
+	import ListGroupHeader from '$lib/components/list-group-header.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
 	import IndicatorAccordion from '$lib/components/questionair/indicator-accordion.svelte';
@@ -162,22 +163,14 @@
 
 			<div class="flex flex-col gap-6">
 				{#each indicatorGroups as group (group.name)}
-					<div
-						in:fade={{ duration: 150 }}
-						class="flex flex-col gap-4 border-t-2 border-gray-6 pt-4"
-					>
-						<div class="flex flex-col b4 text-gray-6">
-							<h4>
-								<span class="font-bold text-gray-8">{group.name}</span>
-								<span>
-									({group.indicators.length}
-									{group.indicators.length === 1 ? 'Indicator' : 'Indicators'})
-								</span>
-							</h4>
-							{#if group.description}
-								<p class=" text-gray-6">{group.description}</p>
-							{/if}
-						</div>
+					<div in:fade={{ duration: 150 }} class="flex flex-col gap-4">
+						<ListGroupHeader
+							name={group.name}
+							postfix="({group.indicators.length} {group.indicators.length === 1
+								? 'Indicator'
+								: 'Indicators'})"
+							description={group.description}
+						/>
 
 						{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
 							<div in:fade={{ duration: 150 }}>
