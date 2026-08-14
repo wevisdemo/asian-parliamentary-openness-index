@@ -6,14 +6,13 @@ from utilities import (
     normalize_parliament_type,
     normalize_answer,
     calculate_score,
+    get_indicator_data,
+    get_questions_data,
 )
 from constants import (
     PARLIAMENT_TYPE_COLUMN,
     COUNTRIES_DEFAULT_COLUMNS,
     RESPONDENTS_DEFAULT_COLUMNS,
-    INDICATORS_DEFAULT_COLUMNS,
-    INDICATORS_TRANSFORM_COLUMNS,
-    QUESTIONS_TRANSFORM_COLUMNS,
     ANSWERS_TRANSFORM_COLUMNS,
     INDICATOR_CONTEXTS_DEFAULT_COLUMNS,
 )
@@ -95,47 +94,10 @@ class OpennessScore:
         )
 
     def get_indicator_data(self) -> pd.DataFrame:
-
-        if self.lower_chamber_df is not None:
-            grouped_df = self.lower_chamber_df.groupby(
-                INDICATORS_DEFAULT_COLUMNS, as_index=False
-            ).size()
-            grouped_df.rename(
-                columns={"Section Name": "Indicator", "Section": "Indicator Number"},
-                inplace=True,
-            )
-            return grouped_df[INDICATORS_TRANSFORM_COLUMNS].sort_values(
-                "Indicator Number"
-            )
-
-        return pd.DataFrame(columns=INDICATORS_TRANSFORM_COLUMNS)
+        return get_indicator_data(self.lower_chamber_df)
 
     def get_questions_data(self) -> pd.DataFrame:
-
-        if self.lower_chamber_df is not None:
-            grouped_df = self.lower_chamber_df.groupby(
-                ["Question"], as_index=False
-            ).sum()
-            grouped_df.rename(
-                columns={
-                    "Section Name": "Indicator",
-                    "Section": "Indicator Number",
-                    "Indicator": "Question Number",
-                    "answer_type": "Answer Type",
-                },
-                inplace=True,
-            )
-
-            # Clean `Question`
-            grouped_df["Question"] = grouped_df["Question"].apply(
-                lambda question_text: re.sub(r"\[.+?\]$", "", question_text).strip()
-            )
-
-            return grouped_df[QUESTIONS_TRANSFORM_COLUMNS].sort_values(
-                "Question Number"
-            )
-
-        return pd.DataFrame(columns=QUESTIONS_TRANSFORM_COLUMNS)
+        return get_questions_data(self.lower_chamber_df)
 
     def get_processedd_answer(self, df: pd.DataFrame) -> pd.DataFrame:
         answer_df = df.groupby(["Question"], as_index=False).sum()

@@ -1,6 +1,11 @@
 from typing import Tuple, Dict
 import re
 import pandas as pd
+from constants import (
+    INDICATORS_DEFAULT_COLUMNS,
+    INDICATORS_TRANSFORM_COLUMNS,
+    QUESTIONS_TRANSFORM_COLUMNS,
+)
 
 
 def transpose_df(df: pd.DataFrame | None) -> pd.DataFrame | None:
@@ -32,6 +37,78 @@ def normalize_info_df(df: pd.DataFrame | None):
 
 def normalize_parliament_type(value) -> str:
     return str(value).strip().capitalize()
+
+
+def clean_answer_options(answer_options_text: str) -> str:
+
+    # Check if this is single select question; then return without modify
+    if not re.search(r"[\u2610-\u2612]", answer_options_text):
+        return answer_options_text
+
+    # Replace checkbox with prefixes
+    prefixes = iter(["a)", "b)", "c)", "d)", "e)", "f)", "g)"])
+
+    # Pull the next item from the iterator on every match
+    prefix_options_text = re.sub(
+        r"[\u2610-\u2612]", lambda match: next(prefixes), answer_options_text
+    )
+
+    # Remove zero score option
+    cleaned_options_text = re.sub(r"[a-z]\).+?\(0\)", "", prefix_options_text).strip()
+
+    return cleaned_options_text
+
+
+def get_indicator_data(df: pd.DataFrame | None = None) -> pd.DataFrame:
+
+    if df is not None:
+        grouped_df = df.groupby(INDICATORS_DEFAULT_COLUMNS, as_index=False).size()
+        grouped_df.rename(
+            columns={"Section Name": "Indicator", "Section": "Indicator Number"},
+            inplace=True,
+        )
+        return grouped_df[INDICATORS_TRANSFORM_COLUMNS].sort_values("Indicator Number")
+
+    return pd.DataFrame(columns=INDICATORS_TRANSFORM_COLUMNS)
+
+
+def get_questions_data(df: pd.DataFrame | None = None) -> pd.DataFrame:
+
+    if df is not None:
+        grouped_df = df.groupby(["Question"], as_index=False).sum()
+        grouped_df.rename(
+            columns={
+                "Section Name": "Indicator",
+                "Section": "Indicator Number",
+                "Indicator": "Question Number",
+                "answer_type": "Answer Type",
+            },
+            inplace=True,
+        )
+
+        # Check for `Answer Type`
+        if "Answer Type" not in grouped_df.columns:
+            grouped_df["Answer Type"] = grouped_df["Question"].apply(
+                lambda question_text: (
+                    "multiple"
+                    if re.search(r"\[.+?\]$", question_text.strip())
+                    else "single"
+                )
+            )
+
+        # Clean `Question`
+        grouped_df["Question"] = grouped_df["Question"].apply(
+            lambda question_text: re.sub(r"\[.+?\]$", "", question_text).strip()
+        )
+
+        # Clean `Answer Options`
+        grouped_df["Answer Options"] = grouped_df["Answer Options"].apply(
+            clean_answer_options
+        )
+
+        return grouped_df[QUESTIONS_TRANSFORM_COLUMNS].sort_values("Question Number")
+
+    return pd.DataFrame(columns=QUESTIONS_TRANSFORM_COLUMNS)
 
 
 def normalize_answer(row: pd.Series) -> str:

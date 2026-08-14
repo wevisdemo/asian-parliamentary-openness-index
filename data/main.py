@@ -12,6 +12,8 @@ from pathlib import Path
 from sheets_retriever import get_data_from_google_sheet
 from openness_score import OpennessScore
 import pandas as pd
+from constants import TEMPLATE_SHEET_LINK
+from utilities import get_indicator_data, get_questions_data
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 
@@ -64,6 +66,15 @@ def main() -> None:
             )
         )
 
+    # Load template sheet
+    template_sheet_df = get_data_from_google_sheet(TEMPLATE_SHEET_LINK)
+    # Construct `indicators` csv
+    indicators = get_indicator_data(template_sheet_df)
+    indicators.to_csv(os.path.join(OUTPUT_DIR, "indicators.csv"), index=False)
+    # Construct `questions` csv
+    questions = get_questions_data(template_sheet_df)
+    questions.to_csv(os.path.join(OUTPUT_DIR, "questions.csv"), index=False)
+
     # Constrct `countries` csv
     countries = pd.concat(
         [cos.get_country_data() for cos in countries_data], ignore_index=True
@@ -83,14 +94,6 @@ def main() -> None:
         index=False,
         quoting=csv.QUOTE_MINIMAL,
     )
-
-    # Construct `indicators` csv
-    indicators = countries_data[0].get_indicator_data()
-    indicators.to_csv(os.path.join(OUTPUT_DIR, "indicators.csv"), index=False)
-
-    # Construct `questions` csv
-    questions = countries_data[0].get_questions_data()
-    questions.to_csv(os.path.join(OUTPUT_DIR, "questions.csv"), index=False)
 
     # Constrct `answers` csv
     answers = pd.concat(
