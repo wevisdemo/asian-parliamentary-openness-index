@@ -139,42 +139,46 @@
 			class="bg-gray-1"
 		/>
 
-		{#key `${selectedChamber}-${selectedDimension}`}
-			<div class="flex flex-col gap-6 md:gap-8" in:fade={{ duration: 150 }}>
-				<p class="b3">
+		<div class="flex flex-col gap-6 md:gap-8">
+			{#key `${selectedChamber}-${selectedDimension}`}
+				<p in:fade={{ duration: 150 }} class="b3">
 					{dimensionDescriptions[selectedDimension]}
 				</p>
-
-				<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
-					<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
-					<div class="mt-1 flex flex-row items-center gap-2 text-gray-6">
-						<span class="b4 whitespace-nowrap">Grouped by</span>
-						<Dropdown
-							options={groupByOptions}
-							value={selectedGroupBy}
-							color="gray"
-							onselect={(groupBy) => (selectedGroupBy = groupBy)}
-						/>
-					</div>
+			{/key}
+			<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
+				<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
+				<div class="mt-1 flex flex-row items-center gap-2 text-gray-6">
+					<span class="b4 whitespace-nowrap">Grouped by</span>
+					<Dropdown
+						options={groupByOptions}
+						value={selectedGroupBy}
+						color="gray"
+						onselect={(groupBy) => (selectedGroupBy = groupBy)}
+					/>
 				</div>
+			</div>
 
-				<div class="flex flex-col gap-6">
-					{#each indicatorGroups as group (group.name)}
-						<div class="flex flex-col gap-4 border-t-2 border-gray-6 pt-4">
-							<div class="flex flex-col b4 text-gray-6">
-								<h4>
-									<span class="font-bold text-gray-8">{group.name}</span>
-									<span>
-										({group.indicators.length}
-										{group.indicators.length === 1 ? 'Indicator' : 'Indicators'})
-									</span>
-								</h4>
-								{#if group.description}
-									<p class=" text-gray-6">{group.description}</p>
-								{/if}
-							</div>
+			<div class="flex flex-col gap-6">
+				{#each indicatorGroups as group (group.name)}
+					<div
+						in:fade={{ duration: 150 }}
+						class="flex flex-col gap-4 border-t-2 border-gray-6 pt-4"
+					>
+						<div class="flex flex-col b4 text-gray-6">
+							<h4>
+								<span class="font-bold text-gray-8">{group.name}</span>
+								<span>
+									({group.indicators.length}
+									{group.indicators.length === 1 ? 'Indicator' : 'Indicators'})
+								</span>
+							</h4>
+							{#if group.description}
+								<p class=" text-gray-6">{group.description}</p>
+							{/if}
+						</div>
 
-							{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
+						{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
+							<div in:fade={{ duration: 150 }}>
 								<IndicatorAccordion
 									{indicator}
 									{questions}
@@ -183,12 +187,12 @@
 										({ indicatorNumber }) => indicatorNumber === indicator.number
 									)}
 								/>
-							{/each}
-						</div>
-					{/each}
-				</div>
+							</div>
+						{/each}
+					</div>
+				{/each}
 			</div>
-		{/key}
+		</div>
 
 		<Pagination
 			options={dimensionOptions}

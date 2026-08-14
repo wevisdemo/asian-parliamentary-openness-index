@@ -126,7 +126,9 @@
 				<h4 class="border-t-2 border-t-gray-6 pt-3 b4 font-bold text-gray-8">{group.title}</h4>
 
 				{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
-					<IndicatorCard {...summary} />
+					<div in:fade={{ duration: 150 }}>
+						<IndicatorCard {...summary} />
+					</div>
 				{/each}
 			{/each}
 		</div>
