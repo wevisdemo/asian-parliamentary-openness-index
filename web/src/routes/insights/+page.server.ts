@@ -1,4 +1,5 @@
 import { achievementLevels, type AchievementLevel } from '$lib/constants/achievements';
+import { chambers, type Chamber } from '$lib/constants/chambers';
 import { dimensions } from '$lib/constants/dimensions';
 import { answers, getAchievementLevel, getScorePercentage, type Answer } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
@@ -23,10 +24,23 @@ const countCountriesByLevel = (indicatorAnswers: Answer[]): Record<AchievementLe
 };
 
 const getCountryScores = (scopedAnswers: Answer[]) =>
-	countries.map((country) => ({
-		country,
-		score: getScorePercentage(scopedAnswers.filter(({ country: name }) => name === country.name))
-	}));
+	countries.map((country) => {
+		const countryAnswers = scopedAnswers.filter(({ country: name }) => name === country.name);
+
+		const chamberScore = (chamber: Chamber) => {
+			const chamberAnswers = countryAnswers.filter((answer) => answer.chamber === chamber);
+
+			return chamberAnswers.length ? getScorePercentage(chamberAnswers) : undefined;
+		};
+
+		return {
+			country,
+			score: getScorePercentage(countryAnswers),
+			chamberScores: Object.fromEntries(
+				chambers.map((chamber) => [chamber, chamberScore(chamber)])
+			) as Partial<Record<Chamber, number>>
+		};
+	});
 
 export const load: PageServerLoad = () => {
 	const indicatorSummaries = indicators.map((indicator) => {

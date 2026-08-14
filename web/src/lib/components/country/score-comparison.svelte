@@ -4,20 +4,42 @@
 	import { resolve } from '$app/paths';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
+	import Combobox from '$lib/components/combobox.svelte';
 	import CountryContext from '$lib/components/country/country-context.svelte';
+	import Dropdown from '$lib/components/dropdown.svelte';
 	import Tooltip from '$lib/components/tooltip.svelte';
+	import { chamberOptions, chambers, type Chamber } from '$lib/constants/chambers';
 	import { parliamentTypes, type ParliamentType } from '$lib/constants/parliament-types';
 	import type { Country } from '$lib/data/countries';
 
+	interface CountryScore {
+		country: Country;
+		score: number;
+		chamberScores: Partial<Record<Chamber, number>>;
+	}
+
 	interface Props {
-		scores: { country: Country; score: number }[];
+		scores: CountryScore[];
 		class?: string;
 	}
 
 	const { scores, class: className }: Props = $props();
 
-	const ranked = $derived(
+	const compareOptions = [{ label: 'Both chambers', value: 'both' }, ...chamberOptions];
+
+	let compare = $state<Chamber | 'both'>('both');
+
+	const compared = $derived(
 		scores
+			.map(({ country, score, chamberScores }) => ({
+				country,
+				score: compare === 'both' ? score : chamberScores[compare]
+			}))
+			.filter((item): item is { country: Country; score: number } => item.score !== undefined)
+	);
+
+	const ranked = $derived(
+		compared
 			.toSorted((a, b) => b.score - a.score)
 			.map((item, index, sorted) => ({
 				...item,
@@ -36,6 +58,14 @@
 		].toSorted((a, b) => b.score - a.score)
 	);
 
+	let highlighted = $state<string[]>([]);
+
+	const highlightOptions = $derived(
+		compared
+			.map(({ country }) => ({ label: country.name, value: country.slug }))
+			.toSorted((a, b) => a.label.localeCompare(b.label))
+	);
+
 	const rankClass = 'w-6 shrink-0 self-start md:self-center text-left b4 md:w-8';
 	const iconSpacerClass = 'w-6 shrink-0';
 	const rowClass = 'flex flex-row gap-1';
@@ -49,33 +79,37 @@
 	>
 {/snippet}
 
-{#snippet scoreRow(label: string, score: number, type?: ParliamentType)}
+{#snippet scoreRow(label: string, score: number, type?: ParliamentType, isHighlighted?: boolean)}
 	<div
-		class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 text-left md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] md:gap-x-6"
+		class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-1 gap-y-2 text-left md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
 	>
-		<span
-			class={[
-				'col-start-1 row-start-1 flex min-w-0 flex-row items-center gap-2',
-				!type && 'text-purple-2'
-			]}
-		>
+		<span class="col-start-1 row-start-1 flex min-w-0 flex-row items-center gap-2">
 			{#if type}
 				{@render typeBadge(type)}
 			{/if}
-			<span class="b4 font-bold">{label}</span>
+			<span
+				class={[
+					'b4 font-bold',
+					!type && 'text-purple-2',
+					isHighlighted && 'text-data-partly-achieved'
+				]}>{label}</span
+			>
 		</span>
 
 		<div
 			class="relative col-span-2 row-start-2 h-4 bg-gray-10 md:col-span-1 md:col-start-2 md:row-start-1 md:h-8"
 		>
 			<div
-				class={['h-full transition-[width] duration-300', type ? 'bg-white' : 'bg-purple-2']}
+				class={[
+					'h-full transition-[width,background-color] duration-300',
+					!type ? 'bg-purple-2' : isHighlighted ? 'bg-data-partly-achieved' : 'bg-white'
+				]}
 				style="width: {score}%"
 			></div>
 			{#if type}
 				<div
 					class={[
-						'absolute inset-y-0 -translate-x-px border-l-2 border-dashed transition-[left] duration-300',
+						'absolute inset-y-0 -translate-x-px border-l-2 border-dashed transition-[left,border-color] duration-300',
 						score > average ? 'border-purple-3' : 'border-purple-2'
 					]}
 					style="left: {average}%"
@@ -84,15 +118,43 @@
 		</div>
 
 		<span
-			class="col-start-2 row-start-1 text-right font-mono b4 md:col-start-3 md:row-start-1 md:w-18"
+			class={[
+				'col-start-2 row-start-1 text-right font-mono b4 md:col-start-3 md:row-start-1 md:w-18',
+				'transition-colors duration-300',
+				!type && 'text-purple-2',
+				isHighlighted && 'text-data-partly-achieved'
+			]}
 		>
 			{score.toFixed(2)}%
 		</span>
 	</div>
 {/snippet}
 
-<div class={['flex flex-col gap-3 bg-black p-5 text-white', className]}>
-	<div class="flex flex-row flex-wrap items-center gap-x-4 gap-y-1 b5 text-gray-4">
+<div class={['flex flex-col gap-4 bg-black p-4 text-white md:p-7', className]}>
+	<div class="flex flex-row flex-wrap items-center gap-x-8 gap-y-2">
+		<div class="flex flex-row items-center gap-3">
+			<span class="font-bold text-gray-4">Compare</span>
+			<Dropdown
+				options={compareOptions}
+				value={compare}
+				color="light"
+				onselect={(value) => (compare = chambers.find((chamber) => chamber === value) ?? 'both')}
+			/>
+		</div>
+
+		<div class="flex flex-row items-center gap-3">
+			<span class="font-bold text-gray-4">Highlight</span>
+			<Combobox
+				options={highlightOptions}
+				value={highlighted}
+				placeholder="Select country"
+				color="light"
+				onselect={(value) => (highlighted = value)}
+			/>
+		</div>
+	</div>
+
+	<div class="flex flex-row flex-wrap items-center gap-2 b5 text-gray-4">
 		<span class="font-bold">Parliamentary type</span>
 		{#each parliamentTypes as type (type)}
 			<span class="flex flex-row items-center gap-1.5">
@@ -107,7 +169,7 @@
 			<span class={rankClass}>Rank</span>
 			<span class={iconSpacerClass} aria-hidden="true"></span>
 			<div
-				class="grid flex-1 grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] md:gap-x-6"
+				class="grid flex-1 grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:gap-x-6"
 			>
 				<span class="col-start-2 row-start-1 justify-self-end md:justify-self-start">
 					<Tooltip triggerClass="text-gray-4">
@@ -135,7 +197,12 @@
 						{/snippet}
 
 						{#snippet header()}
-							{@render scoreRow(row.country.name, row.score, row.country.parliamentType)}
+							{@render scoreRow(
+								row.country.name,
+								row.score,
+								row.country.parliamentType,
+								highlighted.includes(row.country.slug)
+							)}
 						{/snippet}
 
 						{#snippet content()}

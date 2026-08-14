@@ -61,8 +61,8 @@
 
 <section class="bg-gray-2">
 	<div class="content-container flex flex-col gap-6 md:gap-8">
-		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-			<h2 class="h4 font-bold">Overall Score</h2>
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-0">
+			<h2 class="h4 font-bold md:px-6">Overall Score</h2>
 			<div class="flex flex-col gap-2 border-l-2 border-gray-6 pl-4 md:pl-8">
 				<span class="font-bold text-gray-10">Key finding:</span>
 				<p>
@@ -79,8 +79,8 @@
 
 <section>
 	<div class="content-container flex flex-col gap-6 md:gap-8">
-		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-			<h2 class="h4 font-bold">Compare by Dimension</h2>
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-0">
+			<h2 class="h4 font-bold md:px-6">Compare by Dimension</h2>
 			<div class="flex flex-col gap-2 border-l-2 border-gray-4 pl-4 md:pl-8">
 				<span class="font-bold text-gray-8">Key finding:</span>
 				<p>

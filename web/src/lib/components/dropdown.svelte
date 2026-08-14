@@ -12,7 +12,8 @@
 		options: DropdownOption[];
 		value?: string;
 		placeholder?: string;
-		color?: 'purple' | 'gray';
+		color?: 'purple' | 'gray' | 'light';
+		variant?: 'compact' | 'loose';
 		onselect?: (value: string) => void;
 		class?: string;
 	}
@@ -22,9 +23,15 @@
 		value,
 		placeholder = 'Select',
 		color = 'purple',
+		variant = 'loose',
 		onselect,
 		class: className
 	}: Props = $props();
+
+	const variantClasses = {
+		compact: 'px-2 py-1 b4',
+		loose: 'px-5 py-2.5'
+	};
 
 	const colorClasses = {
 		purple: {
@@ -38,6 +45,12 @@
 			triggerOpen: 'border-gray-8 bg-gray-8 text-white',
 			panel: 'border-gray-8',
 			option: 'text-gray-8'
+		},
+		light: {
+			trigger: 'border-gray-2 text-gray-2 hover:bg-gray-2 hover:text-black',
+			triggerOpen: 'border-gray-2 bg-gray-2 text-black',
+			panel: 'border-gray-2',
+			option: 'text-black'
 		}
 	};
 
@@ -50,7 +63,8 @@
 <Select.Root type="single" items={options} {value} onValueChange={onselect} bind:open={isOpen}>
 	<Select.Trigger
 		class={[
-			'inline-flex cursor-pointer items-center justify-between gap-2 border px-2 py-1 b4 leading-none transition-colors',
+			'inline-flex cursor-pointer items-center justify-between gap-2 border leading-none transition-colors',
+			variantClasses[variant],
 			isOpen ? styles.triggerOpen : styles.trigger,
 			className
 		]}
@@ -68,7 +82,7 @@
 			sideOffset={4}
 			collisionPadding={8}
 			class={[
-				'z-10 overflow-y-auto border bg-white',
+				'z-50 overflow-y-auto border bg-white',
 				'max-h-(--bits-select-content-available-height) min-w-(--bits-select-anchor-width)',
 				styles.panel
 			]}
@@ -79,7 +93,8 @@
 						value={option.value}
 						label={option.label}
 						class={[
-							'cursor-pointer px-2 py-1 text-left b4 data-highlighted:bg-gray-1 data-highlighted:text-black',
+							'cursor-pointer text-left data-highlighted:bg-gray-1 data-highlighted:text-black',
+							variantClasses[variant],
 							styles.option
 						]}
 					>

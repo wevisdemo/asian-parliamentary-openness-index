@@ -103,6 +103,7 @@
 		{#snippet breadcrumbTrailing()}
 			<Dropdown
 				class="inline"
+				variant="compact"
 				options={data.countryOptions}
 				value={data.country.slug}
 				onselect={(country) => goto(resolve('/countries/[country]', { country }))}
@@ -153,6 +154,7 @@
 						options={groupByOptions}
 						value={selectedGroupBy}
 						color="gray"
+						variant="compact"
 						onselect={(groupBy) => (selectedGroupBy = groupBy)}
 					/>
 				</div>
