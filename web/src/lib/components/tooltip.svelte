@@ -7,11 +7,19 @@
 		trigger: Snippet;
 		children: Snippet;
 		side?: Tooltip.ContentProps['side'];
+		size?: 'small' | 'big';
 		triggerClass?: string;
 		class?: string;
 	}
 
-	const { trigger, children, side = 'bottom', triggerClass, class: className }: Props = $props();
+	const {
+		trigger,
+		children,
+		side = 'bottom',
+		size = 'small',
+		triggerClass,
+		class: className
+	}: Props = $props();
 
 	let open = $state(false);
 </script>
@@ -27,10 +35,13 @@
 		</Tooltip.Trigger>
 
 		<Tooltip.Portal>
-			<Tooltip.Content {side} sideOffset={4} collisionPadding={8}>
+			<Tooltip.Content {side} sideOffset={4} collisionPadding={8} class="z-60">
 				<div
 					class={[
-						'relative max-w-70 border border-gray-1 bg-white p-4 pr-8 text-left b4 text-black shadow-lg',
+						'relative border border-gray-1 bg-white p-4 pr-8 text-left b4 text-black shadow-lg',
+						size === 'big'
+							? 'max-w-[min(--spacing(140),calc(100vw-1rem))]'
+							: 'max-w-[min(--spacing(70),calc(100vw-1rem))]',
 						className
 					]}
 				>

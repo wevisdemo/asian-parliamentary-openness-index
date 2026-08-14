@@ -18,6 +18,7 @@ export const countrySchema = Object({
 	slug: Column('Country', asSlug),
 	name: Column('Country', asString()),
 	parliamentType: Column('Is the Parliament unicameral or bicameral?', asOneOf(parliamentTypes)),
+	parliamentTypeRemark: Column('Any remark for unicameral or bicamera?', asString().optional()),
 	governmentSystem: Column(
 		'How is the system of government classified in this jurisdiction?',
 		asString()

@@ -9,7 +9,9 @@ import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = () => countries.map(({ slug }) => ({ country: slug }));
 
-const countryOptions = countries.map(({ name, slug }) => ({ label: name, value: slug }));
+const countryOptions = countries
+	.map(({ name, slug }) => ({ label: name, value: slug }))
+	.sort((a, b) => a.label.localeCompare(b.label));
 
 const indicatorQuestions = indicators.map((indicator) => ({
 	indicator,
