@@ -29,14 +29,14 @@
 	<div class="flex flex-1 flex-col">
 		<h3 class="b2 font-bold">{indicator.name}</h3>
 		<p class="b4 text-gray-6">
-			{questionCount}
+			<span class="font-mono">{questionCount}</span>
 			{questionCount === 1 ? 'Question' : 'Questions'}
 		</p>
 	</div>
 
 	<div class="flex flex-1 flex-col gap-4 md:flex-row-reverse md:items-center">
 		<p class="flex w-20 flex-row items-end gap-1 md:flex-col md:text-right">
-			<span class="b2 leading-none font-bold text-data-achieved"
+			<span class="font-mono b2 leading-none font-bold text-data-achieved"
 				>{achievedPercentage.toFixed(2)}%</span
 			>
 			<span class="b4">achieved</span>
@@ -58,7 +58,7 @@
 					<span class="flex flex-row items-center gap-1">
 						<span class={['size-3 border border-gray-8', achievementLevelColorClasses[level]]}
 						></span>
-						<span>{count}</span>
+						<span class="font-mono">{count}</span>
 					</span>
 				{/each}
 			</div>

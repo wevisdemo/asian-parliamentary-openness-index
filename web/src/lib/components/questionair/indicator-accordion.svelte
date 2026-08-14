@@ -47,7 +47,7 @@
 			<div class="flex flex-col text-left">
 				<h3 class="b2 font-bold">{indicator.name}</h3>
 				<p class="b4 text-gray-6">
-					{questions.length}
+					<span class="font-mono">{questions.length}</span>
 					{questions.length === 1 ? 'Question' : 'Questions'}
 				</p>
 			</div>
@@ -56,9 +56,9 @@
 				<span class={['px-2 py-1 b4 font-bold whitespace-nowrap', statusClasses[status]]}
 					>{status}</span
 				>
-				<p class="b2 whitespace-nowrap">
-					<span class="font-bold">{score}</span><span class="text-gray-6"
-						>/{totalApplicableScore}</span
+				<p class="font-mono b2 whitespace-nowrap">
+					<span class="font-bold">{score.toFixed(2)}</span><span class="text-gray-6"
+						>/{totalApplicableScore.toFixed(2)}</span
 					>
 				</p>
 			</div>

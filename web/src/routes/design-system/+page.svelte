@@ -77,7 +77,7 @@
 				<div class="flex flex-col gap-2 py-6 md:flex-row md:gap-8">
 					<div class="w-40 shrink-0">
 						<p class="b5 font-bold">{name}</p>
-						<p class="b5 text-purple-4">{size}px · 125%</p>
+						<p class="font-mono b5 text-purple-4">{size}px · 125%</p>
 					</div>
 					<div class="min-w-0">
 						<p class={[className, 'font-bold']}>Spline Sans-Bold</p>
@@ -95,7 +95,7 @@
 				<div class="flex flex-col gap-2 py-6 md:flex-row md:gap-8">
 					<div class="w-40 shrink-0">
 						<p class="b5 font-bold">{name}</p>
-						<p class="b5 text-purple-4">{size}px · 140%</p>
+						<p class="font-mono b5 text-purple-4">{size}px · 140%</p>
 					</div>
 					<div class="min-w-0">
 						<p class={[className, 'font-bold']}>Spline Sans-Bold</p>

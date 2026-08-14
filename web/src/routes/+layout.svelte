@@ -11,7 +11,7 @@
 	><link rel="icon" href={favicon} /><link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 	<link
-		href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&family=Spline+Sans+Mono:wght@400;700&display=swap"
 		rel="stylesheet"
 	/></svelte:head
 >

@@ -2,6 +2,7 @@
 
 @theme {
 	--font-sans: 'Spline Sans', sans-serif;
+	--font-mono: 'Spline Sans Mono', monospace;
 
 	--text-*: initial;
 

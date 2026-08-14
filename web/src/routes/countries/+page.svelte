@@ -90,16 +90,16 @@
 				href={resolve('/countries/[country]', { country: country.slug })}
 				class={[gridClasses, 'border-t border-gray-2 transition-colors hover:bg-gray-1']}
 			>
-				<span class={[cellClasses.rank, 'b4 font-bold']}>{country.rank}</span>
+				<span class={[cellClasses.rank, 'font-mono b4 font-bold']}>{country.rank}</span>
 				<span class="b2 font-bold md:col-start-2 md:row-start-1">{country.name}</span>
 				<div class={scoresClasses}>
-					<span class={[cellClasses.lowerChamber, 'text-gray-8']}>
+					<span class={[cellClasses.lowerChamber, 'font-mono text-gray-8']}>
 						{formatScore(country.lowerChamberScore)}
 					</span>
-					<span class={[cellClasses.upperChamber, 'text-gray-8']}>
+					<span class={[cellClasses.upperChamber, 'font-mono text-gray-8']}>
 						{formatScore(country.upperChamberScore)}
 					</span>
-					<span class={[cellClasses.overall, 'font-bold']}>
+					<span class={[cellClasses.overall, 'font-mono font-bold']}>
 						{formatScore(country.overallScore)}
 					</span>
 				</div>
