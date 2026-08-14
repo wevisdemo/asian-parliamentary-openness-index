@@ -43,7 +43,11 @@ def clean_answer_options(answer_options_text: str) -> str:
 
     # Check if this is single select question; then return without modify
     if not re.search(r"[\u2610-\u2612]", answer_options_text):
-        return answer_options_text
+        # remove N/A option
+        cleaned_options_text = re.sub(
+            r"[a-z]\).+?\((n\/a|N\/A)\)", "", answer_options_text
+        ).strip()
+        return cleaned_options_text
 
     # Replace checkbox with prefixes
     prefixes = iter(["a)", "b)", "c)", "d)", "e)", "f)", "g)"])
@@ -54,7 +58,9 @@ def clean_answer_options(answer_options_text: str) -> str:
     )
 
     # Remove zero score option
-    cleaned_options_text = re.sub(r"[a-z]\).+?\(0\)", "", prefix_options_text).strip()
+    cleaned_options_text = re.sub(
+        r"[a-z]\).+?\((0|n\/a|N\/A)\)", "", prefix_options_text
+    ).strip()
 
     return cleaned_options_text
 
