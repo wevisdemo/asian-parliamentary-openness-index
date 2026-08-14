@@ -42,9 +42,9 @@
 		<div class="flex flex-row items-start gap-3 text-left">
 			<span class={['shrink-0', iconClass]}>
 				{#if open}
-					<Subtract size={24} />
+					<Subtract size={24} class="size-5 md:size-6" />
 				{:else}
-					<Add size={24} />
+					<Add size={24} class="size-5 md:size-6" />
 				{/if}
 			</span>
 		</div>

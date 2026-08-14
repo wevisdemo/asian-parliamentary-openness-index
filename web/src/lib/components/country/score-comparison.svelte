@@ -67,7 +67,7 @@
 	);
 
 	const rankClass = 'w-6 shrink-0 self-start md:self-center text-left b4 md:w-8';
-	const iconSpacerClass = 'w-6 shrink-0';
+	const iconSpacerClass = 'w-5 shrink-0 md:w-6';
 	const rowClass = 'flex flex-row gap-1';
 	const rowPaddingClass = 'p-2 md:px-4';
 	const headingPaddingClass = 'p-2 md:px-4';
