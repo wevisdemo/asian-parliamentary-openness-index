@@ -55,6 +55,14 @@ class OpennessScore:
     def get_country_data(self) -> pd.DataFrame:
 
         if self.country_context_df is not None:
+            # Check for `Any remark for unicameral or bicamera?` column
+            if (
+                "Any remark for unicameral or bicamera?"
+                not in self.country_context_df.columns
+            ):
+                self.country_context_df.loc[
+                    :, ["Any remark for unicameral or bicamera?"]
+                ] = ""
             country_context_df = self.country_context_df[COUNTRIES_DEFAULT_COLUMNS]
             country_context_df["Country"] = self.country
             country_context_df[PARLIAMENT_TYPE_COLUMN] = country_context_df[
