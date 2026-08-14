@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { resolve } from '$app/paths';
+	import ScoreComparison from '$lib/components/country/score-comparison.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
 	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
@@ -59,17 +60,20 @@
 </Hero>
 
 <section class="bg-gray-2">
-	<div class="content-container grid grid-cols-1 gap-6 md:grid-cols-2">
-		<h2 class="h4 font-bold">Overall Score</h2>
-		<div class="flex flex-col gap-2 border-l-2 border-gray-6 pl-4 md:pl-8">
-			<span class="font-bold text-gray-10">Key finding:</span>
-			<p>
-				Parliamentary openness varies widely across the Asia-Pacific. <strong
-					>Taiwan, Australia, and South Korea</strong
-				> achieved the highest overall scores. In several bicameral legislatures, the upper chamber scores
-				noticeably lower than the lower chamber.
-			</p>
+	<div class="content-container flex flex-col gap-6 md:gap-8">
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<h2 class="h4 font-bold">Overall Score</h2>
+			<div class="flex flex-col gap-2 border-l-2 border-gray-6 pl-4 md:pl-8">
+				<span class="font-bold text-gray-10">Key finding:</span>
+				<p>
+					Parliamentary openness varies widely across the Asia-Pacific. <strong
+						>Taiwan, Australia, and South Korea</strong
+					> achieved the highest overall scores. In several bicameral legislatures, the upper chamber
+					scores noticeably lower than the lower chamber.
+				</p>
+			</div>
 		</div>
+		<ScoreComparison scores={data.countryScores} />
 	</div>
 </section>
 
@@ -108,22 +112,24 @@
 					{dimensionDescriptions[selectedDimension]}
 				</p>
 			</div>
-
-			<div in:fade={{ duration: 150 }} class="flex flex-col gap-4 bg-gray-1 p-5 md:gap-6 md:p-8">
-				<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
-					<h3 class="b1 font-bold">Top indicators in this dimension:</h3>
-					<AchievementLegend class="shrink-0" />
-				</div>
-
-				{#each indicatorGroups as group (group.title)}
-					<h4 class="border-t-2 border-t-gray-6 pt-3 b4 font-bold text-gray-8">{group.title}</h4>
-
-					{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
-						<IndicatorCard {...summary} />
-					{/each}
-				{/each}
-			</div>
 		{/key}
+
+		<ScoreComparison scores={insight?.countryScores ?? []} />
+
+		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:gap-6 md:p-8">
+			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
+				<h3 class="b1 font-bold">Top indicators in this dimension:</h3>
+				<AchievementLegend class="shrink-0" />
+			</div>
+
+			{#each indicatorGroups as group (group.title)}
+				<h4 class="border-t-2 border-t-gray-6 pt-3 b4 font-bold text-gray-8">{group.title}</h4>
+
+				{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
+					<IndicatorCard {...summary} />
+				{/each}
+			{/each}
+		</div>
 
 		<MoreActionCard
 			class="mt-6 md:mt-12"

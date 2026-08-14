@@ -22,6 +22,12 @@ const countCountriesByLevel = (indicatorAnswers: Answer[]): Record<AchievementLe
 	) as Record<AchievementLevel, number>;
 };
 
+const getCountryScores = (scopedAnswers: Answer[]) =>
+	countries.map((country) => ({
+		country,
+		score: getScorePercentage(scopedAnswers.filter(({ country: name }) => name === country.name))
+	}));
+
 export const load: PageServerLoad = () => {
 	const indicatorSummaries = indicators.map((indicator) => {
 		const indicatorQuestions = questions.filter(
@@ -45,17 +51,29 @@ export const load: PageServerLoad = () => {
 			.filter(({ indicator }) => indicator.dimension === dimension)
 			.sort((a, b) => b.achievedPercentage - a.achievedPercentage);
 
+		const questionNumbers = new Set(
+			questions
+				.filter(({ indicatorNumber }) =>
+					ranked.some(({ indicator }) => indicator.number === indicatorNumber)
+				)
+				.map(({ number }) => number)
+		);
+
 		return {
 			dimension,
 			points: ranked.reduce((sum, { questionCount }) => sum + questionCount, 0),
 			mostAchieved: ranked.slice(0, TOP_COUNT),
-			leastAchieved: ranked.slice(Math.max(TOP_COUNT, ranked.length - TOP_COUNT)).reverse()
+			leastAchieved: ranked.slice(Math.max(TOP_COUNT, ranked.length - TOP_COUNT)).reverse(),
+			countryScores: getCountryScores(
+				answers.filter(({ questionNumber }) => questionNumbers.has(questionNumber))
+			)
 		};
 	});
 
 	return {
 		countryCount: countries.length,
 		totalPoints: questions.length,
+		countryScores: getCountryScores(answers),
 		dimensionInsights
 	};
 };

@@ -3,7 +3,7 @@
 
 	interface Props {
 		href?: string;
-		color?: 'purple' | 'gray';
+		color?: 'purple' | 'gray' | 'white';
 		target?: '_blank' | '_self';
 		type?: 'button' | 'submit';
 		icon?: Snippet;
@@ -25,7 +25,8 @@
 
 	const colorClasses = {
 		purple: 'text-purple-5',
-		gray: 'text-gray-8'
+		gray: 'text-gray-8',
+		white: 'text-white'
 	};
 
 	const classes = $derived([

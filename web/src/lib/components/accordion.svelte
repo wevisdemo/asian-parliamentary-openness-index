@@ -7,11 +7,22 @@
 	interface Props {
 		header: Snippet;
 		content: Snippet;
+		leading?: Snippet;
 		headerClass?: string;
+		contentClass?: string;
+		iconClass?: string;
 		class?: string;
 	}
 
-	const { header, content, headerClass, class: className }: Props = $props();
+	const {
+		header,
+		content,
+		leading,
+		headerClass,
+		contentClass,
+		iconClass = 'text-purple-5',
+		class: className
+	}: Props = $props();
 
 	let open = $state(false);
 
@@ -20,14 +31,16 @@
 
 <div class={['flex flex-col', className]}>
 	<button
-		class={['flex cursor-pointer flex-row gap-1 p-4 transition-colors md:p-6', headerClass]}
+		class={['flex cursor-pointer flex-row gap-1 transition-colors', headerClass]}
 		type="button"
 		aria-expanded={open}
 		aria-controls={contentId}
 		onclick={() => (open = !open)}
 	>
+		{@render leading?.()}
+
 		<div class="flex flex-row items-start gap-3 text-left">
-			<span class="shrink-0 text-purple-5">
+			<span class={['shrink-0', iconClass]}>
 				{#if open}
 					<Subtract size={24} />
 				{:else}
@@ -41,7 +54,7 @@
 	{#if open}
 		<div
 			id={contentId}
-			class="flex flex-row p-4 pt-0 md:px-6 md:pb-6"
+			class={['flex flex-row', contentClass]}
 			transition:slide={{ duration: 150 }}
 		>
 			{@render content()}

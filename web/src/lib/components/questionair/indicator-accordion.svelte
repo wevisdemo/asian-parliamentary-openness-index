@@ -41,7 +41,11 @@
 	const status = $derived(getAchievementLevel(indicatorAnswers));
 </script>
 
-<Accordion class="bg-white {className ?? ''}" headerClass="hover:bg-gray-2">
+<Accordion
+	class="bg-white {className ?? ''}"
+	headerClass="p-4 hover:bg-gray-2 md:p-6"
+	contentClass="p-4 pt-0 md:px-6 md:pb-6"
+>
 	{#snippet header()}
 		<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 			<div class="flex flex-col text-left">
@@ -77,7 +81,11 @@
 
 			<div class="flex flex-col gap-2">
 				{#if context?.context}
-					<Accordion class="bg-purple-1" headerClass="hover:bg-purple-2">
+					<Accordion
+						class="bg-purple-1"
+						headerClass="p-4 hover:bg-purple-2 md:p-6"
+						contentClass="p-4 pt-0 md:px-6 md:pb-6"
+					>
 						{#snippet header()}
 							<h4 class="text-left b4 font-bold">Country context</h4>
 						{/snippet}
@@ -89,7 +97,11 @@
 				{/if}
 
 				{#if context?.evidences.length}
-					<Accordion class="bg-purple-1" headerClass="hover:bg-purple-2">
+					<Accordion
+						class="bg-purple-1"
+						headerClass="p-4 hover:bg-purple-2 md:p-6"
+						contentClass="p-4 pt-0 md:px-6 md:pb-6"
+					>
 						{#snippet header()}
 							<h4 class="text-left b4 font-bold">Evidence sources</h4>
 						{/snippet}

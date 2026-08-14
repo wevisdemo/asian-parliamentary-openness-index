@@ -3,15 +3,13 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import mapIllustration from '$lib/assets/images/map-illustration.png';
+	import CountryContext from '$lib/components/country/country-context.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
-	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
 	import IndicatorAccordion from '$lib/components/questionair/indicator-accordion.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
-	import Tooltip from '$lib/components/tooltip.svelte';
-	import WarningAlt from 'carbon-icons-svelte/lib/WarningAlt.svelte';
 	import { achievementLevelDescriptions, achievementLevels } from '$lib/constants/achievements';
 	import { chamberOptions } from '$lib/constants/chambers';
 	import {
@@ -113,33 +111,7 @@
 
 		<div class="flex flex-col gap-6">
 			<h1 class="h2 font-bold">{data.country.name}</h1>
-			<ul class="space-y-1 b4 text-gray-8">
-				<li><strong>Government System:</strong> {data.country.governmentSystem}</li>
-				<li>
-					<strong>Parliamentary type:</strong>
-					{data.country.parliamentType}
-					{#if data.country.parliamentTypeRemark}
-						<Tooltip size="big" triggerClass="align-middle">
-							{#snippet trigger()}
-								<WarningAlt size={18} class="-translate-y-0.5 text-purple-3 md:ml-0.5" />
-							{/snippet}
-							{data.country.parliamentTypeRemark}
-						</Tooltip>
-					{/if}
-				</li>
-				<li><strong>Parliament Name:</strong> {data.country.parliamentName}</li>
-				<li>
-					<strong>Parliament Official Website:</strong>
-					<Hyperlink
-						href={data.country.parliamentWebsite}
-						target="_blank"
-						color="gray"
-						class="break-all"
-					>
-						{data.country.parliamentWebsite}
-					</Hyperlink>
-				</li>
-			</ul>
+			<CountryContext country={data.country} />
 			{#if data.country.keyFindings}
 				<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4">
 					<span class="font-bold">Key findings</span>
