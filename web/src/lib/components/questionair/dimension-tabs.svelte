@@ -44,7 +44,7 @@
 <div
 	bind:this={element}
 	class={[
-		'sticky top-12 z-40 -mx-5 flex flex-1 overflow-x-scroll px-5 md:top-16 md:mx-0 md:overflow-visible md:px-0',
+		'sticky top-(--navbar-height) z-40 -mx-5 flex flex-1 overflow-x-scroll px-5 md:top-(--navbar-height-md) md:mx-0 md:overflow-visible md:px-0',
 		className
 	]}
 >

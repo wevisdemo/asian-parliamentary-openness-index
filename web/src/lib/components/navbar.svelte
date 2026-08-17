@@ -3,13 +3,23 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { slide } from 'svelte/transition';
+	import Bookmark from 'carbon-icons-svelte/lib/Bookmark.svelte';
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import Menu from 'carbon-icons-svelte/lib/Menu.svelte';
+	import Button from '$lib/components/button.svelte';
+	import GlossarySidebar from '$lib/components/glossary-sidebar.svelte';
+	import type { GlossaryTerm } from '$lib/data/glossary';
 
 	interface NavLink {
 		label: string;
 		href: string;
 	}
+
+	interface Props {
+		glossary: GlossaryTerm[];
+	}
+
+	const { glossary }: Props = $props();
 
 	const links: NavLink[] = [
 		{ label: 'Insights', href: resolve('/insights') },
@@ -17,6 +27,12 @@
 	];
 
 	let isMenuOpen = $state(false);
+	let isGlossaryOpen = $state(false);
+
+	const openGlossary = () => {
+		isMenuOpen = false;
+		isGlossaryOpen = true;
+	};
 
 	const isActive = (href: string) =>
 		page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
@@ -24,14 +40,16 @@
 	afterNavigate(() => (isMenuOpen = false));
 </script>
 
-<header class="sticky top-0 z-50 border-b border-gray-1 bg-white">
-	<nav class="mx-auto flex items-center justify-between gap-8">
-		<div class="flex flex-1 flex-row items-center justify-between p-2 md:px-6 md:py-3">
+<header
+	class="sticky top-0 z-50 h-(--navbar-height) border-b border-gray-1 bg-white md:h-(--navbar-height-md)"
+>
+	<nav class="mx-auto flex h-full items-center justify-between gap-8">
+		<div class="flex flex-1 flex-row items-center justify-between p-2 md:p-3">
 			<a href={resolve('/')} class="shrink-0">
 				<img
 					src="https://placehold.co/96x48/b6c4c7/35393a?text=Logo"
 					alt="Asian Parliamentary Openness Index"
-					class="h-8 w-auto md:h-10"
+					class="h-8 w-auto md:h-12"
 				/>
 			</a>
 
@@ -47,6 +65,10 @@
 					</li>
 				{/each}
 			</ul>
+
+			<div class="hidden shrink-0 md:block">
+				{@render glossaryButton()}
+			</div>
 		</div>
 
 		<button
@@ -76,6 +98,21 @@
 					</li>
 				{/each}
 			</ul>
+
+			<div class="mt-6">
+				{@render glossaryButton()}
+			</div>
 		</div>
 	{/if}
 </header>
+
+{#snippet glossaryButton()}
+	<Button variant="secondary" onclick={openGlossary}>
+		Glossary
+		{#snippet icon()}
+			<Bookmark size={16} />
+		{/snippet}
+	</Button>
+{/snippet}
+
+<GlossarySidebar open={isGlossaryOpen} terms={glossary} onclose={() => (isGlossaryOpen = false)} />

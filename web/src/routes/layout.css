@@ -28,6 +28,9 @@
 	--color-purple-4: #7256df;
 	--color-purple-5: #5437cc;
 
+	--navbar-height: 3rem;
+	--navbar-height-md: 4.75rem;
+
 	--color-data-achieved: #00bdda;
 	--color-data-partly-achieved: #fcff9f;
 	--color-data-not-achieved: #ff5335;
@@ -117,6 +120,16 @@
 	line-height: 1.4;
 	@variant md {
 		font-size: 0.875rem;
+	}
+}
+
+/** Keeps the scrollbar gutter reserved, but only paints the thumb on hover */
+@utility auto-hide-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: transparent transparent;
+
+	&:hover {
+		scrollbar-color: var(--color-gray-3) transparent;
 	}
 }
 

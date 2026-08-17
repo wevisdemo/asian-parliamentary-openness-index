@@ -4,7 +4,7 @@
 	import Navbar from '$lib/components/navbar.svelte';
 	import Footer from '$lib/components/footer.svelte';
 
-	let { children } = $props();
+	let { data, children } = $props();
 </script>
 
 <svelte:head
@@ -17,7 +17,7 @@
 >
 
 <div class="flex min-h-screen w-full flex-col">
-	<Navbar />
+	<Navbar glossary={data.glossary} />
 
 	<main class="flex flex-1 flex-col bg-white">
 		{@render children()}

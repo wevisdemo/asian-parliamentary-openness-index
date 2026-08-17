@@ -36,8 +36,8 @@
 			disabled: 'bg-gray-2 text-gray-4'
 		},
 		secondary: {
-			enabled: 'border border-black bg-white text-black hover:border-purple-4 hover:bg-purple-1',
-			disabled: 'border border-gray-2 bg-white text-gray-3'
+			enabled: 'border border-purple-5 text-purple-5 hover:border-purple-4 hover:bg-purple-1',
+			disabled: 'border border-gray-2 text-gray-3'
 		}
 	};
 
@@ -45,7 +45,7 @@
 		'inline-flex items-center justify-center font-medium transition-colors',
 		sizeClasses[size],
 		variantClasses[variant][disabled ? 'disabled' : 'enabled'],
-		disabled && 'cursor-not-allowed',
+		disabled ? 'cursor-not-allowed' : 'cursor-pointer',
 		className
 	]);
 </script>
