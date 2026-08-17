@@ -1,4 +1,4 @@
-import { marked } from 'marked';
+import { marked, Renderer } from 'marked';
 import {
 	asString,
 	Column,
@@ -10,8 +10,17 @@ import {
 
 const spreadsheet = Spreadsheet('1udHPvoDQKQ9_ziyqwTObWgI1dEKTVLnm');
 
+const renderer = new Renderer();
+
+renderer.link = function ({ href, title, tokens }) {
+	const text = this.parser.parseInline(tokens);
+	const titleAttr = title ? ` title="${title}"` : '';
+
+	return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`;
+};
+
 const asMarkdownHtml = createTransformer({
-	decode: (value: string) => marked.parseInline(value, { async: false })
+	decode: (value: string) => marked.parseInline(value, { async: false, renderer })
 });
 
 export const glossaryTermSchema = Object({
