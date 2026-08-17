@@ -4,6 +4,7 @@
 	import ScoreComparison from '$lib/components/country/score-comparison.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroupHeader from '$lib/components/list-group-header.svelte';
+	import Metadata from '$lib/components/metadata.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
 	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
 	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
@@ -44,9 +45,7 @@
 	]);
 </script>
 
-<svelte:head>
-	<title>Explore by Country · Asian Parliamentary Openness Index</title>
-</svelte:head>
+<Metadata page="Insights" />
 
 <Hero
 	breadcrumbItems={[

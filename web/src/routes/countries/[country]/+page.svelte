@@ -7,6 +7,7 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroupHeader from '$lib/components/list-group-header.svelte';
+	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
 	import IndicatorAccordion from '$lib/components/questionair/indicator-accordion.svelte';
@@ -83,9 +84,7 @@
 	);
 </script>
 
-<svelte:head>
-	<title>{data.country.name} · Asian Parliamentary Openness Index</title>
-</svelte:head>
+<Metadata page={data.country.name} />
 
 <section class="relative overflow-clip bg-gray-2">
 	<img

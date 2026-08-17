@@ -1,6 +1,8 @@
-<svelte:head>
-	<title>Asian Parliamentary Openness Index</title>
-</svelte:head>
+<script lang="ts">
+	import Metadata from '$lib/components/metadata.svelte';
+</script>
+
+<Metadata />
 
 <main class="mx-auto max-w-5xl px-6 py-16">
 	<h1 class="h3 font-bold">Asian Parliamentary Openness Index</h1>

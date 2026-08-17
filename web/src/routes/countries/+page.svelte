@@ -4,6 +4,7 @@
 	import ChevronUp from 'carbon-icons-svelte/lib/ChevronUp.svelte';
 	import { resolve } from '$app/paths';
 	import Hero from '$lib/components/hero.svelte';
+	import Metadata from '$lib/components/metadata.svelte';
 	import SearchInput from '$lib/components/search-input.svelte';
 
 	const { data } = $props();
@@ -34,9 +35,7 @@
 		score === undefined ? '-' : `${(score * 100).toFixed(2)}%`;
 </script>
 
-<svelte:head>
-	<title>Explore by Country · Asian Parliamentary Openness Index</title>
-</svelte:head>
+<Metadata page="Explore by Country" />
 
 <Hero
 	breadcrumbItems={[

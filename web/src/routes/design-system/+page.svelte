@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Metadata from '$lib/components/metadata.svelte';
+
 	const headings = [
 		{ name: 'H1', class: 'h1', size: '48 / 80' },
 		{ name: 'H2', class: 'h2', size: '36 / 60' },
@@ -60,9 +62,7 @@
 	];
 </script>
 
-<svelte:head>
-	<title>Design System · Asian Parliamentary Openness Index</title>
-</svelte:head>
+<Metadata page="Design System" />
 
 <main class="mx-auto max-w-5xl bg-white px-6 py-16">
 	<header class="mb-16">
