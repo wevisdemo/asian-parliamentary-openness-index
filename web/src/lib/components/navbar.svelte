@@ -7,7 +7,8 @@
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import Menu from 'carbon-icons-svelte/lib/Menu.svelte';
 	import Button from '$lib/components/button.svelte';
-	import GlossarySidebar from '$lib/components/glossary-sidebar.svelte';
+	import GlossarySidebar from '$lib/components/glossary/glossary-sidebar.svelte';
+	import { getGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
 	import type { GlossaryTerm } from '$lib/data/glossary';
 
 	interface NavLink {
@@ -26,12 +27,13 @@
 		{ label: 'Explore by Country', href: resolve('/countries') }
 	];
 
+	const glossaryState = getGlossaryState();
+
 	let isMenuOpen = $state(false);
-	let isGlossaryOpen = $state(false);
 
 	const openGlossary = () => {
 		isMenuOpen = false;
-		isGlossaryOpen = true;
+		glossaryState.open();
 	};
 
 	const isActive = (href: string) =>
@@ -115,4 +117,4 @@
 	</Button>
 {/snippet}
 
-<GlossarySidebar open={isGlossaryOpen} terms={glossary} onclose={() => (isGlossaryOpen = false)} />
+<GlossarySidebar terms={glossary} />

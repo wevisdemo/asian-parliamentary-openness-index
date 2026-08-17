@@ -4,7 +4,9 @@ declare global {
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
-		// interface PageData {}
+		interface PageData {
+			glossary: import('$lib/data/glossary').GlossaryTerm[];
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}

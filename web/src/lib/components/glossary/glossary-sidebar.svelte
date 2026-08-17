@@ -1,27 +1,42 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { Dialog } from 'bits-ui';
+	import ChevronLeft from 'carbon-icons-svelte/lib/ChevronLeft.svelte';
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import SearchInput from '$lib/components/search-input.svelte';
-	import type { GlossaryTerm } from '$lib/data/glossary';
+	import { getGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
+	import { getTermAliases, type GlossaryTerm } from '$lib/data/glossary';
 
 	interface Props {
-		open: boolean;
 		terms: GlossaryTerm[];
-		onclose: () => void;
 	}
 
-	const { open, terms, onclose }: Props = $props();
+	const { terms }: Props = $props();
+
+	const glossaryState = getGlossaryState();
 
 	let search = $state('');
 
 	const keyword = $derived(search.trim().toLowerCase());
+
+	const selected = $derived(
+		terms.find(({ term }) =>
+			getTermAliases(term).some(
+				(alias) => alias.toLowerCase() === glossaryState.selectedTerm?.toLowerCase()
+			)
+		)
+	);
 
 	const matched = $derived(
 		[...terms]
 			.filter(({ term }) => !keyword || term.toLowerCase().includes(keyword))
 			.sort((a, b) => a.term.localeCompare(b.term))
 	);
+
+	const showAllTerms = () => {
+		search = '';
+		glossaryState.showAllTerms();
+	};
 
 	const groups = $derived.by(() => {
 		const letters = [...new Set(matched.map(({ term }) => term.charAt(0).toUpperCase()))];
@@ -33,7 +48,7 @@
 	});
 </script>
 
-<Dialog.Root {open} onOpenChange={(next) => !next && onclose()}>
+<Dialog.Root open={glossaryState.isOpen} onOpenChange={(next) => !next && glossaryState.close()}>
 	<Dialog.Portal>
 		<Dialog.Overlay forceMount>
 			{#snippet child({ props, open: isOpen })}
@@ -68,11 +83,23 @@
 								Definitions of terms used in survey questions to ensure consistent understanding
 							</Dialog.Description>
 
-							<SearchInput bind:value={search} placeholder="Search term" />
+							{#if !selected}
+								<SearchInput bind:value={search} placeholder="Search term" />
+							{/if}
 						</div>
 
 						<div class="flex-1 auto-hide-scrollbar overflow-y-auto px-5 md:pr-4 md:pl-7">
-							{#if !matched.length}
+							{#if selected}
+								<button
+									type="button"
+									class="-ml-0.5 flex cursor-pointer items-center gap-1 self-start b4 text-purple-5 hover:underline"
+									onclick={showAllTerms}
+								>
+									<ChevronLeft size={16} />
+									All terms
+								</button>
+								{@render termList([selected])}
+							{:else if !matched.length}
 								<p class="py-4 b4 text-gray-8">No term matching '{search}'</p>
 							{:else if keyword}
 								{@render termList(matched)}

@@ -3,8 +3,11 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import Navbar from '$lib/components/navbar.svelte';
 	import Footer from '$lib/components/footer.svelte';
+	import { createGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
 
 	let { data, children } = $props();
+
+	createGlossaryState();
 </script>
 
 <svelte:head

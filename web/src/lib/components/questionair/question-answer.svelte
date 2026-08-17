@@ -2,6 +2,7 @@
 	import type { Answer } from '$lib/data/answers';
 	import type { Question } from '$lib/data/questions';
 	import Information from 'carbon-icons-svelte/lib/Information.svelte';
+	import ContentWithGlossary from '../glossary/content-with-glossary.svelte';
 	import Tooltip from '../tooltip.svelte';
 
 	interface Props {
@@ -18,7 +19,7 @@
 <div class={['flex flex-col gap-2 md:flex-row md:gap-6', className]}>
 	<div class="flex flex-3 flex-row gap-2 md:gap-3">
 		<span class="font-mono font-bold text-gray-8">{question.number.split('.').at(-1)}</span>
-		<p>{question.question}</p>
+		<p><ContentWithGlossary content={question.question} /></p>
 	</div>
 
 	<div class="flex flex-4 flex-col gap-2 md:flex-row md:gap-6">
