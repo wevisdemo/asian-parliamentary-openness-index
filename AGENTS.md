@@ -14,9 +14,17 @@
 - Avoid mutating variables, prefer functional approach when possible
 - After finishing any task, run the following commands:
   - Check type with `moon run web:check`
+  - Run unit tests with `moon run web:test`
   - Lint with `moon run :lint`, all errors and warnings must be fixed
   - Format code with `moon run :format` before declaring task as done
 - Human will get in the loop and edit some file along the way. If you spot it, please respect those changes
+
+## Testing
+
+- `web` is unit tested with Vitest, run through `moon run web:test` (`pnpm test:watch` inside `web/` while iterating)
+- Name specs `<module>.spec.ts` next to the module they cover, only files matching `src/**/*.spec.ts` are picked up
+- Only cover pure logic, e.g. data transformers and derivations. Components are not tested
+- Specs importing a module that reads `$data/*.csv` need `data/output/`, which is why `web:test` depends on `data:build`
 
 ## Routing
 

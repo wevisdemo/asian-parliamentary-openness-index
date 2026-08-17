@@ -40,3 +40,50 @@ export const getTermAliases = (term: string): string[] =>
 			return match ? [match[1], match[2]] : [part];
 		})
 		.filter(Boolean);
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+export const createTermPattern = (terms: GlossaryTerm[]): RegExp | undefined => {
+	const patterns = terms
+		.flatMap(({ term }) => getTermAliases(term))
+		.sort((a, b) => b.length - a.length)
+		.map(escapeRegExp);
+
+	return patterns.length ? new RegExp(`\\b(${patterns.join('|')})\\b`, 'gi') : undefined;
+};
+
+export interface ContentSegment {
+	text: string;
+	isTerm: boolean;
+}
+
+export const splitContentByTerm = (content: string, terms: GlossaryTerm[]): ContentSegment[] => {
+	const pattern = createTermPattern(terms);
+	const matches = pattern ? [...content.matchAll(pattern)] : [];
+	const endOf = (match: RegExpExecArray) => (match.index ?? 0) + match[0].length;
+
+	const parts = matches.flatMap((match, index) => {
+		const previous = matches[index - 1];
+
+		return [
+			{ text: content.slice(previous ? endOf(previous) : 0, match.index), isTerm: false },
+			{ text: match[0], isTerm: true }
+		];
+	});
+
+	const last = matches.at(-1);
+
+	return [...parts, { text: content.slice(last ? endOf(last) : 0), isTerm: false }].filter(
+		({ text }) => text
+	);
+};
+
+export const findTermByAlias = (
+	terms: GlossaryTerm[],
+	alias: string | undefined
+): GlossaryTerm | undefined =>
+	alias
+		? terms.find(({ term }) =>
+				getTermAliases(term).some((each) => each.toLowerCase() === alias.toLowerCase())
+			)
+		: undefined;

@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import Bookmark from 'carbon-icons-svelte/lib/Bookmark.svelte';
 	import { getGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
-	import { getTermAliases } from '$lib/data/glossary';
+	import { splitContentByTerm } from '$lib/data/glossary';
 
 	interface Props {
 		content: string;
@@ -12,37 +12,7 @@
 
 	const glossaryState = getGlossaryState();
 
-	const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-	const termPattern = $derived.by(() => {
-		const patterns = page.data.glossary
-			.flatMap(({ term }) => getTermAliases(term))
-			.sort((a, b) => b.length - a.length)
-			.map(escapeRegExp);
-
-		return patterns.length ? new RegExp(`\\b(${patterns.join('|')})\\b`, 'gi') : undefined;
-	});
-
-	/** Splits the content into plain text and glossary term segments, in reading order */
-	const segments = $derived.by(() => {
-		const matches = termPattern ? [...content.matchAll(termPattern)] : [];
-		const endOf = (match: RegExpExecArray) => (match.index ?? 0) + match[0].length;
-
-		const parts = matches.flatMap((match, index) => {
-			const previous = matches[index - 1];
-
-			return [
-				{ text: content.slice(previous ? endOf(previous) : 0, match.index), isTerm: false },
-				{ text: match[0], isTerm: true }
-			];
-		});
-
-		const last = matches.at(-1);
-
-		return [...parts, { text: content.slice(last ? endOf(last) : 0), isTerm: false }].filter(
-			({ text }) => text
-		);
-	});
+	const segments = $derived(splitContentByTerm(content, page.data.glossary));
 </script>
 
 {#each segments as { text, isTerm }, index (index)}{#if isTerm}<button

@@ -5,7 +5,7 @@
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import SearchInput from '$lib/components/search-input.svelte';
 	import { getGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
-	import { getTermAliases, type GlossaryTerm } from '$lib/data/glossary';
+	import { findTermByAlias, type GlossaryTerm } from '$lib/data/glossary';
 
 	interface Props {
 		terms: GlossaryTerm[];
@@ -19,13 +19,7 @@
 
 	const keyword = $derived(search.trim().toLowerCase());
 
-	const selected = $derived(
-		terms.find(({ term }) =>
-			getTermAliases(term).some(
-				(alias) => alias.toLowerCase() === glossaryState.selectedTerm?.toLowerCase()
-			)
-		)
-	);
+	const selected = $derived(findTermByAlias(terms, glossaryState.selectedTerm));
 
 	const matched = $derived(
 		[...terms]
