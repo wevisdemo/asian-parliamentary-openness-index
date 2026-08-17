@@ -14,6 +14,7 @@ from openness_score import OpennessScore
 import pandas as pd
 from constants import TEMPLATE_SHEET_LINK
 from utilities import get_indicator_data, get_questions_data
+from zipper import zip_csv_files
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 
@@ -108,6 +109,10 @@ def main() -> None:
     indicator_contexts.to_csv(
         os.path.join(OUTPUT_DIR, "indicator-contexts.csv"), index=False
     )
+
+    # TODO: make zip name dynamic
+    zip_file_name = "APOI-2026.zip"
+    zip_csv_files(OUTPUT_DIR, zip_file_name)
 
 
 if __name__ == "__main__":
