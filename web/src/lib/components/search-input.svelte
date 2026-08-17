@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import Search from 'carbon-icons-svelte/lib/Search.svelte';
+	import { controlHeightClasses } from '$lib/constants/control-styles';
 
 	interface Props {
 		value: string;
@@ -18,7 +19,8 @@
 		bind:value
 		{placeholder}
 		class={[
-			'w-full border border-purple-5 px-10 py-2.5 text-gray-8 transition-colors placeholder:text-purple-5 focus:outline-purple-5',
+			'w-full border border-purple-5 px-10 leading-none! text-gray-8 transition-colors placeholder:text-purple-5 focus:outline-purple-5',
+			controlHeightClasses.loose,
 			value && 'bg-purple-1'
 		]}
 	/>
