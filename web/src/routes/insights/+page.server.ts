@@ -53,12 +53,15 @@ export const load: PageServerLoad = () => {
 		);
 
 		const countryCountByLevel = countCountriesByLevel(indicatorAnswers);
+		const applicableCount = countries.length - countryCountByLevel['N/A'];
 
 		return {
 			indicator,
 			questionCount: indicatorQuestions.length,
 			countryCountByLevel,
-			achievedPercentage: (countryCountByLevel['Achieved'] / countries.length) * 100
+			achievedPercentage: applicableCount
+				? (countryCountByLevel['Achieved'] / applicableCount) * 100
+				: 0
 		};
 	});
 

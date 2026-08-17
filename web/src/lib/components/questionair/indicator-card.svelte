@@ -18,7 +18,7 @@
 		class: className
 	}: Props = $props();
 
-	const barLevels: AchievementLevel[] = ['Achieved', 'Partly achieved', 'Not achieved', 'N/A'];
+	const barLevels: AchievementLevel[] = ['Achieved', 'Partly achieved', 'Not achieved'];
 
 	const levelCounts = $derived(
 		barLevels.map((level) => ({ level, count: countryCountByLevel[level] }))
@@ -58,9 +58,13 @@
 					<span class="flex flex-row items-center gap-1">
 						<span class={['size-3 border border-gray-8', achievementLevelColorClasses[level]]}
 						></span>
-						<span class="font-mono">{count}</span>
+						<span class="font-mono text-gray-8">{count}</span>
 					</span>
 				{/each}
+				<span class="flex flex-row items-center gap-1">
+					<span>N/A</span>
+					<span class="font-mono">{countryCountByLevel['N/A']}</span>
+				</span>
 			</div>
 		</div>
 	</div>

@@ -19,7 +19,7 @@
 	const { indicator, questions, answers, context, class: className }: Props = $props();
 
 	const statusClasses: Record<AchievementLevel, string> = {
-		'N/A': 'bg-data-na',
+		'N/A': 'text-gray-4',
 		'Not achieved': 'bg-data-not-achieved',
 		'Partly achieved': 'bg-data-partly-achieved',
 		Achieved: 'bg-data-achieved'
@@ -57,14 +57,20 @@
 			</div>
 
 			<div class="flex flex-row items-center justify-between gap-4">
-				<span class={['px-2 py-1 b4 font-bold whitespace-nowrap', statusClasses[status]]}
-					>{status}</span
+				<span
+					class={[
+						'b4 font-bold whitespace-nowrap',
+						status !== 'N/A' && 'px-2 py-1',
+						statusClasses[status]
+					]}>{status}</span
 				>
-				<p class="font-mono b2 whitespace-nowrap">
-					<span class="font-bold">{score.toFixed(2)}</span><span class="text-gray-6"
-						>/{totalApplicableScore.toFixed(2)}</span
-					>
-				</p>
+				{#if status !== 'N/A'}
+					<p class="font-mono b2 whitespace-nowrap">
+						<span class="font-bold">{score.toFixed(2)}</span><span class="text-gray-6"
+							>/{totalApplicableScore.toFixed(2)}</span
+						>
+					</p>
+				{/if}
 			</div>
 		</div>
 	{/snippet}

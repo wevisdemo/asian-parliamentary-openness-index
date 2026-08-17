@@ -11,6 +11,8 @@
 
 	const levels = ['Achieved', 'Partly achieved', 'Not achieved', 'N/A'] as const;
 
+	const swatchLevels = levels.filter((level) => level !== 'N/A');
+
 	const levelDescriptions: Record<(typeof levels)[number], string> = {
 		Achieved:
 			'All questions within the indicator receive a full score across all chambers, excluding those that are not applicable to the country context.',
@@ -24,7 +26,7 @@
 </script>
 
 <div class={['flex flex-row flex-wrap items-center gap-x-3 gap-y-1 text-gray-8', className]}>
-	{#each levels as level (level)}
+	{#each swatchLevels as level (level)}
 		<span class="flex flex-row items-center gap-1 whitespace-nowrap">
 			<span class={['size-3 border border-gray-8', achievementLevelColorClasses[level]]}></span>
 			<span>{level}</span>
@@ -38,7 +40,7 @@
 
 		<dl class="flex flex-col gap-3">
 			{#each levels as level (level)}
-				<div>
+				<div class={[level === 'N/A' && 'text-gray-6']}>
 					<dt class="inline font-bold">{level}:</dt>
 					<dd class="inline">{levelDescriptions[level]}</dd>
 				</div>
