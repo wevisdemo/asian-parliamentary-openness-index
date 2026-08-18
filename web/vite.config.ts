@@ -29,6 +29,12 @@ export default defineConfig({
 
 			paths: {
 				base: (process.env.BASE_PATH ?? '') as '' | `/${string}`
+			},
+
+			// Pinned so every build pass derives the same __sveltekit_<hash> global.
+			// The Date.now() default can differ between passes and breaks hydration.
+			version: {
+				name: process.env.GITHUB_SHA ?? 'dev'
 			}
 		})
 	],

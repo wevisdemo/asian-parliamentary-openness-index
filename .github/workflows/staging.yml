@@ -37,8 +37,10 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
-      - name: Test and build
-        run: pnpm --package=@moonrepo/cli dlx moon run web:test web:build
+      - name: Test
+        run: pnpm --package=@moonrepo/cli dlx moon run web:test
+      - name: Build
+        run: pnpm --package=@moonrepo/cli dlx moon run web:build
         env:
           BASE_PATH: /${{ github.event.repository.name }}
       - name: Upload Pages artifact
