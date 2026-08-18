@@ -58,8 +58,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.1(prettier-plugin-svelte@4.1.1(prettier@3.9.6)(svelte@5.56.7))(prettier@3.9.6)
       sheethuahua:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^4.0.1
+        version: 4.0.1
       svelte:
         specifier: ^5.56.1
         version: 5.56.7
@@ -1105,8 +1105,8 @@ packages:
   set-cookie-parser@3.1.2:
     resolution: {integrity: sha512-5/r/lTwbJ3zQ+qwdUFZYeRNqda7P5HD8zQKqlSjdGt1/S0cjLAphHusj4Y58ahDtWn/g32xrIS58/ikOvwl0Lw==}
 
-  sheethuahua@4.0.0:
-    resolution: {integrity: sha512-QDsGn6v+GrqSIdDF0Kd5ZIk3XC+gciOHzBYho1Sd5HnX6NuCRAStU8DBZ7WMhUjv0mTImrrul4jmsYNrli54SQ==}
+  sheethuahua@4.0.1:
+    resolution: {integrity: sha512-qRjl2oplkwaAhDEIq1j8DskdaYMNYMAPPrRHc/mHl+bQWZ9MKOCc9jd1PVTH6GmoZUYssSnRn+7aI9e1R5DFhQ==}
 
   siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
@@ -2152,7 +2152,7 @@ snapshots:
 
   set-cookie-parser@3.1.2: {}
 
-  sheethuahua@4.0.0:
+  sheethuahua@4.0.1:
     dependencies:
       '@formkit/tempo': 0.1.2
       '@sinclair/typebox': 0.33.24

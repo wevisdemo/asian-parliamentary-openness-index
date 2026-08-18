@@ -2,3 +2,5 @@ packages:
   - web
 allowBuilds:
   '@tailwindcss/oxide': true
+minimumReleaseAgeExclude:
+  - sheethuahua@4.0.1
