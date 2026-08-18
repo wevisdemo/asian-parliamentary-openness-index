@@ -12,11 +12,18 @@
 	interface Props {
 		breadcrumbItems: BreadcrumbItem[];
 		breadcrumbTrailing?: Snippet;
+		showIndexInfo?: boolean;
 		children?: Snippet;
 		class?: string;
 	}
 
-	const { breadcrumbItems, breadcrumbTrailing, children, class: className }: Props = $props();
+	const {
+		breadcrumbItems,
+		breadcrumbTrailing,
+		showIndexInfo = false,
+		children,
+		class: className
+	}: Props = $props();
 
 	let openModal = $state<'about' | 'methodology'>();
 </script>
@@ -25,20 +32,22 @@
 	<Breadcrumb items={breadcrumbItems} trailing={breadcrumbTrailing} class="px-5 pt-4" />
 
 	<div class="content-container flex flex-col gap-6">
-		<div class="flex flex-col justify-between gap-2 md:flex-row">
-			<div>
-				<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
-				<p class="b5 text-gray-6">Assessment Date: August 2026</p>
+		{#if showIndexInfo}
+			<div class="flex flex-col justify-between gap-2 md:flex-row">
+				<div>
+					<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
+					<p class="b5 text-gray-6">Assessment Date: August 2026</p>
+				</div>
+				<div class="flex flex-row items-start gap-6 md:gap-8">
+					<Hyperlink class="underline" onclick={() => (openModal = 'about')}>
+						About the Index
+					</Hyperlink>
+					<Hyperlink class="underline" onclick={() => (openModal = 'methodology')}>
+						Methodology
+					</Hyperlink>
+				</div>
 			</div>
-			<div class="flex flex-row items-start gap-6 md:gap-8">
-				<Hyperlink class="underline" onclick={() => (openModal = 'about')}>
-					About the Index
-				</Hyperlink>
-				<Hyperlink class="underline" onclick={() => (openModal = 'methodology')}>
-					Methodology
-				</Hyperlink>
-			</div>
-		</div>
+		{/if}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
 			{@render children?.()}
 		</div>

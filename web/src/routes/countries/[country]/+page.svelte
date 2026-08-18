@@ -99,6 +99,7 @@
 			{ label: 'Home', href: resolve('/') },
 			{ label: 'Explore by Country', href: resolve('/countries') }
 		]}
+		showIndexInfo
 	>
 		{#snippet breadcrumbTrailing()}
 			<Dropdown

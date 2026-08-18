@@ -52,6 +52,7 @@
 		{ label: 'Home', href: resolve('/') },
 		{ label: 'Insights', href: resolve('/insights') }
 	]}
+	showIndexInfo
 	class="bg-gray-1"
 >
 	<div class="flex flex-col gap-6">

@@ -24,7 +24,8 @@
 
 	const links: NavLink[] = [
 		{ label: 'Insights', href: resolve('/insights') },
-		{ label: 'Explore by Country', href: resolve('/countries') }
+		{ label: 'Explore by Country', href: resolve('/countries') },
+		{ label: 'About', href: resolve('/about') }
 	];
 
 	const glossaryState = getGlossaryState();

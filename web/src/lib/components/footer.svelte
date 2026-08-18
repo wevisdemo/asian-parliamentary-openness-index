@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { aboutSections } from '$lib/constants/about-sections';
 
 	interface FooterLink {
 		label: string;
@@ -23,10 +24,23 @@
 			/>
 		</a>
 
-		<ul class="flex flex-col gap-2">
-			{#each links as { label, href } (href)}
-				<li><a {href} class="b4 font-bold hover:text-purple-3">{label}</a></li>
-			{/each}
-		</ul>
+		<div class="flex flex-col gap-4 md:flex-row md:gap-16">
+			<ul class="flex flex-col gap-2">
+				{#each links as { label, href } (href)}
+					<li><a {href} class="b4 font-bold hover:text-purple-3">{label}</a></li>
+				{/each}
+			</ul>
+
+			<div class="flex flex-col gap-2">
+				<a href={resolve('/about')} class="b4 font-bold hover:text-purple-3">About</a>
+				<ul class="flex list-disc flex-col gap-1 pl-5">
+					{#each aboutSections as { id, label } (id)}
+						<li>
+							<a href="{resolve('/about')}#{id}" class="b4 hover:text-purple-3">{label}</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		</div>
 	</div>
 </footer>

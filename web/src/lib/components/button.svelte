@@ -27,7 +27,7 @@
 
 	const sizeClasses = {
 		big: 'b3 gap-3 px-5 py-2.5',
-		small: 'b5 gap-2 px-4 py-2'
+		small: 'b5 gap-2 px-4 py-1.5'
 	};
 
 	const variantClasses = {

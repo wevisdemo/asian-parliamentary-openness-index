@@ -42,6 +42,7 @@
 		{ label: 'Home', href: resolve('/') },
 		{ label: 'Explore by Country', href: resolve('/countries') }
 	]}
+	showIndexInfo
 	class="bg-gray-2"
 >
 	<div class="flex flex-col gap-6">
