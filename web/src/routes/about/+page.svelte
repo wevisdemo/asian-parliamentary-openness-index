@@ -268,7 +268,7 @@
 	</div>
 
 	{#if scrollY > 0}
-		<div class="sticky bottom-2 z-40 flex justify-center px-5 md:bottom-4" transition:fade>
+		<div class="sticky bottom-0 z-40 flex justify-center px-5" transition:fade>
 			<Button size="small" onclick={scrollToTop}>
 				Back to top
 				{#snippet icon()}
