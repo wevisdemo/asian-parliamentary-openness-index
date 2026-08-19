@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
 	import { resolve } from '$app/paths';
 	import ScoreComparison from '$lib/components/country/score-comparison.svelte';
 	import Hero from '$lib/components/hero.svelte';
-	import ListGroupHeader from '$lib/components/list-group-header.svelte';
+	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
 	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
@@ -14,6 +13,7 @@
 		dimensionOptions,
 		type Dimension
 	} from '$lib/constants/dimensions';
+	import { quickFade } from '$lib/utils/transitions';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
@@ -112,7 +112,7 @@
 		/>
 
 		{#key selectedDimension}
-			<div in:fade={{ duration: 150 }} class="flex flex-col gap-2 text-gray-8">
+			<div in:quickFade class="flex flex-col gap-2 text-gray-8">
 				<p class="font-bold">
 					{selectedDimension} contributes [{insight?.points}] out of {data.totalPoints} points to the
 					overall score.
@@ -125,20 +125,18 @@
 
 		<ScoreComparison scores={insight?.countryScores ?? []} />
 
-		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:p-8">
+		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:p-7">
 			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 				<h3 class="b1 font-bold">Top indicators in this dimension:</h3>
 				<AchievementLegend class="shrink-0" />
 			</div>
 
 			{#each indicatorGroups as group (group.title)}
-				<ListGroupHeader name={group.title} description={group.description} />
-
-				{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
-					<div in:fade={{ duration: 150 }}>
+				<ListGroup name={group.title} description={group.description}>
+					{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
 						<IndicatorCard {...summary} />
-					</div>
-				{/each}
+					{/each}
+				</ListGroup>
 			{/each}
 		</div>
 

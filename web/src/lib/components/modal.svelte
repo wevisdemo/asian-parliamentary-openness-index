@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { fade } from 'svelte/transition';
 	import { Dialog } from 'bits-ui';
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
+	import { quickFade } from '$lib/utils/transitions';
 
 	interface Props {
 		open: boolean;
@@ -20,11 +20,7 @@
 		<Dialog.Overlay forceMount>
 			{#snippet child({ props, open: isOpen })}
 				{#if isOpen}
-					<div
-						{...props}
-						class="fixed inset-0 z-100 bg-black/25"
-						transition:fade={{ duration: 150 }}
-					></div>
+					<div {...props} class="fixed inset-0 z-100 bg-black/25" transition:quickFade></div>
 				{/if}
 			{/snippet}
 		</Dialog.Overlay>
@@ -38,7 +34,7 @@
 							'fixed top-1/2 left-1/2 z-100 flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-125 -translate-x-1/2 -translate-y-1/2 flex-col gap-4 overflow-y-auto bg-white p-6 shadow-xl md:p-8',
 							className
 						]}
-						transition:fade={{ duration: 150 }}
+						transition:quickFade
 					>
 						<Dialog.Close
 							aria-label="Close"

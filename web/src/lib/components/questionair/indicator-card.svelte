@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { achievementLevelColorClasses, type AchievementLevel } from '$lib/constants/achievements';
+	import { quickFade } from '$lib/utils/transitions';
 	import type { Indicator } from '$lib/data/indicators';
 
 	interface Props {
@@ -25,7 +26,10 @@
 	);
 </script>
 
-<div class={['flex flex-col gap-4 bg-white p-4 md:flex-row md:items-center md:p-6', className]}>
+<div
+	in:quickFade
+	class={['flex flex-col gap-4 bg-white p-4 md:flex-row md:items-center md:p-6', className]}
+>
 	<div class="flex flex-1 flex-col">
 		<h3 class="b2 font-bold">{indicator.name}</h3>
 		<p class="b4 text-gray-6">

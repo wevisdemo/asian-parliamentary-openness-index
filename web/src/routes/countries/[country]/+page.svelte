@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import mapIllustration from '$lib/assets/images/map-illustration.png';
 	import CountryContext from '$lib/components/country/country-context.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
-	import ListGroupHeader from '$lib/components/list-group-header.svelte';
+	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
@@ -20,6 +19,7 @@
 		type Dimension
 	} from '$lib/constants/dimensions';
 	import { getAchievementLevel } from '$lib/data/answers';
+	import { quickFade } from '$lib/utils/transitions';
 
 	const { data } = $props();
 
@@ -143,7 +143,7 @@
 
 		<div class="flex flex-col gap-6 md:gap-8">
 			{#key `${selectedChamber}-${selectedDimension}`}
-				<p in:fade={{ duration: 150 }} class="b3">
+				<p in:quickFade class="b3">
 					{dimensionDescriptions[selectedDimension]}
 				</p>
 			{/key}
@@ -163,17 +163,15 @@
 
 			<div class="flex flex-col gap-6">
 				{#each indicatorGroups as group (group.name)}
-					<div in:fade={{ duration: 150 }} class="flex flex-col gap-4">
-						<ListGroupHeader
-							name={group.name}
-							postfix="({group.indicators.length} {group.indicators.length === 1
-								? 'Indicator'
-								: 'Indicators'})"
-							description={group.description}
-						/>
-
+					<ListGroup
+						name={group.name}
+						postfix="({group.indicators.length} {group.indicators.length === 1
+							? 'Indicator'
+							: 'Indicators'})"
+						description={group.description}
+					>
 						{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
-							<div in:fade={{ duration: 150 }}>
+							<div in:quickFade>
 								<IndicatorAccordion
 									{indicator}
 									{questions}
@@ -184,7 +182,7 @@
 								/>
 							</div>
 						{/each}
-					</div>
+					</ListGroup>
 				{/each}
 			</div>
 		</div>

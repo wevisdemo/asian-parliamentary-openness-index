@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { slide } from 'svelte/transition';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import Subtract from 'carbon-icons-svelte/lib/Subtract.svelte';
+	import { quickSlide } from '$lib/utils/transitions';
 
 	interface Props {
 		header: Snippet;
@@ -52,11 +52,7 @@
 	</button>
 
 	{#if open}
-		<div
-			id={contentId}
-			class={['flex flex-row', contentClass]}
-			transition:slide={{ duration: 150 }}
-		>
+		<div id={contentId} class={['flex flex-row', contentClass]} transition:quickSlide>
 			{@render content()}
 		</div>
 	{/if}

@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { fade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { Dialog } from 'bits-ui';
 	import ChevronLeft from 'carbon-icons-svelte/lib/ChevronLeft.svelte';
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import SearchInput from '$lib/components/search-input.svelte';
 	import { getGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
 	import { findTermByAlias, type GlossaryTerm } from '$lib/data/glossary';
+	import { quickFade } from '$lib/utils/transitions';
 
 	interface Props {
 		terms: GlossaryTerm[];
@@ -47,11 +48,7 @@
 		<Dialog.Overlay forceMount>
 			{#snippet child({ props, open: isOpen })}
 				{#if isOpen}
-					<div
-						{...props}
-						class="fixed inset-0 z-100 bg-black/25"
-						transition:fade={{ duration: 150 }}
-					></div>
+					<div {...props} class="fixed inset-0 z-100 bg-black/25" transition:quickFade></div>
 				{/if}
 			{/snippet}
 		</Dialog.Overlay>

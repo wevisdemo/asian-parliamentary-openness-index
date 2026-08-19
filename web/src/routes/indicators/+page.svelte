@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
 	import { resolve } from '$app/paths';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
-	import ListGroupHeader from '$lib/components/list-group-header.svelte';
+	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
@@ -14,6 +13,7 @@
 		dimensionOptions,
 		type Dimension
 	} from '$lib/constants/dimensions';
+	import { quickFade } from '$lib/utils/transitions';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
@@ -78,48 +78,44 @@
 
 		<div class="flex flex-col gap-6 md:gap-8">
 			{#key selectedDimension}
-				<p in:fade={{ duration: 150 }} class="b3">
+				<p in:quickFade class="b3">
 					{dimensionDescriptions[selectedDimension]}
 				</p>
 			{/key}
 
-			{#each indicatorGroups as group (group.name ?? selectedSortBy)}
-				<div class="flex flex-col gap-4">
-					<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
-						<h2 class="b1 font-bold">
-							{dimensionSummaries.length}
-							{dimensionSummaries.length === 1 ? 'Indicator' : 'Indicators'}
-						</h2>
-						<div class="mt-1 flex flex-row items-center gap-2 text-gray-6">
-							<span class="b4 whitespace-nowrap">Sorted by</span>
-							<Dropdown
-								options={sortByOptions}
-								value={selectedSortBy}
-								color="gray"
-								variant="compact"
-								onselect={(sortBy) => (selectedSortBy = sortBy)}
-							/>
-						</div>
-					</div>
-
-					<AchievementLegend />
-
-					{#if group.name}
-						<ListGroupHeader
-							name={group.name}
-							postfix="({group.summaries.length} {group.summaries.length === 1
-								? 'Indicator'
-								: 'Indicators'})"
+			<div class="flex flex-col gap-4">
+				<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
+					<h2 class="b1 font-bold">
+						{dimensionSummaries.length}
+						{dimensionSummaries.length === 1 ? 'Indicator' : 'Indicators'}
+					</h2>
+					<div class="mt-1 flex flex-row items-center gap-2 text-gray-6">
+						<span class="b4 whitespace-nowrap">Sorted by</span>
+						<Dropdown
+							options={sortByOptions}
+							value={selectedSortBy}
+							color="gray"
+							variant="compact"
+							onselect={(sortBy) => (selectedSortBy = sortBy)}
 						/>
-					{/if}
-
-					{#each group.summaries as summary (summary.indicator.number)}
-						<div in:fade={{ duration: 150 }}>
-							<IndicatorCard {...summary} />
-						</div>
-					{/each}
+					</div>
 				</div>
-			{/each}
+
+				<AchievementLegend />
+
+				{#each indicatorGroups as group (group.name)}
+					<ListGroup
+						name={group.name}
+						postfix="({group.summaries.length} {group.summaries.length === 1
+							? 'Indicator'
+							: 'Indicators'})"
+					>
+						{#each group.summaries as summary (summary.indicator.number)}
+							<IndicatorCard {...summary} />
+						{/each}
+					</ListGroup>
+				{/each}
+			</div>
 		</div>
 
 		<Pagination options={dimensionOptions} value={selectedDimension} onselect={selectDimension} />
