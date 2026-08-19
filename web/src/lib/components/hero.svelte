@@ -35,7 +35,7 @@
 		{#if showIndexInfo}
 			<div class="flex flex-col justify-between gap-2 md:flex-row">
 				<div>
-					<p class="b2 font-bold text-gray-8">Asia Parliamentary Openness Index 2026</p>
+					<p class="b2 font-bold text-gray-8">Asian Parliamentary Openness Index 2026</p>
 					<p class="b5 text-gray-6">Assessment Date: August 2026</p>
 				</div>
 				<div class="flex flex-row items-start gap-6 md:gap-8">
