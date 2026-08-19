@@ -10,7 +10,8 @@
 	const links: FooterLink[] = [
 		{ label: 'Home', href: resolve('/') },
 		{ label: 'Insights', href: resolve('/insights') },
-		{ label: 'Explore by Country', href: resolve('/countries') }
+		{ label: 'Explore by Country', href: resolve('/countries') },
+		{ label: 'Explore by Indicator', href: resolve('/indicators') }
 	];
 </script>
 

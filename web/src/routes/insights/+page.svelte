@@ -125,8 +125,8 @@
 
 		<ScoreComparison scores={insight?.countryScores ?? []} />
 
-		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:gap-6 md:p-8">
-			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
+		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:p-8">
+			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 				<h3 class="b1 font-bold">Top indicators in this dimension:</h3>
 				<AchievementLegend class="shrink-0" />
 			</div>
@@ -146,7 +146,10 @@
 			class="mt-6 md:mt-12"
 			title="Go deeper into the data"
 			description="Explore every country's full profile, or browse the index indicator by indicator."
-			actions={[{ label: 'Explore by country', href: resolve('/countries') }]}
+			actions={[
+				{ label: 'Explore by country', href: resolve('/countries') },
+				{ label: 'Explore by indicator', href: resolve('/indicators') }
+			]}
 		/>
 	</div>
 </section>
