@@ -4,13 +4,57 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
+	import Pagination from '$lib/components/pagination.svelte';
 	import AchievementBar from '$lib/components/questionair/achievement-bar.svelte';
 	import CountryAccordion from '$lib/components/questionair/country-accordion.svelte';
+	import Tabs from '$lib/components/tabs.svelte';
+	import {
+		achievementLevelDescriptions,
+		achievementLevelTabColorClasses,
+		type AchievementLevel
+	} from '$lib/constants/achievements';
+	import { quickFade } from '$lib/utils/transitions';
 	import type { PageProps } from './$types';
+
+	const statusLevels: AchievementLevel[] = ['Achieved', 'Partly achieved', 'Not achieved', 'N/A'];
 
 	const { data }: PageProps = $props();
 
+	let status = $state<AchievementLevel>();
+	let statusTabs = $state<ReturnType<typeof Tabs<AchievementLevel>>>();
+
 	const indicator = $derived(data.summary.indicator);
+
+	const statusOptions = $derived(
+		statusLevels.map((level) => {
+			const count = data.countryResults.filter((result) => result.level === level).length;
+
+			return {
+				label: `${level} (${count})`,
+				value: level,
+				disabled: count === 0,
+				colorClasses: achievementLevelTabColorClasses[level]
+			};
+		})
+	);
+
+	const availableStatusOptions = $derived(
+		statusOptions.filter(({ disabled }) => !disabled).map(({ value }) => ({ label: value, value }))
+	);
+
+	const selectedStatus = $derived(
+		(availableStatusOptions.find(({ value }) => value === status) ?? availableStatusOptions[0])
+			?.value
+	);
+
+	const filteredResults = $derived(
+		data.countryResults.filter(({ level }) => level === selectedStatus)
+	);
+
+	const selectStatus = (level: AchievementLevel) => {
+		status = level;
+		statusTabs?.scrollToContent();
+	};
 </script>
 
 <Metadata page={indicator.name} />
@@ -56,9 +100,30 @@
 </section>
 
 <div class="flex flex-col bg-gray-1">
-	<section class="content-container flex flex-col gap-4">
-		{#each data.countryResults as { country, answers, contexts } (country.slug)}
-			<CountryAccordion {country} questions={data.questions} {answers} {contexts} />
-		{/each}
+	<section class="relative content-container flex flex-col gap-6 md:gap-8">
+		<Tabs
+			bind:this={statusTabs}
+			options={statusOptions}
+			value={selectedStatus}
+			sticky
+			onselect={selectStatus}
+			class="bg-gray-1"
+		/>
+
+		<div class="flex flex-col gap-6 md:gap-8">
+			{#key selectedStatus}
+				{#if selectedStatus}
+					<p in:quickFade class="b3">{achievementLevelDescriptions[selectedStatus]}</p>
+				{/if}
+
+				<div in:quickFade class="flex flex-col gap-4">
+					{#each filteredResults as { country, answers, contexts } (country.slug)}
+						<CountryAccordion {country} questions={data.questions} {answers} {contexts} />
+					{/each}
+				</div>
+			{/key}
+		</div>
+
+		<Pagination options={availableStatusOptions} value={selectedStatus} onselect={selectStatus} />
 	</section>
 </div>

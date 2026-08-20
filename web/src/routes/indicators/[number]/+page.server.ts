@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { answers, getScorePercentage } from '$lib/data/answers';
+import { answers, getAchievementLevel, getScorePercentage } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
 import { indicatorContexts } from '$lib/data/indicator-contexts';
 import { indicators, indicatorSummaries } from '$lib/data/indicators';
@@ -37,7 +37,11 @@ export const load: PageServerLoad = ({ params }) => {
 					name === country.name && indicatorNumber === summary.indicator.number
 			)
 		}))
-		.map((result) => ({ ...result, score: getScorePercentage(result.answers) }))
+		.map((result) => ({
+			...result,
+			score: getScorePercentage(result.answers),
+			level: getAchievementLevel(result.answers)
+		}))
 		.sort((a, b) => b.score - a.score || a.country.name.localeCompare(b.country.name));
 
 	return { summary, indicatorOptions, questions: indicatorQuestions, countryResults };
