@@ -1,5 +1,4 @@
 PARLIAMENT_TYPE_COLUMN = "Is the Parliament unicameral or bicameral?"
-TEMPLATE_SHEET_LINK = "https://docs.google.com/spreadsheets/d/1udHPvoDQKQ9_ziyqwTObWgI1dEKTVLnm/edit?gid=1895687088#gid=1895687088"
 
 COUNTRIES_DEFAULT_COLUMNS = [
     PARLIAMENT_TYPE_COLUMN,

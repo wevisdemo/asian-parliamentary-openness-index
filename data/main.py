@@ -12,7 +12,6 @@ from pathlib import Path
 from sheets_retriever import get_data_from_google_sheet, load_countries_sheet_links
 from openness_score import OpennessScore
 import pandas as pd
-from constants import TEMPLATE_SHEET_LINK
 from utilities import get_indicator_data, get_questions_data
 from zipper import zip_csv_files
 
@@ -65,7 +64,7 @@ def main() -> None:
         )
 
     # Load template sheet
-    template_sheet_df = get_data_from_google_sheet(TEMPLATE_SHEET_LINK)
+    template_sheet_df = get_data_from_google_sheet(index_sheet_links.get("Template"))
     # Construct `indicators` csv
     indicators = get_indicator_data(template_sheet_df)
     indicators.to_csv(os.path.join(OUTPUT_DIR, "indicators.csv"), index=False)
