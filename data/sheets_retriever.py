@@ -36,3 +36,30 @@ def get_data_from_google_sheet(sheet_url: str | None) -> pd.DataFrame:
     df = clean_empty_margins(df)
 
     return df
+
+
+def load_countries_sheet_links(index_sheet_link: str):
+
+    # Extract the unique Sheet ID from the URL
+    sheet_id = index_sheet_link.split("/d/")[1].split("/")[0]
+
+    # Extract gid
+    gid = re.search(r"gid\=(\d+)", index_sheet_link).group(1)  # type: ignore
+
+    # Format a direct download URL targeting CSV output
+    csv_url = (
+        f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
+    )
+
+    df = pd.read_csv(
+        csv_url, engine="python", on_bad_lines="warn", keep_default_na=False
+    )
+    assert df is not None and not df.empty, "No index sheet found"
+
+    countries_links = (
+        df.groupby("Country")
+        .apply(lambda x: x.set_index("Sheet name")["Link"].to_dict())
+        .to_dict()
+    )
+
+    return countries_links

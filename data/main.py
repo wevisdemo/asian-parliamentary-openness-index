@@ -9,7 +9,7 @@ import os
 import json
 import csv
 from pathlib import Path
-from sheets_retriever import get_data_from_google_sheet
+from sheets_retriever import get_data_from_google_sheet, load_countries_sheet_links
 from openness_score import OpennessScore
 import pandas as pd
 from constants import TEMPLATE_SHEET_LINK
@@ -32,7 +32,11 @@ def main() -> None:
 
     # Load sheet links from json
     with open(f"{Path(__file__).resolve().parent}/sheet_links.json", "r") as fj:
-        sheet_links = json.load(fj)
+        index_sheet_links = json.load(fj)
+
+    sheet_links = load_countries_sheet_links(
+        index_sheet_links.get("countries_survey", "")
+    )
 
     # Construct OpennessScore for every country
     countries_data: List[OpennessScore] = []
