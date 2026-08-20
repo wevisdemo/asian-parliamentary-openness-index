@@ -5,6 +5,7 @@
 	import Hero from '$lib/components/hero.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import AchievementBar from '$lib/components/questionair/achievement-bar.svelte';
+	import CountryAccordion from '$lib/components/questionair/country-accordion.svelte';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
@@ -53,3 +54,11 @@
 		</div>
 	</Hero>
 </section>
+
+<div class="flex flex-col bg-gray-1">
+	<section class="content-container flex flex-col gap-4">
+		{#each data.countryResults as { country, answers, contexts } (country.slug)}
+			<CountryAccordion {country} questions={data.questions} {answers} {contexts} />
+		{/each}
+	</section>
+</div>

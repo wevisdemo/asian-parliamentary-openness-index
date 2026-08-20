@@ -8,30 +8,32 @@
 		header: Snippet;
 		content: Snippet;
 		leading?: Snippet;
+		trailing?: Snippet;
+		open?: boolean;
 		headerClass?: string;
 		contentClass?: string;
 		iconClass?: string;
 		class?: string;
 	}
 
-	const {
+	let {
 		header,
 		content,
 		leading,
+		trailing,
+		open = $bindable(false),
 		headerClass,
 		contentClass,
 		iconClass = 'text-purple-5',
 		class: className
 	}: Props = $props();
 
-	let open = $state(false);
-
 	const contentId = $props.id();
 </script>
 
-<div class={['flex flex-col', className]}>
+{#snippet toggle(toggleClass?: string)}
 	<button
-		class={['flex cursor-pointer flex-row gap-1 transition-colors', headerClass]}
+		class={['flex cursor-pointer flex-row gap-1 transition-colors', toggleClass]}
 		type="button"
 		aria-expanded={open}
 		aria-controls={contentId}
@@ -50,6 +52,17 @@
 		</div>
 		<span class="flex-1">{@render header()}</span>
 	</button>
+{/snippet}
+
+<div class={['flex flex-col', className]}>
+	{#if trailing}
+		<div class={['flex flex-col gap-3 md:flex-row md:items-start md:gap-6', headerClass]}>
+			{@render toggle('flex-1 self-stretch')}
+			{@render trailing()}
+		</div>
+	{:else}
+		{@render toggle(headerClass)}
+	{/if}
 
 	{#if open}
 		<div id={contentId} class={['flex flex-row', contentClass]} transition:quickSlide>
