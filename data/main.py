@@ -28,7 +28,7 @@ def main() -> None:
         index_sheet_links = json.load(fj)
 
     sheet_links = load_countries_sheet_links(
-        index_sheet_links.get("countries_survey", "")
+        index_sheet_links.get("Country survey", "")
     )
 
     # Construct OpennessScore for every country
