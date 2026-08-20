@@ -16,15 +16,8 @@ from constants import TEMPLATE_SHEET_LINK
 from utilities import get_indicator_data, get_questions_data
 from zipper import zip_csv_files
 
-OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 
-MOCK_INDEX = [
-    {"country": "Thailand", "year": 2025, "openness_score": 62.5, "rank": 3},
-    {"country": "Japan", "year": 2025, "openness_score": 78.1, "rank": 1},
-    {"country": "South Korea", "year": 2025, "openness_score": 74.9, "rank": 2},
-    {"country": "Indonesia", "year": 2025, "openness_score": 58.3, "rank": 4},
-    {"country": "Malaysia", "year": 2025, "openness_score": 55.0, "rank": 5},
-]
+OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 
 
 def main() -> None:
