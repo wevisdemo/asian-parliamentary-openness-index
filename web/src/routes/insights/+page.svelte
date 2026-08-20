@@ -5,6 +5,7 @@
 	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
+	import Pagination from '$lib/components/pagination.svelte';
 	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
 	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
 	import IndicatorCard from '$lib/components/questionair/indicator-card.svelte';
@@ -128,7 +129,7 @@
 		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:p-7">
 			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 				<h3 class="b1 font-bold">Top indicators in this dimension:</h3>
-				<AchievementLegend class="shrink-0" />
+				<AchievementLegend />
 			</div>
 
 			{#each indicatorGroups as group (group.title)}
@@ -139,6 +140,8 @@
 				</ListGroup>
 			{/each}
 		</div>
+
+		<Pagination options={dimensionOptions} value={selectedDimension} onselect={selectDimension} />
 
 		<MoreActionCard
 			class="mt-6 md:mt-12"

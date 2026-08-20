@@ -25,7 +25,9 @@
 	};
 </script>
 
-<div class={['flex flex-row flex-wrap items-center gap-x-3 gap-y-1 text-gray-8', className]}>
+<div
+	class={['flex shrink-0 flex-row flex-wrap items-center gap-x-3 gap-y-1 text-gray-8', className]}
+>
 	{#each swatchLevels as level (level)}
 		<span class="flex flex-row items-center gap-1 whitespace-nowrap">
 			<span class={['size-3 border border-gray-8', achievementLevelColorClasses[level]]}></span>
