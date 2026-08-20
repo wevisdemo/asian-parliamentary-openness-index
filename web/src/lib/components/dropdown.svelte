@@ -50,11 +50,11 @@
 			className
 		]}
 	>
-		{selectedLabel ?? placeholder}
+		<span class="min-w-0 truncate">{selectedLabel ?? placeholder}</span>
 		{#if isOpen}
-			<ChevronUp size={16} />
+			<ChevronUp size={16} class="shrink-0" />
 		{:else}
-			<ChevronDown size={16} />
+			<ChevronDown size={16} class="shrink-0" />
 		{/if}
 	</Select.Trigger>
 
