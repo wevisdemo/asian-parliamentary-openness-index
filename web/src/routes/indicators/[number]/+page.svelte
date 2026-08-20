@@ -4,6 +4,7 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
+	import AchievementBar from '$lib/components/questionair/achievement-bar.svelte';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
@@ -38,6 +39,17 @@
 				<li><strong>Dimension Relevance:</strong> {indicator.dimensionRelevance}</li>
 				<li><strong>Number of question:</strong> {data.summary.questionCount}</li>
 			</ul>
+		</div>
+
+		<div class="flex h-fit flex-col gap-4 bg-white p-5 md:gap-8 md:p-8">
+			<p class="flex flex-row flex-wrap items-end gap-x-3 gap-y-1">
+				<span class="h3 leading-none font-bold text-data-achieved">
+					{data.summary.achievedPercentage.toFixed(2)}%
+				</span>
+				<span class="flex-1">of countries <strong>achieved</strong> this indicator</span>
+			</p>
+
+			<AchievementBar countryCountByLevel={data.summary.countryCountByLevel} variant="loose" />
 		</div>
 	</Hero>
 </section>

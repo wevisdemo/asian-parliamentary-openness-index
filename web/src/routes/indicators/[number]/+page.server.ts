@@ -5,10 +5,9 @@ import type { EntryGenerator, PageServerLoad } from './$types';
 export const entries: EntryGenerator = () =>
 	indicators.map(({ number }) => ({ number: `${number}` }));
 
-const indicatorOptions = indicators.map(({ number, name }) => ({
-	label: name,
-	value: `${number}`
-}));
+const indicatorOptions = indicators
+	.map(({ number, name }) => ({ label: name, value: `${number}` }))
+	.sort((a, b) => a.label.localeCompare(b.label));
 
 export const load: PageServerLoad = ({ params }) => {
 	const summary = indicatorSummaries.find(

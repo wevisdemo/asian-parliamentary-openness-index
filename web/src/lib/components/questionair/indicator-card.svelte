@@ -1,7 +1,8 @@
 <script lang="ts">
 	import ChevronRight from 'carbon-icons-svelte/lib/ChevronRight.svelte';
 	import { resolve } from '$app/paths';
-	import { achievementLevelColorClasses, type AchievementLevel } from '$lib/constants/achievements';
+	import AchievementBar from '$lib/components/questionair/achievement-bar.svelte';
+	import type { AchievementLevel } from '$lib/constants/achievements';
 	import { quickFade } from '$lib/utils/transitions';
 	import type { Indicator } from '$lib/data/indicators';
 
@@ -20,12 +21,6 @@
 		achievedPercentage,
 		class: className
 	}: Props = $props();
-
-	const barLevels: AchievementLevel[] = ['Achieved', 'Partly achieved', 'Not achieved'];
-
-	const levelCounts = $derived(
-		barLevels.map((level) => ({ level, count: countryCountByLevel[level] }))
-	);
 </script>
 
 <a
@@ -51,32 +46,7 @@
 			>
 			<span class="b4">achieved</span>
 		</p>
-		<div class="flex flex-1 flex-col gap-2">
-			<div class="flex flex-row overflow-clip border border-gray-8" role="presentation">
-				{#each levelCounts as { level, count } (level)}
-					{#if count}
-						<div
-							class={['h-3', achievementLevelColorClasses[level]]}
-							style="flex-grow: {count}"
-						></div>
-					{/if}
-				{/each}
-			</div>
-			<div class="flex flex-row flex-wrap items-center gap-x-3 gap-y-1 b5 text-gray-6">
-				<span>Number of countries</span>
-				{#each levelCounts as { level, count } (level)}
-					<span class="flex flex-row items-center gap-1">
-						<span class={['size-3 border border-gray-8', achievementLevelColorClasses[level]]}
-						></span>
-						<span class="font-mono text-gray-8">{count}</span>
-					</span>
-				{/each}
-				<span class="flex flex-row items-center gap-1">
-					<span>N/A</span>
-					<span class="font-mono">{countryCountByLevel['N/A']}</span>
-				</span>
-			</div>
-		</div>
+		<AchievementBar {countryCountByLevel} class="flex-1" />
 	</div>
 
 	<ChevronRight size={20} class="absolute top-4 right-4 shrink-0 text-gray-4 md:static md:ml-2" />
