@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
+	import DownloadDataCard from '$lib/components/download-data-card.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import AchievementBar from '$lib/components/assessment/achievement-bar.svelte';
@@ -125,5 +126,7 @@
 		</div>
 
 		<Pagination options={availableStatusOptions} value={selectedStatus} onselect={selectStatus} />
+
+		<DownloadDataCard />
 	</section>
 </div>

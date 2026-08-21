@@ -10,24 +10,20 @@
 		title: string;
 		description: string;
 		actions: ActionLink[];
-		class?: string;
 	}
 
-	const { title, description, actions, class: className }: Props = $props();
+	const { title, description, actions }: Props = $props();
 </script>
 
 <div
-	class={[
-		'flex flex-col gap-6 bg-purple-1 p-6 md:flex-row md:items-center md:justify-between md:gap-8',
-		className
-	]}
+	class="mt-6 flex flex-col gap-2 bg-purple-1 p-6 md:mt-12 md:flex-row md:justify-between md:gap-8"
 >
 	<div class="flex flex-col gap-1">
 		<p class="b1 font-bold">{title}</p>
 		<p class="b2">{description}</p>
 	</div>
 
-	<div class="flex flex-col gap-2 md:shrink-0">
+	<div class="flex flex-col items-start gap-2 md:shrink-0 md:items-stretch">
 		{#each actions as { label, href } (href)}
 			<Button {href}>{label}</Button>
 		{/each}

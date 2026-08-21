@@ -144,7 +144,6 @@
 		<Pagination options={dimensionOptions} value={selectedDimension} onselect={selectDimension} />
 
 		<MoreActionCard
-			class="mt-6 md:mt-12"
 			title="Go deeper into the data"
 			description="Explore every country's full profile, or browse the index indicator by indicator."
 			actions={[

@@ -4,6 +4,7 @@
 	import ChevronUp from 'carbon-icons-svelte/lib/ChevronUp.svelte';
 	import { resolve } from '$app/paths';
 	import Hero from '$lib/components/hero.svelte';
+	import DownloadDataCard from '$lib/components/download-data-card.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import SearchInput from '$lib/components/search-input.svelte';
 
@@ -112,5 +113,7 @@
 				No data for '{searchQuery}'
 			</p>
 		{/each}
+
+		<DownloadDataCard />
 	</div>
 </section>

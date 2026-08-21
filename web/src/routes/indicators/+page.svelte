@@ -3,6 +3,7 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
+	import DownloadDataCard from '$lib/components/download-data-card.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import AchievementLegend from '$lib/components/assessment/achievement-legend.svelte';
@@ -121,5 +122,7 @@
 		</div>
 
 		<Pagination options={dimensionOptions} value={selectedDimension} onselect={selectDimension} />
+
+		<DownloadDataCard />
 	</section>
 </div>
