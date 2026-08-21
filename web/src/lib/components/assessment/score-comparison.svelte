@@ -135,7 +135,7 @@
 
 <div class={['flex flex-col gap-4 bg-black p-4 text-white md:p-7', className]}>
 	<div class="flex flex-row flex-wrap items-center gap-x-8 gap-y-2">
-		<div class="flex flex-row items-center gap-3">
+		<div class="flex min-w-0 flex-row items-center gap-3">
 			<span class="font-bold text-gray-4">Compare</span>
 			<Dropdown
 				options={compareOptions}
@@ -145,7 +145,7 @@
 			/>
 		</div>
 
-		<div class="flex flex-row items-center gap-3">
+		<div class="flex min-w-0 flex-row items-center gap-3">
 			<span class="font-bold text-gray-4">Highlight</span>
 			<Combobox
 				options={highlightOptions}

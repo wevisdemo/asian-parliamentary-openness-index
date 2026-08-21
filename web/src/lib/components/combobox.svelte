@@ -46,6 +46,8 @@
 
 	const summary = $derived(selectedLabels[0] ?? placeholder);
 
+	const inputSize = $derived(Math.max((search || summary).length, 1));
+
 	const filteredOptions = $derived(
 		options.filter(({ label }) => label.toLowerCase().includes(search.trim().toLowerCase()))
 	);
@@ -68,6 +70,7 @@
 		bind:this={anchor}
 		class={[
 			selectTriggerClass,
+			'max-w-full',
 			triggerVariantClasses[variant],
 			isOpen ? styles.triggerOpen : styles.trigger,
 			className
@@ -81,6 +84,7 @@
 						aria-label={placeholder}
 						placeholder={summary}
 						value={search}
+						size={inputSize}
 						class="field-sizing-content min-w-0 bg-transparent leading-none! outline-none placeholder:text-current"
 						oninput={(event) => (search = event.currentTarget.value)}
 					/>
