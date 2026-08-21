@@ -6,6 +6,7 @@
 		size?: 'big' | 'small';
 		disabled?: boolean;
 		href?: string;
+		download?: string;
 		type?: 'button' | 'submit';
 		icon?: Snippet;
 		children: Snippet;
@@ -18,6 +19,7 @@
 		size = 'big',
 		disabled = false,
 		href,
+		download,
 		type = 'button',
 		icon,
 		children,
@@ -51,7 +53,13 @@
 </script>
 
 {#if href}
-	<a href={disabled ? undefined : href} aria-disabled={disabled} class={classes} {onclick}>
+	<a
+		href={disabled ? undefined : href}
+		{download}
+		aria-disabled={disabled}
+		class={classes}
+		{onclick}
+	>
 		{@render children()}
 		{@render icon?.()}
 	</a>

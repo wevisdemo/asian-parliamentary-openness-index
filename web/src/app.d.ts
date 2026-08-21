@@ -6,10 +6,16 @@ declare global {
 		// interface Locals {}
 		interface PageData {
 			glossary: import('$lib/data/glossary').GlossaryTerm[];
+			cycle: import('$lib/data/cycle').Cycle;
 		}
 		// interface PageState {}
 		// interface Platform {}
 	}
+}
+
+declare module '*.zip?url' {
+	const url: string;
+	export default url;
 }
 
 declare module '*.csv?raw' {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { page } from '$app/state';
 	import Breadcrumb from './breadcrumb.svelte';
 	import Hyperlink from './hyperlink.svelte';
 	import Modal from './modal.svelte';
@@ -35,8 +36,10 @@
 		{#if showIndexInfo}
 			<div class="flex flex-col justify-between gap-2 md:flex-row">
 				<div>
-					<p class="b2 font-bold text-gray-8">Asian Parliamentary Openness Index 2026</p>
-					<p class="b5 text-gray-6">Assessment Date: August 2026</p>
+					<p class="b2 font-bold text-gray-8">
+						Asian Parliamentary Openness Index {page.data.cycle.year}
+					</p>
+					<p class="b5 text-gray-6">Assessment Date: {page.data.cycle.assessmentDate}</p>
 				</div>
 				<div class="flex flex-row items-start gap-6 md:gap-8">
 					<Hyperlink class="underline" onclick={() => (openModal = 'about')}>
