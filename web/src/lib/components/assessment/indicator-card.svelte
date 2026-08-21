@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ChevronRight from 'carbon-icons-svelte/lib/ChevronRight.svelte';
 	import { resolve } from '$app/paths';
-	import AchievementBar from '$lib/components/questionair/achievement-bar.svelte';
+	import AchievementBar from '$lib/components/assessment/achievement-bar.svelte';
 	import type { AchievementLevel } from '$lib/constants/achievements';
 	import { quickFade } from '$lib/utils/transitions';
 	import type { Indicator } from '$lib/data/indicators';

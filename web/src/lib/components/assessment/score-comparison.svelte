@@ -5,7 +5,7 @@
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
 	import Combobox from '$lib/components/combobox.svelte';
-	import CountryContext from '$lib/components/country/country-context.svelte';
+	import CountryContext from '$lib/components/assessment/country-context.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Tooltip from '$lib/components/tooltip.svelte';
 	import { chamberOptions, chambers, type Chamber } from '$lib/constants/chambers';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Accordion from '$lib/components/accordion.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
-	import QuestionAnswer from '$lib/components/questionair/question-answer.svelte';
+	import QuestionAnswer from '$lib/components/assessment/question-answer.svelte';
 	import type { Answer } from '$lib/data/answers';
 	import type { IndicatorContext } from '$lib/data/indicator-contexts';
 	import type { Question } from '$lib/data/questions';

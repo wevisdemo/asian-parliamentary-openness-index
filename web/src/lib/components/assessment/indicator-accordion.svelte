@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Accordion from '$lib/components/accordion.svelte';
-	import IndicatorDetail from '$lib/components/questionair/indicator-detail.svelte';
+	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
 	import type { AchievementLevel } from '$lib/constants/achievements';
 	import { getAchievementLevel, type Answer } from '$lib/data/answers';
 	import type { IndicatorContext } from '$lib/data/indicator-contexts';

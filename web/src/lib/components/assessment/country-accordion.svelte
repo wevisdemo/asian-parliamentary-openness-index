@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
-	import IndicatorDetail from '$lib/components/questionair/indicator-detail.svelte';
+	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
 	import Tooltip from '$lib/components/tooltip.svelte';
 	import { chambers, type Chamber } from '$lib/constants/chambers';
 	import { getScorePercentage, type Answer } from '$lib/data/answers';

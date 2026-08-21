@@ -5,8 +5,8 @@
 	import Hero from '$lib/components/hero.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
-	import AchievementBar from '$lib/components/questionair/achievement-bar.svelte';
-	import CountryAccordion from '$lib/components/questionair/country-accordion.svelte';
+	import AchievementBar from '$lib/components/assessment/achievement-bar.svelte';
+	import CountryAccordion from '$lib/components/assessment/country-accordion.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
 	import {
 		achievementLevelDescriptions,

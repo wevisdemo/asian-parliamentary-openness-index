@@ -2,14 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import mapIllustration from '$lib/assets/images/map-illustration.png';
-	import CountryContext from '$lib/components/country/country-context.svelte';
+	import CountryContext from '$lib/components/assessment/country-context.svelte';
+	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
+	import IndicatorAccordion from '$lib/components/assessment/indicator-accordion.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
-	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
-	import IndicatorAccordion from '$lib/components/questionair/indicator-accordion.svelte';
 	import Tabs from '$lib/components/tabs.svelte';
 	import { achievementLevelDescriptions, achievementLevels } from '$lib/constants/achievements';
 	import { chamberOptions } from '$lib/constants/chambers';

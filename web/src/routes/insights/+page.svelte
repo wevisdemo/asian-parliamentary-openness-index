@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import ScoreComparison from '$lib/components/country/score-comparison.svelte';
+	import AchievementLegend from '$lib/components/assessment/achievement-legend.svelte';
+	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
+	import IndicatorCard from '$lib/components/assessment/indicator-card.svelte';
+	import ScoreComparison from '$lib/components/assessment/score-comparison.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
-	import AchievementLegend from '$lib/components/questionair/achievement-legend.svelte';
-	import DimensionTabs from '$lib/components/questionair/dimension-tabs.svelte';
-	import IndicatorCard from '$lib/components/questionair/indicator-card.svelte';
 	import {
 		dimensionDescriptions,
 		dimensionOptions,
