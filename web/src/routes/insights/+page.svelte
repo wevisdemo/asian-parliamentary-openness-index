@@ -9,6 +9,7 @@
 	import Metadata from '$lib/components/metadata.svelte';
 	import MoreActionCard from '$lib/components/more-action-card.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
+	import type { Chamber } from '$lib/constants/chambers';
 	import {
 		dimensionDescriptions,
 		dimensionOptions,
@@ -20,6 +21,9 @@
 	const { data }: PageProps = $props();
 
 	let selectedDimension = $state(dimensionOptions[0].value);
+
+	let comparedChamber = $state<Chamber | 'both'>('both');
+	let highlightedCountries = $state<string[]>([]);
 
 	let dimensionTabs = $state<ReturnType<typeof DimensionTabs>>();
 
@@ -83,7 +87,11 @@
 				</p>
 			</div>
 		</div>
-		<ScoreComparison scores={data.countryScores} />
+		<ScoreComparison
+			scores={data.countryScores}
+			bind:compare={comparedChamber}
+			bind:highlighted={highlightedCountries}
+		/>
 	</div>
 </section>
 
@@ -124,7 +132,11 @@
 			</div>
 		{/key}
 
-		<ScoreComparison scores={insight?.countryScores ?? []} />
+		<ScoreComparison
+			scores={insight?.countryScores ?? []}
+			bind:compare={comparedChamber}
+			bind:highlighted={highlightedCountries}
+		/>
 
 		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:p-7">
 			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">

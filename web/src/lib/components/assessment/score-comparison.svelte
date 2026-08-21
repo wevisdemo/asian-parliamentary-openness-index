@@ -20,14 +20,19 @@
 
 	interface Props {
 		scores: CountryScore[];
+		compare?: Chamber | 'both';
+		highlighted?: string[];
 		class?: string;
 	}
 
-	const { scores, class: className }: Props = $props();
+	let {
+		scores,
+		compare = $bindable('both'),
+		highlighted = $bindable([]),
+		class: className
+	}: Props = $props();
 
 	const compareOptions = [{ label: 'Both chambers', value: 'both' }, ...chamberOptions];
-
-	let compare = $state<Chamber | 'both'>('both');
 
 	const compared = $derived(
 		scores
@@ -57,8 +62,6 @@
 			{ key: 'average', country: undefined, rank: undefined, score: average }
 		].toSorted((a, b) => b.score - a.score)
 	);
-
-	let highlighted = $state<string[]>([]);
 
 	const highlightOptions = $derived(
 		compared
