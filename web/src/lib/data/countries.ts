@@ -1,26 +1,7 @@
 import countriesCsv from '$data/countries.csv?raw';
-import {
-	asOneOf,
-	asString,
-	Column,
-	createTransformer,
-	Object,
-	parseCsv,
-	type StaticDecode
-} from 'sheethuahua';
+import { asOneOf, asString, Column, Object, parseCsv, type StaticDecode } from 'sheethuahua';
 import { parliamentTypes } from '$lib/constants/parliament-types';
-
-const asSlug = createTransformer({
-	decode: (value: string) => value.toLowerCase().replaceAll(' ', '-')
-});
-
-const asUrlList = createTransformer({
-	decode: (value: string) =>
-		value
-			.split('\n')
-			.map((url) => url.trim())
-			.filter((url) => url.length > 0)
-});
+import { asSlug, asUrlList } from '$lib/data/transformers';
 
 export const countrySchema = Object({
 	slug: Column('Country', asSlug),
