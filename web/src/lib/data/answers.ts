@@ -73,11 +73,11 @@ export const getAchievementLevel = (answers: Answer[]): AchievementLevel => {
 
 	if (!applicable.length) return 'N/A';
 
-	const achieved = applicable.filter(
-		({ score, totalApplicableScore }) => score === totalApplicableScore
-	);
+	const score = applicable.reduce((sum, { score }) => sum + score, 0);
 
-	if (!achieved.length) return 'Not achieved';
+	if (score === 0) return 'Not achieved';
 
-	return achieved.length === applicable.length ? 'Achieved' : 'Partly achieved';
+	const total = applicable.reduce((sum, { totalApplicableScore }) => sum + totalApplicableScore, 0);
+
+	return score === total ? 'Achieved' : 'Partly achieved';
 };

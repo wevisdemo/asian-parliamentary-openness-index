@@ -95,7 +95,15 @@ describe('getAchievementLevel', () => {
 		expect(getAchievementLevel(asAnswers([2, 2], [1, 2]))).toBe('Partly achieved');
 	});
 
-	it('is not achieved when no applicable answer gets the full score', () => {
-		expect(getAchievementLevel(asAnswers([0, 2], [1, 2]))).toBe('Not achieved');
+	it('is partly achieved when applicable answers score without reaching the full score', () => {
+		expect(getAchievementLevel(asAnswers([0, 2], [1, 2]))).toBe('Partly achieved');
+	});
+
+	it('is not achieved when every applicable answer scores zero', () => {
+		expect(getAchievementLevel(asAnswers([0, 2], [0, 1]))).toBe('Not achieved');
+	});
+
+	it('is not achieved when the only scoring answers are not applicable', () => {
+		expect(getAchievementLevel(asAnswers([0, 2], [2, 0]))).toBe('Not achieved');
 	});
 });
