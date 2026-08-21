@@ -64,6 +64,16 @@ class OpennessScore:
                 self.country_context_df.loc[
                     :, ["Any remark for unicameral or bicamera?"]
                 ] = ""
+
+            # Check for `Any remark for system of government classified?` column
+            if (
+                "Any remark for system of government classified?"
+                not in self.country_context_df.columns
+            ):
+                self.country_context_df.loc[
+                    :, ["Any remark for system of government classified?"]
+                ] = ""
+
             country_context_df = self.country_context_df[COUNTRIES_DEFAULT_COLUMNS]
             country_context_df["Country"] = self.country
             country_context_df[PARLIAMENT_TYPE_COLUMN] = country_context_df[
