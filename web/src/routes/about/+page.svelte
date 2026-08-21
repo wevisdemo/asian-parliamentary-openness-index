@@ -54,13 +54,13 @@
 </Hero>
 
 <section>
-	<div class="content-container flex flex-col gap-8 md:flex-row md:gap-16">
+	<div class="content-container flex flex-col gap-8 lg:flex-row lg:gap-16">
 		<TocSidebar
 			items={aboutSections}
-			class="w-full shrink-0 self-start md:sticky md:top-28 md:flex md:w-56"
+			class="w-full shrink-0 self-start lg:sticky lg:top-28 lg:flex lg:w-56"
 		/>
 
-		<div class="flex flex-1 flex-col gap-6 md:gap-8">
+		<div class="flex flex-1 flex-col gap-7.5">
 			<h2 id={aboutSections[0].id}>About the index</h2>
 
 			<p>
@@ -72,7 +72,7 @@
 
 			<h3>3 Dimensions</h3>
 
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
 				{#each dimensions as dimension (dimension)}
 					<div class="flex flex-col gap-3">
 						<img
@@ -88,13 +88,13 @@
 
 			<h3>Structure</h3>
 
-			<div class="grid grid-cols-1 gap-y-4 md:grid-cols-3 md:gap-x-6">
+			<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3">
 				<img
 					src="https://placehold.co/600x600/b6c4c7/35393a?text=Illustration"
 					alt=""
 					class="aspect-square w-full object-cover"
 				/>
-				<p class="col-span-2">
+				<p class="lg:col-span-2">
 					Each dimension breaks down into relevances, each relevance into indicators, and each
 					indicator into one or more questions — the level at which every chamber is actually
 					scored. Scores roll back up the same hierarchy to produce indicator, dimension, and
@@ -104,7 +104,7 @@
 
 			<h3>Who is this for</h3>
 
-			<div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-x-6">
+			<div class="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-x-6">
 				{#each audiences as { name, description } (name)}
 					<div class="flex flex-col gap-3">
 						<img
@@ -214,7 +214,7 @@
 
 			<h2 id={aboutSections[2].id}>About contributors</h2>
 
-			<div class="grid grid-cols-1 gap-y-4 md:grid-cols-3 md:gap-x-6">
+			<div class="grid grid-cols-1 gap-y-4 lg:grid-cols-3 lg:gap-x-6">
 				<img
 					src="https://placehold.co/600x600/b6c4c7/35393a?text=Illustration"
 					alt=""
@@ -236,18 +236,18 @@
 			<div class="flex flex-col">
 				{#each data.respondents as respondent, index (index)}
 					<div
-						class="grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 border-t border-gray-2 pt-4 pb-6 md:grid-cols-[auto_1fr_auto] md:gap-x-6"
+						class="grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 border-t border-gray-2 pt-4 pb-6 lg:grid-cols-[auto_1fr_auto] lg:gap-x-6"
 					>
 						<img
 							src="https://placehold.co/600x600/b6c4c7/35393a?text=Logo"
 							alt=""
-							class="col-start-1 row-start-1 size-16 object-cover md:size-24"
+							class="col-start-1 row-start-1 size-16 object-cover lg:size-24"
 						/>
-						<p class="col-start-2 row-start-1 text-right md:col-start-3">
+						<p class="col-start-2 row-start-1 text-right lg:col-start-3">
 							{respondent.country}
 						</p>
 						<div
-							class="col-span-2 col-start-1 row-start-2 flex flex-col gap-2 md:col-span-1 md:col-start-2 md:row-start-1"
+							class="col-span-2 col-start-1 row-start-2 flex flex-col gap-2 lg:col-span-1 lg:col-start-2 lg:row-start-1"
 						>
 							<h4 class="b2 font-bold">
 								{respondent.organization ?? respondent.names?.join(', ')}
@@ -285,10 +285,14 @@
 	@reference '../layout.css';
 
 	h2 {
-		@apply scroll-mt-20 border-t-4 pt-2 h4 font-bold md:pt-4;
+		@apply scroll-mt-20 border-t-4 pt-2 h4 font-bold lg:pt-4;
+
+		&:not(:first-child) {
+			@apply mt-7.5;
+		}
 	}
 
 	h3 {
-		@apply border-t-2 pt-1 b1 font-bold text-gray-8 md:pt-3;
+		@apply border-t border-gray-6 pt-1 b1 font-bold text-gray-8 lg:pt-3;
 	}
 </style>
