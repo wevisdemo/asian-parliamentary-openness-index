@@ -14,6 +14,14 @@ const asSlug = createTransformer({
 	decode: (value: string) => value.toLowerCase().replaceAll(' ', '-')
 });
 
+const asUrlList = createTransformer({
+	decode: (value: string) =>
+		value
+			.split('\n')
+			.map((url) => url.trim())
+			.filter((url) => url.length > 0)
+});
+
 export const countrySchema = Object({
 	slug: Column('Country', asSlug),
 	name: Column('Country', asString()),
@@ -24,7 +32,7 @@ export const countrySchema = Object({
 		asString()
 	),
 	parliamentName: Column('What is the name of the Parliament you will be assessing?', asString()),
-	parliamentWebsite: Column('Provide the link to the Parliament’s official website', asString()),
+	parliamentWebsites: Column('Provide the link to the Parliament’s official website', asUrlList),
 	keyFindings: Column('Key findings', asString().optional())
 });
 

@@ -35,13 +35,25 @@
 	<li><strong>Parliament Name:</strong> {country.parliamentName}</li>
 	<li>
 		<strong>Parliament Official Website:</strong>
-		<Hyperlink
-			href={country.parliamentWebsite}
-			target="_blank"
-			color={variant === 'dark' ? 'white' : 'gray'}
-			class="break-all"
-		>
-			{country.parliamentWebsite}
-		</Hyperlink>
+		{#if country.parliamentWebsites.length > 1}
+			<ul class="list-disc pl-4 marker:text-gray-6">
+				{#each country.parliamentWebsites as website (website)}
+					<li>{@render websiteLink(website)}</li>
+				{/each}
+			</ul>
+		{:else if country.parliamentWebsites.length}
+			{@render websiteLink(country.parliamentWebsites[0])}
+		{/if}
 	</li>
 </ul>
+
+{#snippet websiteLink(website: string)}
+	<Hyperlink
+		href={website}
+		target="_blank"
+		color={variant === 'dark' ? 'white' : 'gray'}
+		class="break-all"
+	>
+		{website}
+	</Hyperlink>
+{/snippet}
