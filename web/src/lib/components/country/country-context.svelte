@@ -19,17 +19,18 @@
 </script>
 
 <ul class={['space-y-1 b4', variantClasses[variant], className]}>
-	<li><strong>Government System:</strong> {country.governmentSystem}</li>
+	<li>
+		<strong>Government System:</strong>
+		{country.governmentSystem}
+		{#if country.governmentSystemRemark}
+			{@render remark(country.governmentSystemRemark)}
+		{/if}
+	</li>
 	<li>
 		<strong>Parliamentary type:</strong>
 		{country.parliamentType}
 		{#if country.parliamentTypeRemark}
-			<Tooltip size="big" triggerClass="align-middle">
-				{#snippet trigger()}
-					<WarningAlt size={18} class="-translate-y-0.5 text-purple-3 md:ml-0.5" />
-				{/snippet}
-				{country.parliamentTypeRemark}
-			</Tooltip>
+			{@render remark(country.parliamentTypeRemark)}
 		{/if}
 	</li>
 	<li><strong>Parliament Name:</strong> {country.parliamentName}</li>
@@ -46,6 +47,15 @@
 		{/if}
 	</li>
 </ul>
+
+{#snippet remark(content: string)}
+	<Tooltip size="big" triggerClass="align-middle">
+		{#snippet trigger()}
+			<WarningAlt size={18} class="-translate-y-0.5 text-purple-3 md:ml-0.5" />
+		{/snippet}
+		{content}
+	</Tooltip>
+{/snippet}
 
 {#snippet websiteLink(website: string)}
 	<Hyperlink

@@ -4,6 +4,7 @@ COUNTRIES_DEFAULT_COLUMNS = [
     PARLIAMENT_TYPE_COLUMN,
     "Any remark for unicameral or bicamera?",
     "How is the system of government classified in this jurisdiction?",
+    "Any remark for system of government classified?",
     "What is the name of the Parliament you will be assessing?",
     "Provide the link to the Parliament’s official website",
     "Key findings",

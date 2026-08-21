@@ -12,6 +12,10 @@ export const countrySchema = Object({
 		'How is the system of government classified in this jurisdiction?',
 		asString()
 	),
+	governmentSystemRemark: Column(
+		'Any remark for system of government classified?',
+		asString().optional()
+	),
 	parliamentName: Column('What is the name of the Parliament you will be assessing?', asString()),
 	parliamentWebsites: Column('Provide the link to the Parliament’s official website', asUrlList),
 	keyFindings: Column('Key findings', asString().optional())
