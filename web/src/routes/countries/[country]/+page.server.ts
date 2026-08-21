@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { answers } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
 import { indicatorContexts } from '$lib/data/indicator-contexts';
-import { indicators } from '$lib/data/indicators';
+import { indicators, indicatorSummaries } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import { respondents } from '$lib/data/respondents';
 import type { EntryGenerator, PageServerLoad } from './$types';
@@ -18,6 +18,13 @@ const indicatorQuestions = indicators.map((indicator) => ({
 	questions: questions.filter(({ indicatorNumber }) => indicatorNumber === indicator.number)
 }));
 
+const achievedCountryCounts = Object.fromEntries(
+	indicatorSummaries.map(({ indicator, countryCountByLevel }) => [
+		indicator.number,
+		countryCountByLevel['Achieved']
+	])
+);
+
 export const load: PageServerLoad = ({ params }) => {
 	const country = countries.find((c) => c.slug === params.country);
 
@@ -28,6 +35,7 @@ export const load: PageServerLoad = ({ params }) => {
 		countryOptions,
 		respondents: respondents.filter(({ country: name }) => name === country.name),
 		indicatorQuestions,
+		achievedCountryCounts,
 		answers: answers.filter(({ country: name }) => name === country.name),
 		indicatorContexts: indicatorContexts.filter(({ country: name }) => name === country.name)
 	};

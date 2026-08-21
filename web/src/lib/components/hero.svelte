@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import { aboutSections } from '$lib/constants/about-sections';
 	import Breadcrumb from './breadcrumb.svelte';
+	import Button from './button.svelte';
 	import Hyperlink from './hyperlink.svelte';
 	import Modal from './modal.svelte';
 
@@ -64,6 +67,7 @@
 		against the same set of questions, organized into three dimensions of openness: Transparency,
 		Accountability, and Citizen Participation.
 	</p>
+	{@render seeMore(aboutSections[0].id)}
 </Modal>
 
 <Modal
@@ -76,4 +80,13 @@
 		two years (first launched in 2026) by local PMOs or think tanks using only publicly available
 		information, with the findings verified by academic experts.
 	</p>
+	{@render seeMore(aboutSections[1].id)}
 </Modal>
+
+{#snippet seeMore(sectionId: string)}
+	<div class="flex justify-end">
+		<Button href="{resolve('/about')}#{sectionId}" onclick={() => (openModal = undefined)}>
+			See more
+		</Button>
+	</div>
+{/snippet}

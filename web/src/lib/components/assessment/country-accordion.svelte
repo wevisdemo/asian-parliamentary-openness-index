@@ -142,7 +142,6 @@
 			<Button
 				href={resolve('/countries/[country]', { country: country.slug })}
 				variant="secondary"
-				size="small"
 				class="self-end"
 			>
 				Explore {country.name}

@@ -1,5 +1,9 @@
 <script lang="ts">
+	import ChevronRight from 'carbon-icons-svelte/lib/ChevronRight.svelte';
+	import { resolve } from '$app/paths';
 	import Accordion from '$lib/components/accordion.svelte';
+	import Button from '$lib/components/button.svelte';
+	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
 	import type { AchievementLevel } from '$lib/constants/achievements';
 	import { getAchievementLevel, type Answer } from '$lib/data/answers';
@@ -11,11 +15,23 @@
 		indicator: Indicator;
 		questions: Question[];
 		answers: Answer[];
+		achievedCountryCount: number;
 		context?: IndicatorContext;
 		class?: string;
 	}
 
-	const { indicator, questions, answers, context, class: className }: Props = $props();
+	const {
+		indicator,
+		questions,
+		answers,
+		achievedCountryCount,
+		context,
+		class: className
+	}: Props = $props();
+
+	const indicatorHref = $derived(
+		resolve('/indicators/[number]', { number: `${indicator.number}` })
+	);
 
 	const statusClasses: Record<AchievementLevel, string> = {
 		'N/A': 'text-gray-4',
@@ -46,15 +62,17 @@
 	contentClass="p-4 pt-0 md:px-6 md:pb-6"
 >
 	{#snippet header()}
-		<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-			<div class="flex flex-col text-left">
-				<h3 class="b2 font-bold">{indicator.name}</h3>
-				<p class="b4 text-gray-6">
-					<span class="font-mono">{questions.length}</span>
-					{questions.length === 1 ? 'Question' : 'Questions'}
-				</p>
-			</div>
+		<div class="flex flex-col text-left">
+			<h3 class="b2 font-bold">{indicator.name}</h3>
+			<p class="b4 text-gray-6">
+				<span class="font-mono">{questions.length}</span>
+				{questions.length === 1 ? 'Question' : 'Questions'}
+			</p>
+		</div>
+	{/snippet}
 
+	{#snippet trailing()}
+		<div class="flex flex-col gap-2 md:items-end">
 			<div class="flex flex-row items-center justify-between gap-4">
 				<span
 					class={[
@@ -71,10 +89,24 @@
 					</p>
 				{/if}
 			</div>
+
+			<Hyperlink href={indicatorHref} class="b4">
+				<span class="font-mono">{achievedCountryCount}</span>
+				{achievedCountryCount === 1 ? 'country' : 'countries'} achieved
+				{#snippet icon()}
+					<ChevronRight size={16} class="-mx-1" />
+				{/snippet}
+			</Hyperlink>
 		</div>
 	{/snippet}
 
 	{#snippet content()}
-		<IndicatorDetail {questions} {answers} {context} class="border-t-4 border-black pt-4" />
+		<div class="flex flex-1 flex-col gap-4">
+			<IndicatorDetail {questions} {answers} {context} class="border-t-4 border-black pt-4" />
+
+			<Button href={indicatorHref} variant="secondary" class="self-end">
+				Explore this indicator
+			</Button>
+		</div>
 	{/snippet}
 </Accordion>
