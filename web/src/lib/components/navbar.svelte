@@ -58,7 +58,7 @@
 				/>
 			</a>
 
-			<ul class="hidden flex-1 items-center justify-center gap-10 md:flex">
+			<ul class="hidden flex-1 items-center justify-center gap-10 lg:flex">
 				{#each links as { label, href } (href)}
 					<li>
 						<a
@@ -71,14 +71,14 @@
 				{/each}
 			</ul>
 
-			<div class="hidden shrink-0 md:block">
+			<div class="hidden shrink-0 lg:block">
 				{@render glossaryButton()}
 			</div>
 		</div>
 
 		<button
 			type="button"
-			class="h-full md:hidden {isMenuOpen ? 'bg-gray-1' : ''}"
+			class="h-full lg:hidden {isMenuOpen ? 'bg-gray-1' : ''}"
 			aria-expanded={isMenuOpen}
 			aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
 			onclick={() => (isMenuOpen = !isMenuOpen)}
@@ -93,7 +93,7 @@
 
 	{#if isMenuOpen}
 		<div
-			class="absolute inset-x-0 top-full border-b border-gray-2 bg-gray-1 px-6 py-4 md:hidden"
+			class="absolute inset-x-0 top-full border-b border-gray-2 bg-gray-1 px-6 py-4 lg:hidden"
 			transition:slide={{ duration: 200 }}
 		>
 			<ul class="flex flex-col gap-4">
