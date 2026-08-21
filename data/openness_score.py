@@ -5,6 +5,7 @@ from utilities import (
     normalize_info_df,
     normalize_parliament_type,
     normalize_answer,
+    normalize_evidences,
     calculate_score,
     get_indicator_data,
     get_questions_data,
@@ -182,6 +183,9 @@ class OpennessScore:
             inplace=True,
         )
         grouped_df["Country"] = self.country
+
+        if "Evidences" in grouped_df.columns:
+            grouped_df["Evidences"] = grouped_df["Evidences"].apply(normalize_evidences)
 
         return grouped_df
 

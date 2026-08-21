@@ -1,6 +1,8 @@
-from typing import Tuple, Dict
 import re
+from typing import Dict, Tuple
+
 import pandas as pd
+
 from constants import (
     INDICATORS_DEFAULT_COLUMNS,
     INDICATORS_TRANSFORM_COLUMNS,
@@ -37,6 +39,25 @@ def normalize_info_df(df: pd.DataFrame | None):
 
 def normalize_parliament_type(value) -> str:
     return str(value).strip().capitalize()
+
+
+URL_PATTERN = re.compile(r"https?://[^\s<>\"']+")
+
+
+def normalize_evidences(value) -> str:
+    if pd.isna(value):
+        return ""
+
+    urls = []
+    for match in URL_PATTERN.findall(str(value)):
+        url = match.rstrip(".,;:")
+        while url.endswith(")") and url.count(")") > url.count("("):
+            url = url[:-1]
+
+        if url and url not in urls:
+            urls.append(url)
+
+    return "\n".join(urls)
 
 
 def clean_answer_options(answer_options_text: str) -> str:
