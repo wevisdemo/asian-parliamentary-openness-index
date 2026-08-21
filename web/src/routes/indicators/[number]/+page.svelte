@@ -27,26 +27,16 @@
 	const indicator = $derived(data.summary.indicator);
 
 	const statusOptions = $derived(
-		statusLevels.map((level) => {
-			const count = data.countryResults.filter((result) => result.level === level).length;
-
-			return {
-				label: `${level} (${count})`,
-				value: level,
-				disabled: count === 0,
-				colorClasses: achievementLevelTabColorClasses[level]
-			};
-		})
+		statusLevels.map((level) => ({
+			label: `${level} (${data.countryResults.filter((result) => result.level === level).length})`,
+			value: level,
+			colorClasses: achievementLevelTabColorClasses[level]
+		}))
 	);
 
-	const availableStatusOptions = $derived(
-		statusOptions.filter(({ disabled }) => !disabled).map(({ value }) => ({ label: value, value }))
-	);
+	const paginationOptions = statusLevels.map((value) => ({ label: value, value }));
 
-	const selectedStatus = $derived(
-		(availableStatusOptions.find(({ value }) => value === status) ?? availableStatusOptions[0])
-			?.value
-	);
+	const selectedStatus = $derived(status ?? statusLevels[0]);
 
 	const filteredResults = $derived(
 		data.countryResults.filter(({ level }) => level === selectedStatus)
@@ -113,19 +103,19 @@
 
 		<div class="flex flex-col gap-6 md:gap-8">
 			{#key selectedStatus}
-				{#if selectedStatus}
-					<p in:quickFade class="b3">{achievementLevelDescriptions[selectedStatus]}</p>
-				{/if}
+				<p in:quickFade class="b3">{achievementLevelDescriptions[selectedStatus]}</p>
 
 				<div in:quickFade class="flex flex-col gap-4">
 					{#each filteredResults as { country, answers, contexts } (country.slug)}
 						<CountryAccordion {country} questions={data.questions} {answers} {contexts} />
+					{:else}
+						<p class="px-4 py-10 text-center text-gray-8">No countries in this category.</p>
 					{/each}
 				</div>
 			{/key}
 		</div>
 
-		<Pagination options={availableStatusOptions} value={selectedStatus} onselect={selectStatus} />
+		<Pagination options={paginationOptions} value={selectedStatus} onselect={selectStatus} />
 
 		<DownloadDataCard />
 	</section>

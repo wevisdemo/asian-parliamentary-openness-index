@@ -139,8 +139,8 @@
 		/>
 
 		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:p-7">
-			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-				<h3 class="b1 font-bold">Top indicators in this dimension:</h3>
+			<div class="flex flex-row flex-wrap items-end gap-2">
+				<h3 class="mr-auto b1 font-bold">Top indicators in this dimension:</h3>
 				<AchievementLegend />
 			</div>
 

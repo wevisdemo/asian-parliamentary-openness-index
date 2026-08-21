@@ -85,25 +85,22 @@
 			{/key}
 
 			<div class="flex flex-col gap-4">
-				<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-					<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
-						<h2 class="b1 font-bold">
-							{dimensionSummaries.length}
-							{dimensionSummaries.length === 1 ? 'Indicator' : 'Indicators'}
-						</h2>
-						<div class="mt-1 flex flex-row items-center gap-2 text-gray-6">
-							<span class="b4 whitespace-nowrap">Sorted by</span>
-							<Dropdown
-								options={sortByOptions}
-								value={selectedSortBy}
-								color="gray"
-								variant="compact"
-								onselect={(sortBy) => (selectedSortBy = sortBy)}
-							/>
-						</div>
+				<div class="flex flex-row flex-wrap gap-2">
+					<h2 class="b1 font-bold">
+						{dimensionSummaries.length}
+						{dimensionSummaries.length === 1 ? 'Indicator' : 'Indicators'}
+					</h2>
+					<div class="mr-auto flex flex-row items-center gap-2 text-gray-6 md:mt-1">
+						<span class="b4 whitespace-nowrap">Sorted by</span>
+						<Dropdown
+							options={sortByOptions}
+							value={selectedSortBy}
+							color="gray"
+							variant="compact"
+							onselect={(sortBy) => (selectedSortBy = sortBy)}
+						/>
 					</div>
-
-					<AchievementLegend class="md:mt-1" />
+					<AchievementLegend />
 				</div>
 
 				{#each indicatorGroups as group (group.name)}
