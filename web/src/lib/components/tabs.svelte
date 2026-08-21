@@ -55,7 +55,7 @@
 
 	const variantClasses = {
 		primary: {
-			base: 'b1 border-2',
+			base: 'b2 border-2',
 			default: 'border-purple-5 text-purple-5 hover:bg-purple-1',
 			selected: 'border-purple-5 bg-purple-5 font-bold text-white',
 			disabled: 'border-gray-2 text-gray-3'

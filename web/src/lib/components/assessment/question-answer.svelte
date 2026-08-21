@@ -55,7 +55,9 @@
 					>
 				</p>
 			{:else if answer}
-				<p class="text-right font-mono b2 font-bold whitespace-nowrap text-gray-4">N/A</p>
+				<p class="text-right font-mono b2 font-bold whitespace-nowrap text-gray-4 md:w-[9ch]">
+					N/A
+				</p>
 			{/if}
 		</div>
 	{/key}
