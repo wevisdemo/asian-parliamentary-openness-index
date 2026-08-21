@@ -48,12 +48,14 @@
 				{/each}
 			</ul>
 
-			{#if answer}
+			{#if answer && answer.totalApplicableScore > 0}
 				<p class="text-right font-mono b2 whitespace-nowrap">
 					<span class="font-bold">{answer.score.toFixed(2)}</span><span class="text-gray-6"
 						>/{answer.totalApplicableScore.toFixed(2)}</span
 					>
 				</p>
+			{:else if answer}
+				<p class="text-right font-mono b2 font-bold whitespace-nowrap text-gray-4">N/A</p>
 			{/if}
 		</div>
 	{/key}

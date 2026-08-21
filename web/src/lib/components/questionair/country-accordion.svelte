@@ -45,6 +45,9 @@
 	const assessedChambers = $derived(chamberScores.filter(({ hasAnswers }) => hasAnswers));
 	const selectedChamber = $derived(chamber ?? assessedChambers[0]?.chamber);
 	const overallPercentage = $derived(getScorePercentage(answers));
+	const hasApplicableScore = $derived(
+		answers.some(({ totalApplicableScore }) => totalApplicableScore > 0)
+	);
 
 	const selectChamber = (value: Chamber) => {
 		chamber = value;
@@ -58,10 +61,14 @@
 	totalApplicableScore
 }: (typeof chamberScores)[number])}
 	<span class="b5 text-gray-8">{value} Chamber</span>
-	<span class="flex flex-col font-mono md:flex-row">
-		<span class="font-bold">{score.toFixed(2)}</span>
-		<span class="text-gray-6">/{totalApplicableScore.toFixed(2)}</span>
-	</span>
+	{#if totalApplicableScore > 0}
+		<span class="flex flex-col font-mono md:flex-row">
+			<span class="font-bold">{score.toFixed(2)}</span>
+			<span class="text-gray-6">/{totalApplicableScore.toFixed(2)}</span>
+		</span>
+	{:else}
+		<span class="font-bold text-gray-4">N/A</span>
+	{/if}
 {/snippet}
 
 <Accordion
@@ -111,8 +118,13 @@
 						Share of the applicable score this country achieved on this indicator, across all chambers.
 					</Tooltip>
 				</span>
-				<span class="w-[7ch] text-right font-mono b2 font-bold whitespace-nowrap">
-					{overallPercentage.toFixed(2)}%
+				<span
+					class={[
+						'w-[7ch] text-right font-mono b2 font-bold whitespace-nowrap',
+						!hasApplicableScore && 'text-gray-4'
+					]}
+				>
+					{hasApplicableScore ? `${overallPercentage.toFixed(2)}%` : 'N/A'}
 				</span>
 			</div>
 		</div>
