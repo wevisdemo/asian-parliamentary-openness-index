@@ -116,7 +116,7 @@
 			<h1 class="h2 font-bold">{data.country.name}</h1>
 			<CountryContext country={data.country} />
 			{#if data.country.keyFindings}
-				<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4">
+				<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4 whitespace-pre-line">
 					<span class="font-bold">Key findings</span>
 					<p>{data.country.keyFindings}</p>
 				</div>
