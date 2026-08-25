@@ -8,6 +8,7 @@ node_modules/
 # python
 __pycache__/
 .venv/
+.ruff_cache/
 
 # generated data
 /data/output/

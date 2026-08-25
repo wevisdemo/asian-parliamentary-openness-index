@@ -11,6 +11,10 @@
     "data/**/*.py": [
       "uv run --project data ruff format",
       "uv run --project data ruff check --fix"
+    ],
+    "scripts/**/*.py": [
+      "uv run --project scripts ruff format",
+      "uv run --project scripts ruff check --fix"
     ]
   },
   "devDependencies": {

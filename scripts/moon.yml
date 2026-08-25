@@ -1,0 +1,12 @@
+language: "python"
+layer: "tool"
+
+tasks:
+  optimize-pixel-map-svg:
+    command: "uv run optimize_pixel_map_svg.py"
+    options:
+      cache: false
+  lint:
+    command: "uv run ruff check ."
+  format:
+    command: "uv run ruff format ."

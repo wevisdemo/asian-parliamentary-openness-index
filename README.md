@@ -14,6 +14,7 @@ Data pipeline and website for the Asian Parliamentary Openness Index.
 - [moon](https://moonrepo.dev) — monorepo task runner, wires `data` → `web` build dependency
 - `data/` — Python ([uv](https://docs.astral.sh/uv/)) pipeline that fetches and processes index data, outputs CSV files to `data/output/` (currently mock data)
 - `web/` — [SvelteKit](https://svelte.dev/docs/kit) + TypeScript + Tailwind CSS ([pnpm](https://pnpm.io)) site that displays and visualizes the CSVs, unit tested with [Vitest](https://vitest.dev)
+- `scripts/` — Python (uv) one-off maintenance scripts, run by hand rather than as part of a build, e.g. [optimizing Figma-exported SVG animations](scripts/README.md)
 - Git hooks (husky) — [lint-staged](https://github.com/lint-staged/lint-staged) (Prettier + Ruff) on pre-commit, [commitlint](https://commitlint.js.org) (conventional commits) on commit-msg
 
 ## Requirements
