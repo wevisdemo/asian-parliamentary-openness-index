@@ -2,14 +2,29 @@
 	import { fade } from 'svelte/transition';
 	import ArrowUp from 'carbon-icons-svelte/lib/ArrowUp.svelte';
 	import { resolve } from '$app/paths';
+	import StructureGraphic from '$lib/components/about/structure-graphic.svelte';
+	import RespondentOrganization from '$lib/components/about/respondent-organization.svelte';
 	import Button from '$lib/components/button.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
 	import TruncatableParagraph from '$lib/components/truncatable-paragraph.svelte';
 	import { aboutSections } from '$lib/constants/about-sections';
-	import { dimensionDescriptions, dimensions } from '$lib/constants/dimensions';
+	import academicsImage from '$lib/assets/images/about/audience-academics.svg';
+	import ngoImage from '$lib/assets/images/about/audience-ngo.svg';
+	import parliamentImage from '$lib/assets/images/about/audience-parliament.svg';
+	import pressImage from '$lib/assets/images/about/audience-press.svg';
+	import accountabilityImage from '$lib/assets/images/about/dimension-accountability.svg';
+	import civicParticipationImage from '$lib/assets/images/about/dimension-civic-participation.svg';
+	import transparencyImage from '$lib/assets/images/about/dimension-transparency.svg';
+	import { dimensionDescriptions, dimensions, type Dimension } from '$lib/constants/dimensions';
 	import type { PageProps } from './$types';
+
+	const dimensionImages: Record<Dimension, string> = {
+		Transparency: transparencyImage,
+		Accountability: accountabilityImage,
+		'Citizen Participation': civicParticipationImage
+	};
 
 	const { data }: PageProps = $props();
 
@@ -21,22 +36,26 @@
 		{
 			name: 'NGOs & Civil Society',
 			description:
-				'Plan advocacy activities and prioritize reform efforts using indicator-level evidence.'
+				'Plan advocacy activities and prioritize reform efforts using indicator-level evidence.',
+			image: ngoImage
 		},
 		{
 			name: 'Parliamentarians & Staff',
 			description:
-				'Identify where your own parliament falls short and strengthen its openness practices.'
+				'Identify where your own parliament falls short and strengthen its openness practices.',
+			image: parliamentImage
 		},
 		{
 			name: 'Academics & Researchers',
 			description:
-				'Analyze whether parliamentary openness is associated with corruption, democratic quality, or public trust.'
+				'Analyze whether parliamentary openness is associated with corruption, democratic quality, or public trust.',
+			image: academicsImage
 		},
 		{
 			name: 'The Press',
 			description:
-				'Report on transparency gaps to raise public awareness and hold parliaments accountable.'
+				'Report on transparency gaps to raise public awareness and hold parliaments accountable.',
+			image: pressImage
 		}
 	];
 </script>
@@ -76,9 +95,9 @@
 				{#each dimensions as dimension (dimension)}
 					<div class="flex flex-col gap-3">
 						<img
-							src="https://placehold.co/600x600/b6c4c7/35393a?text=Illustration"
+							src={dimensionImages[dimension]}
 							alt=""
-							class="aspect-square w-full object-cover"
+							class="aspect-square w-full object-contain"
 						/>
 						<h4 class="b2 font-bold">{dimension}</h4>
 						<p>{dimensionDescriptions[dimension]}</p>
@@ -89,11 +108,7 @@
 			<h3>Structure</h3>
 
 			<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3">
-				<img
-					src="https://placehold.co/600x600/b6c4c7/35393a?text=Illustration"
-					alt=""
-					class="aspect-square w-full object-cover"
-				/>
+				<StructureGraphic />
 				<p class="lg:col-span-2">
 					Each dimension breaks down into relevances, each relevance into indicators, and each
 					indicator into one or more questions — the level at which every chamber is actually
@@ -105,13 +120,9 @@
 			<h3>Who is this for</h3>
 
 			<div class="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-x-6">
-				{#each audiences as { name, description } (name)}
+				{#each audiences as { name, description, image } (name)}
 					<div class="flex flex-col gap-3">
-						<img
-							src="https://placehold.co/600x600/b6c4c7/35393a?text=Illustration"
-							alt=""
-							class="aspect-square w-full max-w-36 object-cover"
-						/>
+						<img src={image} alt="" class="aspect-square w-full max-w-30 object-contain" />
 						<h4 class="b2 font-bold">{name}</h4>
 						<p>{description}</p>
 					</div>
@@ -235,33 +246,7 @@
 
 			<div class="flex flex-col">
 				{#each data.respondents as respondent, index (index)}
-					<div
-						class="grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 border-t border-gray-2 pt-4 pb-6 lg:grid-cols-[auto_1fr_auto] lg:gap-x-6"
-					>
-						<img
-							src={respondent.organizationLogo}
-							alt=""
-							class="col-start-1 row-start-1 size-20 object-contain"
-						/>
-						<p class="col-start-2 row-start-1 text-right lg:col-start-3">
-							{respondent.country}
-						</p>
-						<div
-							class="col-span-2 col-start-1 row-start-2 flex flex-col gap-2 lg:col-span-1 lg:col-start-2 lg:row-start-1"
-						>
-							<h4 class="b2 font-bold">
-								{respondent.organization ?? respondent.names?.join(', ')}
-							</h4>
-							{#if respondent.about}
-								<TruncatableParagraph class="b4 whitespace-pre-line text-gray-8">
-									{respondent.about}
-								</TruncatableParagraph>
-							{/if}
-							{#if respondent.email}
-								<p>{respondent.email}</p>
-							{/if}
-						</div>
-					</div>
+					<RespondentOrganization {respondent} />
 				{/each}
 			</div>
 		</div>
