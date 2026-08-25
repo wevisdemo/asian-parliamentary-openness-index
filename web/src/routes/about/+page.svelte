@@ -239,9 +239,9 @@
 						class="grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-2 border-t border-gray-2 pt-4 pb-6 lg:grid-cols-[auto_1fr_auto] lg:gap-x-6"
 					>
 						<img
-							src="https://placehold.co/600x600/b6c4c7/35393a?text=Logo"
+							src={respondent.organizationLogo}
 							alt=""
-							class="col-start-1 row-start-1 size-16 object-cover lg:size-24"
+							class="col-start-1 row-start-1 size-20 object-contain"
 						/>
 						<p class="col-start-2 row-start-1 text-right lg:col-start-3">
 							{respondent.country}

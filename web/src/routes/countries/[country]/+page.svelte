@@ -203,10 +203,11 @@
 				{#each data.respondents as respondent, index (index)}
 					<div
 						class={[
-							'grid grid-cols-1 gap-4 text-gray-8 md:grid-cols-2 md:gap-8',
+							'grid grid-cols-1 gap-4 text-gray-8 md:grid-cols-[auto_1fr_1fr] md:gap-8',
 							index > 0 && 'border-t border-gray-2 pt-6'
 						]}
 					>
+						<img src={respondent.organizationLogo} alt="" class="size-16" />
 						<div class="flex flex-col gap-4">
 							{#if respondent.organization || respondent.about}
 								<div class="flex flex-col gap-1">
