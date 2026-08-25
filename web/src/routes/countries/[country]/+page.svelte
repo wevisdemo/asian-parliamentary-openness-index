@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import mapIllustration from '$lib/assets/images/map-illustration.png';
+	import countryHeroImage from '$lib/assets/images/hero/country.png';
 	import CountryContext from '$lib/components/assessment/country-context.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorAccordion from '$lib/components/assessment/indicator-accordion.svelte';
@@ -89,7 +89,7 @@
 
 <section class="relative overflow-clip bg-gray-2">
 	<img
-		src={mapIllustration}
+		src={countryHeroImage}
 		alt=""
 		aria-hidden="true"
 		class="pointer-events-none absolute top-30 left-1/2 w-[110vw] max-w-none min-w-15 -translate-x-1/2 select-none"

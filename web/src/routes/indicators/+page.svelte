@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import exploreByIndicatorHeroImage from '$lib/assets/images/hero/explore-by-indicator.png';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
@@ -54,19 +55,26 @@
 
 <Metadata page="Explore by Indicator" />
 
-<Hero
-	breadcrumbItems={[
-		{ label: 'Home', href: resolve('/') },
-		{ label: 'Explore by Indicator', href: resolve('/indicators') }
-	]}
-	showIndexInfo
-	class="bg-gray-2"
->
-	<div class="flex flex-col gap-6">
-		<h1 class="h2 font-bold">Explore by Indicator</h1>
-		<p>See how every country compares on a single indicator, question by question.</p>
-	</div>
-</Hero>
+<section class="relative overflow-clip bg-gray-2">
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-0 bg-size-[100%_auto] bg-bottom bg-no-repeat select-none md:left-auto md:w-1/2 md:bg-size-[auto_100%] md:bg-left md:bg-repeat-x"
+		style="background-image: url({exploreByIndicatorHeroImage})"
+	></div>
+
+	<Hero
+		breadcrumbItems={[
+			{ label: 'Home', href: resolve('/') },
+			{ label: 'Explore by Indicator', href: resolve('/indicators') }
+		]}
+		showIndexInfo
+	>
+		<div class="flex flex-col gap-6">
+			<h1 class="h2 font-bold">Explore by Indicator</h1>
+			<p>See how every country compares on a single indicator, question by question.</p>
+		</div>
+	</Hero>
+</section>
 
 <div class="flex flex-col bg-gray-1">
 	<section class="relative content-container flex flex-col gap-6 md:gap-8">

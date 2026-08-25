@@ -3,6 +3,7 @@
 	import ChevronRight from 'carbon-icons-svelte/lib/ChevronRight.svelte';
 	import ChevronUp from 'carbon-icons-svelte/lib/ChevronUp.svelte';
 	import { resolve } from '$app/paths';
+	import exploreByCountryHeroImage from '$lib/assets/images/hero/explore-by-country.png';
 	import Hero from '$lib/components/hero.svelte';
 	import DownloadDataCard from '$lib/components/download-data-card.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
@@ -38,21 +39,29 @@
 
 <Metadata page="Explore by Country" />
 
-<Hero
-	breadcrumbItems={[
-		{ label: 'Home', href: resolve('/') },
-		{ label: 'Explore by Country', href: resolve('/countries') }
-	]}
-	showIndexInfo
-	class="bg-gray-2"
->
-	<div class="flex flex-col gap-6">
-		<h1 class="h2 font-bold">Explore by Country</h1>
-		<p>
-			See every country's overall score, chamber-by-chamber breakdown, and indicator-level detail.
-		</p>
-	</div>
-</Hero>
+<section class="relative overflow-clip bg-gray-2">
+	<img
+		src={exploreByCountryHeroImage}
+		alt=""
+		aria-hidden="true"
+		class="pointer-events-none absolute right-0 bottom-0 w-full select-none md:top-0 md:w-[50vw]"
+	/>
+
+	<Hero
+		breadcrumbItems={[
+			{ label: 'Home', href: resolve('/') },
+			{ label: 'Explore by Country', href: resolve('/countries') }
+		]}
+		showIndexInfo
+	>
+		<div class="flex flex-col gap-6">
+			<h1 class="h2 font-bold">Explore by Country</h1>
+			<p>
+				See every country's overall score, chamber-by-chamber breakdown, and indicator-level detail.
+			</p>
+		</div>
+	</Hero>
+</section>
 
 <section>
 	<div class="content-container flex flex-col">

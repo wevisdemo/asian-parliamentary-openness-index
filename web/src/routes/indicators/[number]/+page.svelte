@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import indicatorHeroImage from '$lib/assets/images/hero/indicator.png';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import DownloadDataCard from '$lib/components/download-data-card.svelte';
@@ -50,7 +51,13 @@
 
 <Metadata page={indicator.name} />
 
-<section class="bg-gray-2">
+<section class="relative overflow-clip bg-gray-2">
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-left bg-repeat-x select-none md:block"
+		style="background-image: url({indicatorHeroImage}); background-size: auto 100%"
+	></div>
+
 	<Hero
 		breadcrumbItems={[
 			{ label: 'Home', href: resolve('/') },

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import insightHeroImage from '$lib/assets/images/hero/insight.png';
 	import AchievementLegend from '$lib/components/assessment/achievement-legend.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorCard from '$lib/components/assessment/indicator-card.svelte';
@@ -71,6 +72,7 @@
 			</p>
 		</div>
 	</div>
+	<img src={insightHeroImage} alt="" />
 </Hero>
 
 <section class="bg-gray-2">
