@@ -1,6 +1,6 @@
 import re
 from typing import Dict, Tuple
-
+import unicodedata
 import pandas as pd
 
 from constants import (
@@ -141,16 +141,17 @@ def get_questions_data(df: pd.DataFrame | None = None) -> pd.DataFrame:
 def normalize_answer(row: pd.Series) -> str:
     # Check question type
     # If single; normalize to lower case
+    normalized_chars = unicodedata.normalize("NFKC", row["Answer"])
     if row["Answer Type"] == "single":
         # Check for n/a
         if not re.search(
-            str(row["Answer"]).lower().strip() + r"\)\s", row["Answer Options"]
+            normalized_chars.lower().strip() + r"\)\s?", row["Answer Options"]
         ):
             return "n/a"
-        return str(row["Answer"]).lower()
+        return normalized_chars.lower()
 
     # Multiple choices
-    selected_options_str = row["Answer"]
+    selected_options_str = normalized_chars
 
     # Check if this question is n/a
     if str(selected_options_str).lower() == "n/a":
