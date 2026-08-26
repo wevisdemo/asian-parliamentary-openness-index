@@ -52,11 +52,13 @@
 		aria-hidden="true"
 		class="pointer-events-none absolute top-0 left-1/2 h-[70vh] w-auto max-w-none -translate-x-1/2 md:h-auto md:w-screen"
 	/>
-	<div class="relative mx-auto flex w-full max-w-5xl md:justify-end">
-		<div class="flex max-w-2xl flex-col items-center gap-4 text-center md:items-start md:text-left">
+	<div class="relative mx-auto flex w-full max-w-6xl md:justify-end md:px-12">
+		<div
+			class="flex w-full max-w-2xl flex-col items-center gap-4 text-center md:items-start md:text-left"
+		>
 			<h1 class="h2 font-bold">Asian Parliamentary Openness Index</h1>
 			<p class="b2">A regional index tracking how openly Asia-Pacific parliaments operate.</p>
-			<div class="mt-2 grid w-full grid-cols-1 gap-3 sm:gap-4 md:grid-cols-3">
+			<div class="mt-2 grid w-full grid-cols-1 gap-2 md:grid-cols-3">
 				<Button href={resolve('/insights')}>Insights</Button>
 				<Button href={resolve('/countries')} variant="secondary">Explore by country</Button>
 				<Button href={resolve('/indicators')} variant="secondary">Explore by indicator</Button>

@@ -168,7 +168,7 @@
 	</div>
 
 	<div class="flex flex-col">
-		<div class={[rowClass, headingPaddingClass, 'b5 text-gray-4']}>
+		<div class={[rowClass, headingPaddingClass, 'b4 text-gray-4']}>
 			<span class={rankClass}>Rank</span>
 			<span class={iconSpacerClass} aria-hidden="true"></span>
 			<div

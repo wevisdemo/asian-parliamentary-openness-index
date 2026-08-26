@@ -19,7 +19,7 @@
 
 <div class={['flex flex-col gap-2 md:flex-row md:gap-6', className]}>
 	<div class="flex flex-3 flex-row gap-2 md:gap-3">
-		<span class="font-mono font-bold text-gray-8">{question.number.split('.').at(-1)}</span>
+		<span class="font-mono font-bold">{question.number.split('.').at(-1)}</span>
 		<p><ContentWithGlossary content={question.question} /></p>
 	</div>
 
