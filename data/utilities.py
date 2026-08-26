@@ -143,7 +143,9 @@ def normalize_answer(row: pd.Series) -> str:
     # If single; normalize to lower case
     if row["Answer Type"] == "single":
         # Check for n/a
-        if not re.search(str(row["Answer"]).strip() + r"\)\s", row["Answer Options"]):
+        if not re.search(
+            str(row["Answer"]).lower().strip() + r"\)\s", row["Answer Options"]
+        ):
             return "n/a"
         return str(row["Answer"]).lower()
 
