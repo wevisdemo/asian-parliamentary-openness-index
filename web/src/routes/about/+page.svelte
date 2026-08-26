@@ -2,6 +2,8 @@
 	import { fade } from 'svelte/transition';
 	import ArrowUp from 'carbon-icons-svelte/lib/ArrowUp.svelte';
 	import { resolve } from '$app/paths';
+	import AudienceCards from '$lib/components/about/audience-cards.svelte';
+	import DimensionCards from '$lib/components/about/dimension-cards.svelte';
 	import StructureGraphic from '$lib/components/about/structure-graphic.svelte';
 	import RespondentOrganization from '$lib/components/about/respondent-organization.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -10,54 +12,14 @@
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
 	import TruncatableParagraph from '$lib/components/truncatable-paragraph.svelte';
 	import { aboutSections } from '$lib/constants/about-sections';
-	import academicsImage from '$lib/assets/images/about/audience-academics.svg';
-	import ngoImage from '$lib/assets/images/about/audience-ngo.svg';
-	import parliamentImage from '$lib/assets/images/about/audience-parliament.svg';
-	import pressImage from '$lib/assets/images/about/audience-press.svg';
-	import accountabilityImage from '$lib/assets/images/about/dimension-accountability.svg';
-	import civicParticipationImage from '$lib/assets/images/about/dimension-civic-participation.svg';
-	import transparencyImage from '$lib/assets/images/about/dimension-transparency.svg';
-	import { dimensionDescriptions, dimensions, type Dimension } from '$lib/constants/dimensions';
+	import { alliance } from '$lib/constants/contributors';
 	import type { PageProps } from './$types';
-
-	const dimensionImages: Record<Dimension, string> = {
-		Transparency: transparencyImage,
-		Accountability: accountabilityImage,
-		'Citizen Participation': civicParticipationImage
-	};
 
 	const { data }: PageProps = $props();
 
 	let scrollY = $state(0);
 
 	const scrollToTop = () => window.scrollTo({ top: 0 });
-
-	const audiences = [
-		{
-			name: 'NGOs & Civil Society',
-			description:
-				'Plan advocacy activities and prioritize reform efforts using indicator-level evidence.',
-			image: ngoImage
-		},
-		{
-			name: 'Parliamentarians & Staff',
-			description:
-				'Identify where your own parliament falls short and strengthen its openness practices.',
-			image: parliamentImage
-		},
-		{
-			name: 'Academics & Researchers',
-			description:
-				'Analyze whether parliamentary openness is associated with corruption, democratic quality, or public trust.',
-			image: academicsImage
-		},
-		{
-			name: 'The Press',
-			description:
-				'Report on transparency gaps to raise public awareness and hold parliaments accountable.',
-			image: pressImage
-		}
-	];
 </script>
 
 <Metadata page="About" />
@@ -91,19 +53,7 @@
 
 			<h3>3 Dimensions</h3>
 
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-				{#each dimensions as dimension (dimension)}
-					<div class="flex flex-col gap-3">
-						<img
-							src={dimensionImages[dimension]}
-							alt=""
-							class="aspect-square w-full object-contain"
-						/>
-						<h4 class="b2 font-bold">{dimension}</h4>
-						<p>{dimensionDescriptions[dimension]}</p>
-					</div>
-				{/each}
-			</div>
+			<DimensionCards />
 
 			<h3>Structure</h3>
 
@@ -119,15 +69,7 @@
 
 			<h3>Who is this for</h3>
 
-			<div class="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-x-6">
-				{#each audiences as { name, description, image } (name)}
-					<div class="flex flex-col gap-3">
-						<img src={image} alt="" class="aspect-square w-full max-w-30 object-contain" />
-						<h4 class="b2 font-bold">{name}</h4>
-						<p>{description}</p>
-					</div>
-				{/each}
-			</div>
+			<AudienceCards />
 
 			<h2 id={aboutSections[1].id}>Methodology</h2>
 
@@ -226,19 +168,10 @@
 			<h2 id={aboutSections[2].id}>About contributors</h2>
 
 			<div class="grid grid-cols-1 gap-y-4 lg:grid-cols-3 lg:gap-x-6">
-				<img
-					src="https://placehold.co/600x600/b6c4c7/35393a?text=Illustration"
-					alt=""
-					class="aspect-square w-full object-cover"
-				/>
+				<img src={alliance.logo} alt="" class="aspect-square w-full object-cover" />
 				<div class="col-span-2 space-y-2">
-					<h4 class="b2 font-bold">Asian Alliance for Parliamentary Openness (AAPO)</h4>
-					<p>
-						Each dimension breaks down into relevances, each relevance into indicators, and each
-						indicator into one or more questions — the level at which every chamber is actually
-						scored. Scores roll back up the same hierarchy to produce indicator, dimension, and
-						overall results.
-					</p>
+					<h4 class="b2 font-bold">{alliance.name}</h4>
+					<p>{alliance.description}</p>
 				</div>
 			</div>
 
