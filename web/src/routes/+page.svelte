@@ -44,7 +44,7 @@
 {/snippet}
 
 <section
-	class="relative flex min-h-[70vh] flex-col items-end justify-center overflow-hidden bg-gray-2 px-5 py-16"
+	class="relative flex min-h-[calc(100vh-var(--navbar-height))] flex-col items-end justify-center overflow-hidden bg-gray-2 px-5 py-16 md:min-h-[calc(100vh-var(--navbar-height-md))]"
 >
 	<img
 		src={landingAnimation}
@@ -68,7 +68,7 @@
 </section>
 
 <section class="grid grid-cols-1 gap-1 bg-gray-1 p-1 md:grid-cols-2">
-	<div class="mx-auto flex max-w-lg flex-col items-start gap-4 px-5 py-8 md:gap-6 md:py-16">
+	<div class="mx-auto flex flex-col items-start gap-4 px-5 py-8 md:max-w-lg md:gap-6 md:py-16">
 		<div class="flex flex-col gap-1">
 			<h2 class="h5 font-bold">{page.data.cycle.year} Insight</h2>
 			<p class="b5 text-gray-6">Assessment Date: {page.data.cycle.assessmentDate}</p>
@@ -111,7 +111,7 @@
 
 	{#each exploreActions as { title, description, label, href } (href)}
 		<div class=" bg-purple-1">
-			<div class="mx-auto flex max-w-lg flex-col items-start gap-4 px-5 py-8 md:gap-6 md:py-16">
+			<div class="mx-auto flex flex-col items-start gap-4 px-5 py-8 md:max-w-lg md:gap-6 md:py-16">
 				<h3 class="h5 font-bold">{title}</h3>
 				<p>{description}</p>
 				<Button {href}>{label}</Button>
