@@ -7,6 +7,7 @@
 	import Button from './button.svelte';
 	import Hyperlink from './hyperlink.svelte';
 	import Modal from './modal.svelte';
+	import Sharer from './sharer.svelte';
 
 	interface BreadcrumbItem {
 		label: string;
@@ -35,7 +36,12 @@
 <div class={['relative flex flex-col', className]}>
 	<Breadcrumb items={breadcrumbItems} trailing={breadcrumbTrailing} class="px-5 pt-4" />
 
-	<div class="content-container flex flex-col gap-6">
+	<div
+		class={[
+			'content-container flex flex-col gap-6 md:gap-8',
+			!showIndexInfo && 'md:flex-row md:items-start md:justify-between'
+		]}
+	>
 		{#if showIndexInfo}
 			<div class="flex flex-col justify-between gap-2 md:flex-row">
 				<div>
@@ -57,6 +63,7 @@
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
 			{@render children?.()}
 		</div>
+		<Sharer />
 	</div>
 </div>
 

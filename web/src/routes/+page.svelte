@@ -11,6 +11,7 @@
 	import { aboutSections } from '$lib/constants/about-sections';
 	import { alliance } from '$lib/constants/contributors';
 	import type { PageProps } from './$types';
+	import Sharer from '$lib/components/sharer.svelte';
 
 	const exploreActions = [
 		{
@@ -58,11 +59,12 @@
 		>
 			<h1 class="h2 font-bold">Asian Parliamentary Openness Index</h1>
 			<p class="b2">A regional index tracking how openly Asia-Pacific parliaments operate.</p>
-			<div class="mt-2 grid w-full grid-cols-1 gap-2 md:grid-cols-3">
+			<div class="my-2 grid w-full grid-cols-1 gap-2 md:grid-cols-3">
 				<Button href={resolve('/insights')}>Insights</Button>
 				<Button href={resolve('/countries')} variant="secondary">Explore by country</Button>
 				<Button href={resolve('/indicators')} variant="secondary">Explore by indicator</Button>
 			</div>
+			<Sharer />
 		</div>
 	</div>
 </section>
