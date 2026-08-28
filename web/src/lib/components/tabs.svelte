@@ -53,6 +53,28 @@
 		});
 	};
 
+	const scrollMargin = 20;
+
+	$effect(() => {
+		if (!value || !element || element.scrollWidth <= element.clientWidth) return;
+
+		const tab = element.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]');
+
+		if (!tab) return;
+
+		const container = element.getBoundingClientRect();
+		const { left, right } = tab.getBoundingClientRect();
+
+		const delta =
+			left < container.left + scrollMargin
+				? left - container.left - scrollMargin
+				: right > container.right - scrollMargin
+					? right - container.right + scrollMargin
+					: 0;
+
+		if (delta) element.scrollBy({ left: delta, behavior: 'smooth' });
+	});
+
 	const variantClasses = {
 		primary: {
 			base: 'b2 border-2',
