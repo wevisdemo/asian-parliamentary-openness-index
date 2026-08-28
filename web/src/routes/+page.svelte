@@ -169,7 +169,7 @@
 		<p class="h5 font-bold">{alliance.name}</p>
 
 		<div class="flex flex-col gap-4 md:flex-row md:gap-8">
-			<img src={alliance.logo} alt="" class="aspect-square w-full max-w-40 object-cover" />
+			<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />
 			<p class="flex-1">{alliance.description}</p>
 		</div>
 

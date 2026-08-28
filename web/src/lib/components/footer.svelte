@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import apoiLongLogo from '$lib/assets/images/apoi-long.png';
 	import { aboutSections } from '$lib/constants/about-sections';
 	import { downloadSections } from '$lib/constants/download-sections';
 
@@ -20,9 +21,9 @@
 	<div class="content-container flex flex-col gap-4 md:flex-row md:justify-between md:gap-8">
 		<a href={resolve('/')} class="shrink-0">
 			<img
-				src="https://placehold.co/96x48/b6c4c7/35393a?text=Logo"
+				src={apoiLongLogo}
 				alt="Asian Parliamentary Openness Index"
-				class="h-10 w-auto"
+				class="h-12 w-auto brightness-0 invert md:h-14"
 			/>
 		</a>
 

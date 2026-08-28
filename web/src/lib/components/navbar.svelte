@@ -6,6 +6,7 @@
 	import Bookmark from 'carbon-icons-svelte/lib/Bookmark.svelte';
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import Menu from 'carbon-icons-svelte/lib/Menu.svelte';
+	import apoiShortLogo from '$lib/assets/images/apoi-short.png';
 	import Button from '$lib/components/button.svelte';
 	import GlossarySidebar from '$lib/components/glossary/glossary-sidebar.svelte';
 	import { getGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
@@ -49,12 +50,12 @@
 	class="sticky top-0 z-50 h-(--navbar-height) border-b border-gray-1 bg-white md:h-(--navbar-height-md)"
 >
 	<nav class="mx-auto flex h-full items-center justify-between gap-8">
-		<div class="flex flex-1 flex-row items-center justify-between p-2 md:p-3">
+		<div class="flex flex-1 flex-row items-center justify-between p-3 md:p-2">
 			<a href={resolve('/')} class="shrink-0">
 				<img
-					src="https://placehold.co/96x48/b6c4c7/35393a?text=Logo"
+					src={apoiShortLogo}
 					alt="Asian Parliamentary Openness Index"
-					class="h-8 w-auto md:h-12"
+					class="h-6 w-auto md:h-11"
 				/>
 			</a>
 

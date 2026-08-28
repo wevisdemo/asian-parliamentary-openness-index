@@ -167,9 +167,9 @@
 
 			<h2 id={aboutSections[2].id}>About contributors</h2>
 
-			<div class="grid grid-cols-1 gap-y-4 lg:grid-cols-3 lg:gap-x-6">
-				<img src={alliance.logo} alt="" class="aspect-square w-full object-cover" />
-				<div class="col-span-2 space-y-2">
+			<div class="flex flex-col gap-4 md:flex-row md:gap-8">
+				<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />
+				<div class="flex-1 space-y-2">
 					<h4 class="b2 font-bold">{alliance.name}</h4>
 					<p>{alliance.description}</p>
 				</div>
