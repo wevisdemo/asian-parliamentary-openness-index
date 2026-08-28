@@ -50,6 +50,11 @@
 	);
 
 	const selectChamber = (value: Chamber) => {
+		if (assessedChambers.length < 2) {
+			open = !open;
+			return;
+		}
+
 		chamber = value;
 		open = true;
 	};
@@ -60,9 +65,9 @@
 	score,
 	totalApplicableScore
 }: (typeof chamberScores)[number])}
-	<span class="b5 text-gray-8">{value} Chamber</span>
+	<span class="b5 text-gray-8 md:text-nowrap">{value} Chamber</span>
 	{#if totalApplicableScore > 0}
-		<span class="flex flex-col font-mono md:flex-row">
+		<span class="flex flex-row flex-wrap font-mono">
 			<span class="font-bold">{score.toFixed(2)}</span>
 			<span class="text-gray-6">/{totalApplicableScore.toFixed(2)}</span>
 		</span>
@@ -85,24 +90,20 @@
 		<div class="flex flex-row items-center">
 			{#each chamberScores as score (score.chamber)}
 				{#if !score.hasAnswers}
-					<div class="invisible flex flex-col gap-0.5 p-2 md:px-4" aria-hidden="true">
+					<div class="invisible flex flex-1 flex-col gap-0.5 p-2 md:px-4" aria-hidden="true">
 						{@render chamberScore(score)}
 					</div>
-				{:else if assessedChambers.length > 1}
+				{:else}
 					<button
 						type="button"
 						class={[
-							'flex cursor-pointer flex-col gap-0.5 p-2 text-left transition-colors md:px-4',
+							'flex flex-1 cursor-pointer flex-col gap-0.5 p-2 text-left transition-colors md:px-4',
 							open && score.chamber === selectedChamber ? 'bg-gray-2' : 'hover:bg-gray-1'
 						]}
 						onclick={() => selectChamber(score.chamber)}
 					>
 						{@render chamberScore(score)}
 					</button>
-				{:else}
-					<div class={['flex flex-col gap-0.5 p-2 md:px-4', open && 'bg-gray-2']}>
-						{@render chamberScore(score)}
-					</div>
 				{/if}
 			{/each}
 
