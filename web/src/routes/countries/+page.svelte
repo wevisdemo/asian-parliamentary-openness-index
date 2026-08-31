@@ -32,8 +32,7 @@
 
 	const scoresClasses = 'col-span-full row-start-2 grid grid-cols-2 gap-x-4 md:contents';
 
-	const formatScore = (score?: number) =>
-		score === undefined ? '-' : `${(score * 100).toFixed(2)}%`;
+	const formatScore = (score?: number) => (score === undefined ? '-' : `${score.toFixed(2)}%`);
 </script>
 
 <Metadata page="Explore by Country" />

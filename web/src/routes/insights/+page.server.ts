@@ -1,9 +1,10 @@
 import { chambers, type Chamber } from '$lib/constants/chambers';
 import { dimensions } from '$lib/constants/dimensions';
-import { answers, getScorePercentage, type Answer } from '$lib/data/answers';
+import { answers, type Answer } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
 import { indicatorSummaries, sortByAchieved } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
+import { getWeightedScorePercentage, hasApplicableScore } from '$lib/data/scores';
 import type { PageServerLoad } from './$types';
 
 const TOP_COUNT = 3;
@@ -15,7 +16,9 @@ const getCountryScores = (scopedAnswers: Answer[]) =>
 		const chamberScore = (chamber: Chamber) => {
 			const chamberAnswers = countryAnswers.filter((answer) => answer.chamber === chamber);
 
-			return chamberAnswers.length ? getScorePercentage(chamberAnswers) : undefined;
+			return hasApplicableScore(chamberAnswers)
+				? getWeightedScorePercentage(chamberAnswers)
+				: undefined;
 		};
 
 		return {

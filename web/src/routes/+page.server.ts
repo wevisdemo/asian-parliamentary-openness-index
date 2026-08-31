@@ -1,15 +1,18 @@
 import { dimensions, type Dimension } from '$lib/constants/dimensions';
-import { answers, getScorePercentage, type Answer } from '$lib/data/answers';
+import { answers, type Answer } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
 import { indicators } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import { respondents } from '$lib/data/respondents';
+import { getWeightedScorePercentage } from '$lib/data/scores';
 import type { PageServerLoad } from './$types';
 
 const getCountryScores = (scopedAnswers: Answer[]) =>
 	countries.map((country) => ({
 		name: country.name,
-		score: getScorePercentage(scopedAnswers.filter(({ country: name }) => name === country.name))
+		score: getWeightedScorePercentage(
+			scopedAnswers.filter(({ country: name }) => name === country.name)
+		)
 	}));
 
 const getAverageScore = (scopedAnswers: Answer[]) => {
