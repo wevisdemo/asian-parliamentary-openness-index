@@ -4,7 +4,7 @@
 	import landingAnimation from '$lib/assets/animations/landing.svg';
 	import AudienceCards from '$lib/components/about/audience-cards.svelte';
 	import DimensionCards from '$lib/components/about/dimension-cards.svelte';
-	import OverallScoreChart from '$lib/components/assessment/overall-score-chart.svelte';
+	import CountryScoreChart from '$lib/components/assessment/country-score-chart.svelte';
 	import Button from '$lib/components/button.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
@@ -16,8 +16,7 @@
 	const exploreActions = [
 		{
 			title: 'Explore by country',
-			description:
-				"See every country's overall score, chamber-by-chamber breakdown, and indicator-level detail.",
+			description: "See every country's chamber-by-chamber breakdown and indicator-level detail.",
 			label: 'Explore',
 			href: resolve('/countries')
 		},
@@ -76,8 +75,8 @@
 			<p class="b5 text-gray-6">Assessment Date: {page.data.cycle.assessmentDate}</p>
 		</div>
 		<p>
-			Across {data.countryCount} parliaments assessed this cycle, the regional average sits at
-			{percentage(data.overallScore)}. {leading.dimension} leads the way regionally at
+			Across {data.countryCount} parliaments assessed this cycle, the regional lower chamber average sits
+			at {percentage(data.averageScore)}. {leading.dimension} leads the way regionally at
 			{percentage(leading.score)}, while {lagging.dimension} lags furthest behind at
 			{percentage(lagging.score)}.
 		</p>
@@ -86,13 +85,15 @@
 	<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
 		<div class="flex flex-col justify-between gap-6 bg-black p-5 text-white md:p-7">
 			<div class="flex flex-col gap-1">
-				<h3 class="h5 font-bold">Overall Score</h3>
-				<p class="b4 text-purple-2">Average score for {data.countryCount} countries</p>
-				<p class="mt-1 h1 font-bold text-purple-2">{percentage(data.overallScore)}</p>
+				<h3 class="h5 font-bold">Score</h3>
+				<p class="b4 text-purple-2">
+					Average lower chamber score for {data.countryCount} countries
+				</p>
+				<p class="mt-1 h1 font-bold text-purple-2">{percentage(data.averageScore)}</p>
 			</div>
-			<OverallScoreChart
+			<CountryScoreChart
 				scores={data.countryScores}
-				average={data.overallScore}
+				average={data.averageScore}
 				class="h-1/2 min-h-32"
 			/>
 		</div>

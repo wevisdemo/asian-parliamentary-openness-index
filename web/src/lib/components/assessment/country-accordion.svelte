@@ -1,12 +1,10 @@
 <script lang="ts">
-	import Information from 'carbon-icons-svelte/lib/Information.svelte';
 	import { resolve } from '$app/paths';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
 	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
-	import Tooltip from '$lib/components/tooltip.svelte';
 	import { chambers, type Chamber } from '$lib/constants/chambers';
-	import { getScorePercentage, type Answer } from '$lib/data/answers';
+	import type { Answer } from '$lib/data/answers';
 	import type { Country } from '$lib/data/countries';
 	import type { IndicatorContext } from '$lib/data/indicator-contexts';
 	import type { Question } from '$lib/data/questions';
@@ -44,10 +42,6 @@
 
 	const assessedChambers = $derived(chamberScores.filter(({ hasAnswers }) => hasAnswers));
 	const selectedChamber = $derived(chamber ?? assessedChambers[0]?.chamber);
-	const overallPercentage = $derived(getScorePercentage(answers));
-	const hasApplicableScore = $derived(
-		answers.some(({ totalApplicableScore }) => totalApplicableScore > 0)
-	);
 
 	const selectChamber = (value: Chamber) => {
 		if (assessedChambers.length < 2) {
@@ -106,28 +100,6 @@
 					</button>
 				{/if}
 			{/each}
-
-			<div
-				class="flex flex-col justify-between gap-0.5 self-stretch border-l-2 border-gray-4 py-2 pl-3 md:pl-4"
-			>
-				<span class="flex flex-row items-center gap-1 b5">
-					<span class="font-bold">Overall</span>
-					<Tooltip triggerClass="text-purple-3">
-						{#snippet trigger()}
-							<Information size={16} />
-						{/snippet}
-						Share of the applicable score this country achieved on this indicator, across all chambers.
-					</Tooltip>
-				</span>
-				<span
-					class={[
-						'w-[7ch] text-right font-mono b2 font-bold whitespace-nowrap',
-						!hasApplicableScore && 'text-gray-4'
-					]}
-				>
-					{hasApplicableScore ? `${overallPercentage.toFixed(2)}%` : 'N/A'}
-				</span>
-			</div>
 		</div>
 	{/snippet}
 

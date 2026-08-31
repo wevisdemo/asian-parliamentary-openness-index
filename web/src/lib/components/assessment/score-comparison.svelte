@@ -14,31 +14,28 @@
 
 	interface CountryScore {
 		country: Country;
-		score: number;
 		chamberScores: Partial<Record<Chamber, number>>;
 	}
 
 	interface Props {
 		scores: CountryScore[];
-		compare?: Chamber | 'both';
+		compare?: Chamber;
 		highlighted?: string[];
 		class?: string;
 	}
 
 	let {
 		scores,
-		compare = $bindable('both'),
+		compare = $bindable('Lower'),
 		highlighted = $bindable([]),
 		class: className
 	}: Props = $props();
 
-	const compareOptions = [{ label: 'Both chambers', value: 'both' }, ...chamberOptions];
-
 	const compared = $derived(
 		scores
-			.map(({ country, score, chamberScores }) => ({
+			.map(({ country, chamberScores }) => ({
 				country,
-				score: compare === 'both' ? score : chamberScores[compare]
+				score: chamberScores[compare]
 			}))
 			.filter((item): item is { country: Country; score: number } => item.score !== undefined)
 	);
@@ -138,10 +135,10 @@
 		<div class="flex min-w-0 flex-row items-center gap-3">
 			<span class="font-bold text-gray-4">Compare</span>
 			<Dropdown
-				options={compareOptions}
+				options={chamberOptions}
 				value={compare}
 				color="light"
-				onselect={(value) => (compare = chambers.find((chamber) => chamber === value) ?? 'both')}
+				onselect={(value) => (compare = chambers.find((chamber) => chamber === value) ?? 'Lower')}
 			/>
 		</div>
 
@@ -180,7 +177,8 @@
 							Score
 							<Information size={16} class="text-purple-3" />
 						{/snippet}
-						Percentage of the applicable points a parliament achieved across all questions of the index.
+						Percentage of the applicable points a parliament achieved in the selected chamber, across
+						all questions of the index.
 					</Tooltip>
 				</span>
 				<span class="hidden md:col-start-3 md:block md:w-18"></span>

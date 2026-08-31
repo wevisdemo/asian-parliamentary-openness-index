@@ -23,7 +23,7 @@
 
 	let selectedDimension = $state(dimensionOptions[0].value);
 
-	let comparedChamber = $state<Chamber | 'both'>('both');
+	let comparedChamber = $state<Chamber>('Lower');
 	let highlightedCountries = $state<string[]>([]);
 
 	let dimensionTabs = $state<ReturnType<typeof DimensionTabs>>();
@@ -78,14 +78,14 @@
 <section class="bg-gray-2">
 	<div class="content-container flex flex-col gap-6 md:gap-8">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-0">
-			<h2 class="h4 font-bold md:px-6">Overall Score</h2>
+			<h2 class="h4 font-bold md:px-6">Compare by Country</h2>
 			<div class="flex flex-col gap-2 border-l-2 border-gray-6 pl-4 md:pl-8">
 				<span class="font-bold text-gray-10">Key finding:</span>
 				<p>
 					Parliamentary openness varies widely across the Asia-Pacific. <strong
 						>Taiwan, Australia, and South Korea</strong
-					> achieved the highest overall scores. In several bicameral legislatures, the upper chamber
-					scores noticeably lower than the lower chamber.
+					> achieved the highest scores. In several bicameral legislatures, the upper chamber scores noticeably
+					lower than the lower chamber.
 				</p>
 			</div>
 		</div>
@@ -126,7 +126,7 @@
 			<div in:quickFade class="flex flex-col gap-2 text-gray-8">
 				<p class="font-bold">
 					{selectedDimension} contributes [{insight?.points}] out of {data.totalPoints} points to the
-					overall score.
+					total score.
 				</p>
 				<p>
 					{dimensionDescriptions[selectedDimension]}

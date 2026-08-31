@@ -24,14 +24,13 @@
 		rank: 'col-start-1 row-start-1',
 		lowerChamber: 'md:col-start-3 md:row-start-1',
 		upperChamber: 'md:col-start-4 md:row-start-1',
-		overall: 'md:col-start-5 md:row-start-1',
-		chevron: 'col-start-3 row-start-1 justify-self-end md:col-start-6 md:self-center'
+		chevron: 'col-start-3 row-start-1 justify-self-end md:col-start-5 md:self-center'
 	};
 
 	const gridClasses =
-		'grid grid-cols-[3rem_1fr_1.5rem] items-baseline gap-x-4 gap-y-2 px-4 py-2.5 md:grid-cols-[4rem_1fr_6.5rem_6.5rem_6.5rem_1rem] md:gap-x-3 md:gap-y-0 lg:grid-cols-[4rem_1fr_8rem_8rem_8rem_1rem] lg:gap-x-4';
+		'grid grid-cols-[3rem_1fr_1.5rem] items-baseline gap-x-4 gap-y-2 px-4 py-2.5 md:grid-cols-[4rem_1fr_6.5rem_6.5rem_1rem] md:gap-x-3 md:gap-y-0 lg:grid-cols-[4rem_1fr_8rem_8rem_1rem] lg:gap-x-4';
 
-	const scoresClasses = 'col-span-full row-start-2 grid grid-cols-3 gap-x-4 md:contents';
+	const scoresClasses = 'col-span-full row-start-2 grid grid-cols-2 gap-x-4 md:contents';
 
 	const formatScore = (score?: number) =>
 		score === undefined ? '-' : `${(score * 100).toFixed(2)}%`;
@@ -56,9 +55,7 @@
 	>
 		<div class="flex flex-col gap-6">
 			<h1 class="h2 font-bold">Explore by Country</h1>
-			<p>
-				See every country's overall score, chamber-by-chamber breakdown, and indicator-level detail.
-			</p>
+			<p>See every country's chamber-by-chamber breakdown and indicator-level detail.</p>
 		</div>
 	</Hero>
 </section>
@@ -91,7 +88,6 @@
 			<div class={scoresClasses}>
 				<span class={cellClasses.lowerChamber}>Lower Chamber</span>
 				<span class={cellClasses.upperChamber}>Upper Chamber</span>
-				<span class={cellClasses.overall}>Overall Score</span>
 			</div>
 		</div>
 
@@ -103,14 +99,11 @@
 				<span class={[cellClasses.rank, 'font-mono font-bold']}>{country.rank}</span>
 				<span class="b2 font-bold md:col-start-2 md:row-start-1">{country.name}</span>
 				<div class={scoresClasses}>
-					<span class={[cellClasses.lowerChamber, 'font-mono text-gray-8']}>
+					<span class={[cellClasses.lowerChamber, 'font-mono font-bold']}>
 						{formatScore(country.lowerChamberScore)}
 					</span>
 					<span class={[cellClasses.upperChamber, 'font-mono text-gray-8']}>
 						{formatScore(country.upperChamberScore)}
-					</span>
-					<span class={[cellClasses.overall, 'font-mono font-bold']}>
-						{formatScore(country.overallScore)}
 					</span>
 				</div>
 				<span class={cellClasses.chevron}>

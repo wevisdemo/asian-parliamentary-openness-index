@@ -63,7 +63,7 @@
 					Each dimension breaks down into relevances, each relevance into indicators, and each
 					indicator into one or more questions — the level at which every chamber is actually
 					scored. Scores roll back up the same hierarchy to produce indicator, dimension, and
-					overall results.
+					chamber results.
 				</p>
 			</div>
 

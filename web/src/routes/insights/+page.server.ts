@@ -20,7 +20,6 @@ const getCountryScores = (scopedAnswers: Answer[]) =>
 
 		return {
 			country,
-			score: getScorePercentage(countryAnswers),
 			chamberScores: Object.fromEntries(
 				chambers.map((chamber) => [chamber, chamberScore(chamber)])
 			) as Partial<Record<Chamber, number>>

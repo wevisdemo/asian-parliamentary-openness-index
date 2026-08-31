@@ -18,6 +18,8 @@ const getAverageScore = (scopedAnswers: Answer[]) => {
 	return scores.length ? scores.reduce((sum, { score }) => sum + score, 0) / scores.length : 0;
 };
 
+const lowerChamberAnswers = answers.filter(({ chamber }) => chamber === 'Lower');
+
 const getDimensionAnswers = (dimension: Dimension) => {
 	const indicatorNumbers = new Set(
 		indicators.filter((indicator) => indicator.dimension === dimension).map(({ number }) => number)
@@ -28,14 +30,14 @@ const getDimensionAnswers = (dimension: Dimension) => {
 			.map(({ number }) => number)
 	);
 
-	return answers.filter(({ questionNumber }) => questionNumbers.has(questionNumber));
+	return lowerChamberAnswers.filter(({ questionNumber }) => questionNumbers.has(questionNumber));
 };
 
 export const load: PageServerLoad = () => ({
 	countryCount: countries.length,
 	indicatorCount: indicators.length,
-	overallScore: getAverageScore(answers),
-	countryScores: getCountryScores(answers).toSorted((a, b) => b.score - a.score),
+	averageScore: getAverageScore(lowerChamberAnswers),
+	countryScores: getCountryScores(lowerChamberAnswers).toSorted((a, b) => b.score - a.score),
 	dimensionScores: dimensions.map((dimension) => ({
 		dimension,
 		score: getAverageScore(getDimensionAnswers(dimension))

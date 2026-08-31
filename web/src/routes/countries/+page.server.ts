@@ -25,16 +25,16 @@ const scores = countries
 			slug: country.slug,
 			name: country.name,
 			lowerChamberScore: chamberScoreRatio(countryAnswers, 'Lower'),
-			upperChamberScore: chamberScoreRatio(countryAnswers, 'Upper'),
-			overallScore: scoreRatio(countryAnswers)
+			upperChamberScore: chamberScoreRatio(countryAnswers, 'Upper')
 		};
 	})
-	.sort((a, b) => (b.overallScore ?? -1) - (a.overallScore ?? -1));
+	.sort((a, b) => (b.lowerChamberScore ?? -1) - (a.lowerChamberScore ?? -1));
 
 const rankedCountries = scores.map((country, index) => ({
 	...country,
 	rank:
-		scores.findIndex(({ overallScore }) => overallScore === country.overallScore) + 1 || index + 1
+		scores.findIndex(({ lowerChamberScore }) => lowerChamberScore === country.lowerChamberScore) +
+			1 || index + 1
 }));
 
 export const load: PageServerLoad = () => ({ countries: rankedCountries });
