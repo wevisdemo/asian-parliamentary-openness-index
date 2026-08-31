@@ -12,6 +12,7 @@
 
 	interface Props {
 		options: TabOption<T>[];
+		id?: string;
 		value?: T;
 		variant?: 'primary' | 'secondary';
 		sticky?: boolean;
@@ -21,6 +22,7 @@
 
 	const {
 		options,
+		id,
 		value,
 		variant = 'primary',
 		sticky = false,
@@ -102,8 +104,9 @@
 	};
 </script>
 
-{#snippet tablist(listClass?: string)}
+{#snippet tablist(listClass?: string, listId?: string)}
 	<div
+		id={listId}
 		role="tablist"
 		class={['flex flex-row', variant === 'secondary' && 'border-b-2 border-purple-5 ', listClass]}
 	>
@@ -129,6 +132,7 @@
 
 {#if sticky}
 	<div
+		{id}
 		bind:this={element}
 		class={[
 			'sticky top-(--navbar-height) z-40 -mx-5 flex flex-1 overflow-x-scroll px-5 md:top-(--navbar-height-md) md:mx-0 md:overflow-visible md:px-0',
@@ -138,5 +142,5 @@
 		{@render tablist('flex-1 whitespace-nowrap')}
 	</div>
 {:else}
-	{@render tablist(className)}
+	{@render tablist(className, id)}
 {/if}

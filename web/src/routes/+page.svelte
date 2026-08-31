@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ChevronRight from 'carbon-icons-svelte/lib/ChevronRight.svelte';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import landingAnimation from '$lib/assets/animations/landing.svg';
@@ -9,6 +10,8 @@
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import { aboutSections } from '$lib/constants/about-sections';
+	import { dimensionSlugs } from '$lib/constants/dimensions';
+	import { insightSections } from '$lib/constants/insight-sections';
 	import { alliance } from '$lib/constants/contributors';
 	import type { PageProps } from './$types';
 	import Sharer from '$lib/components/sharer.svelte';
@@ -83,7 +86,12 @@
 		<Button href={resolve('/insights')}>See more</Button>
 	</div>
 	<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-		<div class="flex flex-col justify-between gap-6 bg-black p-5 text-white md:p-7">
+		<a
+			href="{resolve('/insights')}#{insightSections.countryComparison}"
+			class="relative flex flex-col justify-between gap-6 bg-black p-5 text-white transition-colors hover:bg-gray-9 md:p-7"
+		>
+			<ChevronRight size={20} class="absolute top-5 right-5 text-purple-2 md:top-7 md:right-7" />
+
 			<div class="flex flex-col gap-1">
 				<h3 class="h5 font-bold">Score</h3>
 				<p class="b4 text-purple-2">
@@ -96,18 +104,26 @@
 				average={data.averageScore}
 				class="h-1/2 min-h-32"
 			/>
-		</div>
+		</a>
 		<div class="grid grid-cols-1 gap-1">
 			{#each data.dimensionScores as { dimension, score } (dimension)}
-				<div
-					class="flex flex-row justify-between gap-1 bg-black p-5 text-white md:flex-col md:p-7 md:pb-18"
+				<a
+					href="{resolve('/insights')}?dimension={dimensionSlugs[
+						dimension
+					]}#{insightSections.dimensionComparison}"
+					class="relative flex flex-row justify-between gap-1 bg-black p-5 text-white transition-colors hover:bg-gray-9 md:flex-col md:p-7 md:pb-18"
 				>
+					<ChevronRight
+						size={20}
+						class="absolute top-1/2 right-5 -translate-y-1/2 text-purple-2 md:top-7 md:right-7 md:translate-y-0"
+					/>
+
 					<h3 class="b2 font-bold">{dimension}</h3>
-					<div class="flex flex-col items-end md:items-start">
+					<div class="flex flex-col items-end pr-7 md:items-start md:pr-0">
 						<p class="b4 text-purple-2">Average</p>
 						<p class="mt-1 h3 font-bold text-purple-2">{percentage(score)}</p>
 					</div>
-				</div>
+				</a>
 			{/each}
 		</div>
 	</div>

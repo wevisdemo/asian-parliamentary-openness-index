@@ -7,6 +7,13 @@ export const dimensionOptions = dimensions.map((dimension) => ({
 	value: dimension
 }));
 
+export const dimensionSlugs = Object.fromEntries(
+	dimensions.map((dimension) => [dimension, dimension.toLowerCase().replaceAll(' ', '-')])
+) as Record<Dimension, string>;
+
+export const toDimension = (slug?: string | null): Dimension | undefined =>
+	dimensions.find((dimension) => dimensionSlugs[dimension] === slug);
+
 // TODO: Replace with the final copy from the methodology
 export const dimensionDescriptions: Record<Dimension, string> = {
 	Transparency:

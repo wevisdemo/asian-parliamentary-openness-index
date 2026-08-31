@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import insightHeroImage from '$lib/assets/images/hero/insight.png';
 	import AchievementLegend from '$lib/components/assessment/achievement-legend.svelte';
@@ -14,14 +16,24 @@
 	import {
 		dimensionDescriptions,
 		dimensionOptions,
+		toDimension,
 		type Dimension
 	} from '$lib/constants/dimensions';
+	import { insightSections } from '$lib/constants/insight-sections';
 	import { quickFade } from '$lib/utils/transitions';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
 
-	let selectedDimension = $state(dimensionOptions[0].value);
+	let pickedDimension = $state<Dimension>();
+
+	const linkedDimension = $derived(
+		browser ? toDimension(page.url.searchParams.get('dimension')) : undefined
+	);
+
+	const selectedDimension = $derived(
+		pickedDimension ?? linkedDimension ?? dimensionOptions[0].value
+	);
 
 	let comparedChamber = $state<Chamber>('Lower');
 	let highlightedCountries = $state<string[]>([]);
@@ -29,7 +41,7 @@
 	let dimensionTabs = $state<ReturnType<typeof DimensionTabs>>();
 
 	const selectDimension = (dimension: Dimension) => {
-		selectedDimension = dimension;
+		pickedDimension = dimension;
 		dimensionTabs?.scrollToContent();
 	};
 
@@ -75,7 +87,10 @@
 	<img src={insightHeroImage} alt="" />
 </Hero>
 
-<section class="bg-gray-2">
+<section
+	id={insightSections.countryComparison}
+	class="scroll-mt-(--navbar-height) bg-gray-2 md:scroll-mt-(--navbar-height-md)"
+>
 	<div class="content-container flex flex-col gap-6 md:gap-8">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-0">
 			<h2 class="h4 font-bold md:px-6">Compare by Country</h2>
@@ -117,9 +132,10 @@
 
 		<DimensionTabs
 			bind:this={dimensionTabs}
+			id={insightSections.dimensionComparison}
 			value={selectedDimension}
 			onselect={selectDimension}
-			class="bg-white"
+			class="scroll-mt-(--navbar-height) bg-white md:scroll-mt-(--navbar-height-md)"
 		/>
 
 		{#key selectedDimension}
