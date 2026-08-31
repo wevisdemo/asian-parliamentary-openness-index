@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import exploreByIndicatorHeroImage from '$lib/assets/images/hero/explore-by-indicator.png';
+	import exploreByIndicatorDesktopImage from '$lib/assets/images/hero/explore-by-indicator-desktop.png';
+	import exploreByIndicatorMobileImage from '$lib/assets/images/hero/explore-by-indicator-mobile.png';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
@@ -58,8 +59,14 @@
 <section class="relative overflow-clip bg-gray-2">
 	<div
 		aria-hidden="true"
-		class="pointer-events-none absolute inset-0 bg-size-[100%_auto] bg-bottom bg-no-repeat select-none md:left-auto md:w-1/2 md:bg-size-[auto_100%] md:bg-left md:bg-repeat-x"
-		style="background-image: url({exploreByIndicatorHeroImage})"
+		class="pointer-events-none absolute inset-0 bg-size-[auto_100%] bg-right bg-no-repeat select-none md:hidden"
+		style="background-image: url({exploreByIndicatorMobileImage})"
+	></div>
+
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-size-[auto_100%] bg-left bg-repeat-x select-none md:block"
+		style="background-image: url({exploreByIndicatorDesktopImage})"
 	></div>
 
 	<Hero
