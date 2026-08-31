@@ -38,6 +38,7 @@
 
 	let isOpen = $state(false);
 	let search = $state('');
+	let isButtonPressed = false;
 	let anchor = $state<HTMLElement | null>(null);
 
 	const selectedLabels = $derived(
@@ -68,6 +69,8 @@
 >
 	<div
 		bind:this={anchor}
+		onpointerdowncapture={(event) =>
+			(isButtonPressed = event.target instanceof Element && !!event.target.closest('button'))}
 		class={[
 			selectTriggerClass,
 			'max-w-full',
@@ -87,6 +90,15 @@
 						size={inputSize}
 						class="field-sizing-content min-w-0 bg-transparent leading-none! outline-none placeholder:text-current"
 						oninput={(event) => (search = event.currentTarget.value)}
+						onfocus={() => {
+							if (isButtonPressed) {
+								isButtonPressed = false;
+								return;
+							}
+
+							isOpen = true;
+						}}
+						onblur={() => (isButtonPressed = false)}
 					/>
 				{/snippet}
 			</Combobox.Input>
