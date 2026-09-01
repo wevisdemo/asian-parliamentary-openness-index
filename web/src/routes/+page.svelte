@@ -88,7 +88,7 @@
 	<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
 		<a
 			href="{resolve('/insights')}#{insightSections.countryComparison}"
-			class="relative flex flex-col justify-between gap-6 bg-black p-5 text-white transition-colors hover:bg-gray-9 md:p-7"
+			class="relative flex flex-col justify-between gap-6 bg-black p-5 text-white transition-colors hover:bg-gray-10 md:p-7"
 		>
 			<ChevronRight size={20} class="absolute top-5 right-5 text-purple-2 md:top-7 md:right-7" />
 
@@ -111,7 +111,7 @@
 					href="{resolve('/insights')}?dimension={dimensionSlugs[
 						dimension
 					]}#{insightSections.dimensionComparison}"
-					class="relative flex flex-row justify-between gap-1 bg-black p-5 text-white transition-colors hover:bg-gray-9 md:flex-col md:p-7 md:pb-18"
+					class="relative flex flex-row justify-between gap-1 bg-black p-5 text-white transition-colors hover:bg-gray-10 md:flex-col md:p-7 md:pb-18"
 				>
 					<ChevronRight
 						size={20}
