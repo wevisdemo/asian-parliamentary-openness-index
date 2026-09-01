@@ -38,7 +38,7 @@
 	];
 </script>
 
-<div class={['grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-x-6', className]}>
+<div class={['grid grid-cols-2 gap-4 xl:grid-cols-4 xl:gap-x-6', className]}>
 	{#each audiences as { name, description, image } (name)}
 		<div class="flex flex-col gap-3">
 			<img src={image} alt="" class="aspect-square w-full max-w-30 object-contain" />
