@@ -188,7 +188,10 @@
 
 		<div class="flex flex-col gap-4 md:flex-row md:gap-8">
 			<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />
-			<p class="flex-1">{alliance.description}</p>
+			<div class="flex flex-1 flex-col gap-2">
+				<p>{alliance.description}</p>
+				<Hyperlink href="mailto:contact@aapo-apoi.com">contact@aapo-apoi.com</Hyperlink>
+			</div>
 		</div>
 
 		<h3 class="border-t-2 pt-3 b3 font-bold text-gray-8">Our team</h3>

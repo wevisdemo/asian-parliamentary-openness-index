@@ -207,6 +207,7 @@
 				<div class="flex-1 space-y-2">
 					<h4 class="b2 font-bold">{alliance.name}</h4>
 					<p>{alliance.description}</p>
+					<Hyperlink href="mailto:contact@aapo-apoi.com">contact@aapo-apoi.com</Hyperlink>
 				</div>
 			</div>
 
