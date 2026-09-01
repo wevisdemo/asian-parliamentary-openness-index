@@ -144,9 +144,10 @@
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
 			<h2 class="h5 font-bold">About the index</h2>
 			<p>
-				APOI assesses how openly national parliaments across the Asia-Pacific operate, so citizens,
-				media, and reformers can see exactly where each parliament stands. Every parliament is
-				scored against the same set of questions, organized into three dimensions of openness.
+				APOI assesses how openly national parliaments across the Asia-Pacific region disclose their
+				activities, hold their members accountable, and create meaningful avenues for citizen
+				participation. Parliaments are assessed using a standardized set of indicators organized
+				into three core dimensions of openness.
 			</p>
 		</div>
 

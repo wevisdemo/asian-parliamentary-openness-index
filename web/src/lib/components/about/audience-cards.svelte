@@ -20,13 +20,13 @@
 		{
 			name: 'Parliamentarians & Staff',
 			description:
-				'Identify where your own parliament falls short and strengthen its openness practices.',
+				'Identify institutional shortfalls and strengthen parliamentary openness practices.',
 			image: parliamentImage
 		},
 		{
 			name: 'Academics & Researchers',
 			description:
-				'Analyze whether parliamentary openness is associated with corruption, democratic quality, or public trust.',
+				'Analyze relationships between parliamentary openness, governance quality, democratic health, and public trust.',
 			image: academicsImage
 		},
 		{

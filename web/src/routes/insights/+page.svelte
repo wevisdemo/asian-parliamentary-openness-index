@@ -15,6 +15,7 @@
 	import type { Chamber } from '$lib/constants/chambers';
 	import {
 		dimensionDescriptions,
+		dimensionKeyIndicators,
 		dimensionOptions,
 		toDimension,
 		type Dimension
@@ -146,6 +147,7 @@
 				</p>
 				<p>
 					{dimensionDescriptions[selectedDimension]}
+					{dimensionKeyIndicators[selectedDimension]}
 				</p>
 			</div>
 		{/key}
