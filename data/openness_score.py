@@ -118,7 +118,7 @@ class OpennessScore:
     def get_questions_data(self) -> pd.DataFrame:
         return get_questions_data(self.lower_chamber_df)
 
-    def get_processedd_answer(self, df: pd.DataFrame) -> pd.DataFrame:
+    def get_processed_answer(self, df: pd.DataFrame) -> pd.DataFrame:
         answer_df = df.groupby(["Question"], as_index=False).sum()
         answer_df.rename(
             columns={
@@ -152,7 +152,7 @@ class OpennessScore:
         # Extract answer from lower camber
 
         if self.lower_chamber_df is not None:
-            lower_chamb_answer_df = self.get_processedd_answer(self.lower_chamber_df)
+            lower_chamb_answer_df = self.get_processed_answer(self.lower_chamber_df)
             lower_chamb_answer_df["Chamber"] = "Lower"
             answers_df = lower_chamb_answer_df.sort_values(
                 ["Country", "Chamber", "Question Number"]
@@ -162,7 +162,7 @@ class OpennessScore:
             self.upper_chamber_df is not None
             and self.parliament_type == ParliamentStructuralType.BICAMERAL
         ):
-            upper_chamb_answer_df = self.get_processedd_answer(self.upper_chamber_df)
+            upper_chamb_answer_df = self.get_processed_answer(self.upper_chamber_df)
             upper_chamb_answer_df["Chamber"] = "Upper"
             answers_df = pd.concat(
                 [
@@ -176,7 +176,7 @@ class OpennessScore:
 
         return answers_df
 
-    def get_processedd_context(self, df: pd.DataFrame) -> pd.DataFrame:
+    def get_processed_context(self, df: pd.DataFrame) -> pd.DataFrame:
         chamber_df = df.copy()
 
         # Fill empty from merge cell in `Country context for section`
@@ -199,12 +199,12 @@ class OpennessScore:
 
         return grouped_df
 
-    def get_indicato_contexts_data(self) -> pd.DataFrame:
+    def get_indicator_contexts_data(self) -> pd.DataFrame:
 
         contexts_df = pd.DataFrame(columns=INDICATOR_CONTEXTS_DEFAULT_COLUMNS)
 
         if self.lower_chamber_df is not None:
-            lower_chamb_answer_df = self.get_processedd_context(self.lower_chamber_df)
+            lower_chamb_answer_df = self.get_processed_context(self.lower_chamber_df)
             lower_chamb_answer_df["Chamber"] = "Lower"
 
             contexts_df = lower_chamb_answer_df[
@@ -215,7 +215,7 @@ class OpennessScore:
             self.upper_chamber_df is not None
             and self.parliament_type == ParliamentStructuralType.BICAMERAL
         ):
-            upper_chamb_answer_df = self.get_processedd_context(self.upper_chamber_df)
+            upper_chamb_answer_df = self.get_processed_context(self.upper_chamber_df)
             upper_chamb_answer_df["Chamber"] = "Upper"
             contexts_df = pd.concat(
                 [

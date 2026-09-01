@@ -100,7 +100,7 @@ def main() -> None:
 
     # Constrct `indicator-contexts` csv
     indicator_contexts = pd.concat(
-        [cos.get_indicato_contexts_data() for cos in countries_data], ignore_index=True
+        [cos.get_indicator_contexts_data() for cos in countries_data], ignore_index=True
     )
     indicator_contexts.to_csv(
         os.path.join(OUTPUT_DIR, "indicator-contexts.csv"), index=False
