@@ -72,7 +72,7 @@ def main() -> None:
     questions = get_questions_data(template_sheet_df)
     questions.to_csv(os.path.join(OUTPUT_DIR, "questions.csv"), index=False)
 
-    # Constrct `countries` csv
+    # Construct `countries` csv
     countries = pd.concat(
         [cos.get_country_data() for cos in countries_data], ignore_index=True
     )
@@ -82,7 +82,7 @@ def main() -> None:
         quoting=csv.QUOTE_MINIMAL,
     )
 
-    # Constrct `respondents` csv
+    # Construct `respondents` csv
     respondents = pd.concat(
         [cos.get_respondent_data() for cos in countries_data], ignore_index=True
     )
@@ -92,13 +92,13 @@ def main() -> None:
         quoting=csv.QUOTE_MINIMAL,
     )
 
-    # Constrct `answers` csv
+    # Construct `answers` csv
     answers = pd.concat(
         [cos.get_answers_data() for cos in countries_data], ignore_index=True
     )
     answers.to_csv(os.path.join(OUTPUT_DIR, "answers.csv"), index=False)
 
-    # Constrct `indicator-contexts` csv
+    # Construct `indicator-contexts` csv
     indicator_contexts = pd.concat(
         [cos.get_indicator_contexts_data() for cos in countries_data], ignore_index=True
     )
