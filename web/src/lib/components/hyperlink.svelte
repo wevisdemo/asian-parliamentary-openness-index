@@ -30,7 +30,7 @@
 	};
 
 	const classes = $derived([
-		'inline-flex cursor-pointer items-center gap-1 b4',
+		'inline-flex cursor-pointer items-center gap-1',
 		colorClasses[color],
 		!icon && 'underline',
 		className

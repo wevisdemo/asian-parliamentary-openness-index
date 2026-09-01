@@ -62,7 +62,7 @@
 		href={website}
 		target="_blank"
 		color={variant === 'dark' ? 'white' : 'gray'}
-		class="break-all"
+		class="b4 break-all"
 	>
 		{website}
 	</Hyperlink>

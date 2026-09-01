@@ -31,7 +31,7 @@
 				{@render chevron()}
 			{/if}
 		{:else}
-			<Hyperlink {href} icon={hasNext ? chevron : undefined}>{label}</Hyperlink>
+			<Hyperlink {href} icon={hasNext ? chevron : undefined} class="b4">{label}</Hyperlink>
 		{/if}
 	{/each}
 

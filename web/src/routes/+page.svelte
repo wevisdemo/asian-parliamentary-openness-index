@@ -43,7 +43,7 @@
 <Metadata />
 
 {#snippet seeMore(section: (typeof aboutSections)[number])}
-	<Hyperlink href="{resolve('/about')}#{section.id}" class="self-end">See more</Hyperlink>
+	<Hyperlink href="{resolve('/about')}#{section.id}" class="self-end b4">See more</Hyperlink>
 {/snippet}
 
 <section

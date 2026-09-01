@@ -5,32 +5,39 @@
 
 	interface Props {
 		children: Snippet;
-		maxLength?: number;
+		maxLines?: number;
 		class?: string;
 	}
 
-	const { children, maxLength = 200, class: className }: Props = $props();
+	const { children, maxLines = 3, class: className }: Props = $props();
 
-	let fullText = $state('');
 	let isExpanded = $state(false);
+	let isTruncatable = $state(false);
 
-	const isTruncatable = $derived(fullText.length > maxLength);
-	const isTruncated = $derived(isTruncatable && !isExpanded);
+	const measureOverflow: Attachment<HTMLParagraphElement> = (paragraph) => {
+		const observer = new ResizeObserver(() => {
+			if (!isExpanded) {
+				isTruncatable = paragraph.scrollHeight > paragraph.clientHeight;
+			}
+		});
 
-	const measureText: Attachment<HTMLParagraphElement> = (paragraph) => {
-		fullText = paragraph.textContent ?? '';
+		observer.observe(paragraph);
+
+		return () => observer.disconnect();
 	};
 </script>
 
-<p class={className} {@attach measureText}>
-	{#if isTruncated}
-		{`${fullText.slice(0, maxLength).trimEnd()}…`}
-	{:else}
+<div class="flex flex-col items-start">
+	<p
+		class={[className, !isExpanded && 'line-clamp-(--max-lines)']}
+		style="--max-lines: {maxLines}"
+		{@attach measureOverflow}
+	>
 		{@render children()}
-	{/if}
+	</p>
 	{#if isTruncatable}
-		<Hyperlink class="ml-1" onclick={() => (isExpanded = !isExpanded)}>
+		<Hyperlink class="b4" onclick={() => (isExpanded = !isExpanded)}>
 			{isExpanded ? 'See less' : 'See more'}
 		</Hyperlink>
 	{/if}
-</p>
+</div>

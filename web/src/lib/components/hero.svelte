@@ -51,8 +51,8 @@
 					<p class="b5 text-gray-6">Assessment Date: {page.data.cycle.assessmentDate}</p>
 				</div>
 				<div class="flex flex-row items-start gap-6 md:gap-8">
-					<Hyperlink onclick={() => (openModal = 'about')}>About the Index</Hyperlink>
-					<Hyperlink onclick={() => (openModal = 'methodology')}>Methodology</Hyperlink>
+					<Hyperlink class="b4" onclick={() => (openModal = 'about')}>About the Index</Hyperlink>
+					<Hyperlink class="b4" onclick={() => (openModal = 'methodology')}>Methodology</Hyperlink>
 				</div>
 			</div>
 		{/if}
