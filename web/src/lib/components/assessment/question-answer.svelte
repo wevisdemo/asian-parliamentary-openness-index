@@ -27,12 +27,13 @@
 		<div in:quickFade class="flex flex-4 flex-col gap-2 md:flex-row md:gap-6">
 			<ul class="flex flex-1 flex-col">
 				{#each question.answerOptions as option (option.answer)}
-					{@const selectedOption = selectedOptions[option.answer]}
-					<li class={['flex flex-row gap-2', selectedOption ? 'font-bold' : 'text-gray-6']}>
+					{@const optionState = selectedOptions[option.answer]}
+					{@const isSelected = optionState === 'yes'}
+					<li class={['flex flex-row gap-2', isSelected ? 'font-bold' : 'text-gray-6']}>
 						<span aria-hidden="true">&bull;</span>
 						<span class="flex-1">{option.text}</span>
-						<span class={selectedOption ? 'text-black' : undefined}>
-							{#if answer?.answer || (question.answerType === 'multiple' && selectedOption !== undefined)}
+						<span class={isSelected ? 'text-black' : undefined}>
+							{#if answer?.answer && optionState !== 'n/a'}
 								<span class="font-mono">{option.score.toFixed(2)}</span>
 							{:else}
 								<Tooltip>

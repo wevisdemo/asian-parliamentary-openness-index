@@ -12,13 +12,14 @@ import {
 import type { AchievementLevel } from '$lib/constants/achievements';
 import { chambers } from '$lib/constants/chambers';
 
-const optionStates: Record<string, boolean | undefined> = {
-	yes: true,
-	no: false,
-	'n/a': undefined
-};
+export const optionStates = ['yes', 'no', 'n/a'] as const;
 
-/** Decodes `a=yes;b=no` into `{ a: true, b: false }`, `a` into `{ a: true }`, with all n/a omitted */
+export type OptionState = (typeof optionStates)[number];
+
+const isOptionState = (value: string): value is OptionState =>
+	(optionStates as readonly string[]).includes(value);
+
+/** Decodes `a=yes;b=n/a` into `{ a: 'yes', b: 'n/a' }`, `a` into `{ a: 'yes' }` */
 const asAnswer = createTransformer({
 	decode: (value: string) =>
 		value
@@ -36,14 +37,14 @@ const asAnswer = createTransformer({
 					throw new Error(`Option "${option}" has an empty key`);
 				}
 
-				if (!(state in optionStates)) {
+				if (!isOptionState(state)) {
 					throw new Error(`Option "${option}" has an unknown value "${state}"`);
 				}
 
-				return [key, optionStates[state]] as const;
+				return [key, state] as const;
 			})
-			.reduce<Record<string, boolean>>(
-				(options, [key, state]) => (state === undefined ? options : { ...options, [key]: state }),
+			.reduce<Record<string, OptionState>>(
+				(options, [key, state]) => ({ ...options, [key]: state }),
 				{}
 			),
 	emptyValues: ['', 'n/a']

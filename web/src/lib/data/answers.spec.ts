@@ -22,20 +22,20 @@ const parseAnswerColumn = (value: string) =>
 	)[0].answer;
 
 describe('answer column', () => {
-	it('decodes each selected option', () => {
-		expect(parseAnswerColumn('a=yes;b=no')).toEqual({ a: true, b: false });
+	it('decodes the state of each option', () => {
+		expect(parseAnswerColumn('a=yes;b=no')).toEqual({ a: 'yes', b: 'no' });
 	});
 
 	it('treats an option without a value as selected', () => {
-		expect(parseAnswerColumn('a;b=no')).toEqual({ a: true, b: false });
+		expect(parseAnswerColumn('a;b=no')).toEqual({ a: 'yes', b: 'no' });
 	});
 
-	it('omits options that are not applicable', () => {
-		expect(parseAnswerColumn('a=yes;b=n/a')).toEqual({ a: true });
+	it('keeps options that are not applicable', () => {
+		expect(parseAnswerColumn('a=yes;b=n/a')).toEqual({ a: 'yes', b: 'n/a' });
 	});
 
 	it('trims spaces around keys and values', () => {
-		expect(parseAnswerColumn('a = yes ; b = no')).toEqual({ a: true, b: false });
+		expect(parseAnswerColumn('a = yes ; b = no')).toEqual({ a: 'yes', b: 'no' });
 	});
 
 	it('has no answer when the whole column is empty or not applicable', () => {
