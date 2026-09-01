@@ -29,7 +29,7 @@
 		{@render children()}
 	{/if}
 	{#if isTruncatable}
-		<Hyperlink class="ml-1 underline" onclick={() => (isExpanded = !isExpanded)}>
+		<Hyperlink class="ml-1" onclick={() => (isExpanded = !isExpanded)}>
 			{isExpanded ? 'See less' : 'See more'}
 		</Hyperlink>
 	{/if}

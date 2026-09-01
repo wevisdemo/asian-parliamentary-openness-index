@@ -66,12 +66,7 @@
 						>
 							{#each context.evidences as evidence (evidence)}
 								<li>
-									<Hyperlink
-										href={evidence}
-										target="_blank"
-										color="gray"
-										class="b4 break-all underline"
-									>
+									<Hyperlink href={evidence} target="_blank" color="gray" class="b4 break-all">
 										{evidence}
 									</Hyperlink>
 								</li>

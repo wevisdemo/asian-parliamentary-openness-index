@@ -24,14 +24,15 @@
 	}: Props = $props();
 
 	const colorClasses = {
-		purple: 'text-purple-5',
-		gray: 'text-gray-8',
-		white: 'text-white'
+		purple: 'text-purple-5 hover:text-gray-8',
+		gray: 'text-gray-8 hover:text-purple-5',
+		white: 'text-white hover:text-purple-3'
 	};
 
 	const classes = $derived([
-		'inline-flex cursor-pointer items-center gap-1 b4 hover:underline',
+		'inline-flex cursor-pointer items-center gap-1 b4',
 		colorClasses[color],
+		!icon && 'underline',
 		className
 	]);
 </script>
