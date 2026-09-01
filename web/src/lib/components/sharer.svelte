@@ -9,11 +9,9 @@
 
 	const { class: className }: Props = $props();
 
-	const shareUrl = $derived.by(() => {
-		const { origin, pathname } = browser ? window.location : page.url;
-
-		return `${origin}${pathname}`;
-	});
+	const shareUrl = $derived(
+		`${browser ? window.location.origin : page.url.origin}${page.url.pathname}`
+	);
 	const encodedUrl = $derived(encodeURIComponent(shareUrl));
 
 	const shareLinks = $derived([
