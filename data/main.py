@@ -30,6 +30,15 @@ def main() -> None:
         index_sheet_links.get("Country survey", "")
     )
 
+    # Load template sheet
+    template_sheet_df = get_data_from_google_sheet(index_sheet_links.get("Template"))
+    # Construct `indicators` csv
+    indicators = get_indicator_data(template_sheet_df)
+    indicators.to_csv(os.path.join(OUTPUT_DIR, "indicators.csv"), index=False)
+    # Construct `questions` csv
+    questions = get_questions_data(template_sheet_df)
+    questions.to_csv(os.path.join(OUTPUT_DIR, "questions.csv"), index=False)
+
     # Construct OpennessScore for every country
     countries_data: List[OpennessScore] = []
     for country, links in sheet_links.items():
@@ -60,17 +69,9 @@ def main() -> None:
                 country_context_df=country_context_df,
                 lower_chamber_df=lower_chamber_df,
                 upper_chamber_df=upper_chamber_df,
+                question_df=questions,
             )
         )
-
-    # Load template sheet
-    template_sheet_df = get_data_from_google_sheet(index_sheet_links.get("Template"))
-    # Construct `indicators` csv
-    indicators = get_indicator_data(template_sheet_df)
-    indicators.to_csv(os.path.join(OUTPUT_DIR, "indicators.csv"), index=False)
-    # Construct `questions` csv
-    questions = get_questions_data(template_sheet_df)
-    questions.to_csv(os.path.join(OUTPUT_DIR, "questions.csv"), index=False)
 
     # Construct `countries` csv
     countries = pd.concat(

@@ -138,7 +138,7 @@ def get_questions_data(df: pd.DataFrame | None = None) -> pd.DataFrame:
     return pd.DataFrame(columns=QUESTIONS_TRANSFORM_COLUMNS)
 
 
-def normalize_answer(row: pd.Series) -> str:
+def normalize_answer(row: pd.Series, answer_options: str | None = None) -> str:
     # Check question type
     # If single; normalize to lower case
     normalized_chars = unicodedata.normalize("NFKC", row["Answer"])
@@ -158,7 +158,9 @@ def normalize_answer(row: pd.Series) -> str:
         return "n/a"
 
     # Get all possible options
-    possible_options = list(get_option_score_index(row["Answer Options"]).keys())
+    if answer_options is None:
+        answer_options = str(row["Answer Options"])
+    possible_options = list(get_option_score_index(answer_options).keys())
     # Check if answer if not in option
     if not any(
         re.search(r"(^" + option + r"|\;" + option + r")", str(selected_options_str))

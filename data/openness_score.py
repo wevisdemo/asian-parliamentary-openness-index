@@ -32,6 +32,7 @@ class OpennessScore:
         country_context_df: pd.DataFrame | None = None,
         lower_chamber_df: pd.DataFrame | None = None,
         upper_chamber_df: pd.DataFrame | None = None,
+        question_df: pd.DataFrame | None = None,
     ):
         self.country = country
         self._score = None
@@ -52,6 +53,8 @@ class OpennessScore:
                     self.parliament_type = ParliamentStructuralType.UNICAMERAL
                 case ParliamentStructuralType.BICAMERAL.value:
                     self.parliament_type = ParliamentStructuralType.BICAMERAL
+
+        self.question_df = question_df
 
     def get_country_data(self) -> pd.DataFrame:
 
@@ -133,9 +136,21 @@ class OpennessScore:
         answer_df["Country"] = self.country
         answer_df["Chamber"] = None  # Add after processed
 
+        # Construct answer options index
+        answer_options = {}
+        if self.question_df is not None:
+            answer_options = self.question_df.set_index("Question Number")[
+                "Answer Options"
+            ].to_dict()
+
         # Normalize answer
         answer_df["Answer"] = answer_df["Answer"].fillna("")
-        answer_df["Answer"] = answer_df.apply(lambda row: normalize_answer(row), axis=1)
+        answer_df["Answer"] = answer_df.apply(
+            lambda row: normalize_answer(
+                row=row, answer_options=answer_options.get(row["Question Number"], "")
+            ),
+            axis=1,
+        )
 
         # TODO: calculate score
         # Calcualte & Add Score
