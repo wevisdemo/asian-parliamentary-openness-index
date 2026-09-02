@@ -148,7 +148,7 @@ def normalize_answer(row: pd.Series, answer_options: str | None = None) -> str:
             normalized_chars.lower().strip() + r"\)\s?", row["Answer Options"]
         ):
             return "n/a"
-        return normalized_chars.lower()
+        return normalized_chars.lower().strip()
 
     # Multiple choices
     selected_options_str = normalized_chars
