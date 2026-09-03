@@ -14,7 +14,7 @@
 	let isExpanded = $state(false);
 	let isTruncatable = $state(false);
 
-	const measureOverflow: Attachment<HTMLParagraphElement> = (paragraph) => {
+	const measureOverflow: Attachment<HTMLElement> = (paragraph) => {
 		const observer = new ResizeObserver(() => {
 			if (!isExpanded) {
 				isTruncatable = paragraph.scrollHeight > paragraph.clientHeight;
@@ -28,13 +28,13 @@
 </script>
 
 <div class="flex flex-col items-start">
-	<p
+	<div
 		class={[className, !isExpanded && 'line-clamp-(--max-lines)']}
 		style="--max-lines: {maxLines}"
 		{@attach measureOverflow}
 	>
 		{@render children()}
-	</p>
+	</div>
 	{#if isTruncatable}
 		<Hyperlink class="b4" onclick={() => (isExpanded = !isExpanded)}>
 			{isExpanded ? 'See less' : 'See more'}

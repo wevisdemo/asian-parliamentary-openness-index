@@ -5,7 +5,7 @@
 	import { resolve } from '$app/paths';
 	import exploreByCountryHeroImage from '$lib/assets/images/hero/explore-by-country.png';
 	import Hero from '$lib/components/hero.svelte';
-	import DownloadDataCard from '$lib/components/download-data-card.svelte';
+	import MoreActionsSection from '$lib/components/more-actions-section.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import SearchInput from '$lib/components/search-input.svelte';
 
@@ -115,6 +115,6 @@
 			</p>
 		{/each}
 
-		<DownloadDataCard />
+		<MoreActionsSection />
 	</div>
 </section>

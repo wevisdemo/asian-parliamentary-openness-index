@@ -4,7 +4,7 @@
 	import indicatorHeroImage from '$lib/assets/images/hero/indicator.png';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
-	import DownloadDataCard from '$lib/components/download-data-card.svelte';
+	import MoreActionsSection from '$lib/components/more-actions-section.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import AchievementBar from '$lib/components/assessment/achievement-bar.svelte';
@@ -124,6 +124,6 @@
 
 		<Pagination options={paginationOptions} value={selectedStatus} onselect={selectStatus} />
 
-		<DownloadDataCard />
+		<MoreActionsSection />
 	</section>
 </div>

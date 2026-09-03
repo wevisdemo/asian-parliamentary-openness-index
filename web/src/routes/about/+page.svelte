@@ -15,6 +15,7 @@
 	import { aboutSections } from '$lib/constants/about-sections';
 	import { academicPartners } from '$lib/constants/academic-partners';
 	import { alliance } from '$lib/constants/contributors';
+	import { feedbackCategories, feedbackFormUrl } from '$lib/constants/feedback';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
@@ -43,7 +44,7 @@
 			class="w-full shrink-0 self-start lg:sticky lg:top-28 lg:flex lg:w-56"
 		/>
 
-		<div class="flex flex-1 flex-col gap-7.5">
+		<div class="flex flex-1 flex-col gap-5 lg:gap-7.5">
 			<h2 id={aboutSections[0].id}>About the index</h2>
 
 			<p>
@@ -200,6 +201,37 @@
 				<span class="font-bold">Result:</span>
 				<Button size="small" variant="secondary" href={resolve('/insights')}>2026</Button>
 			</div>
+
+			<h2>Submit your feedback</h2>
+
+			<p>
+				Your feedback helps us improve the accuracy, relevance, and usability of the index. You can
+				submit feedback in one of the four categories below. Please provide as much detail as
+				possible so the relevant team can review and respond appropriately.
+			</p>
+
+			<Button href={feedbackFormUrl} target="_blank" class="self-start">Feedback form</Button>
+
+			{#each feedbackCategories as { title, description, criteriaLabel, criteria, whatHappensNext }, index (title)}
+				<h3>{index + 1}. {title}</h3>
+
+				<TruncatableParagraph class="space-y-3">
+					<p>{description}</p>
+					<p>{criteriaLabel}</p>
+					<ul class="list-disc pl-5">
+						{#each criteria as criterion (criterion)}
+							<li>{criterion}</li>
+						{/each}
+					</ul>
+					<p class="font-bold">What happens next?</p>
+					<p>{whatHappensNext}</p>
+				</TruncatableParagraph>
+			{/each}
+
+			<p class="font-bold">
+				Thank you for helping us continuously improve the index and make it more accurate, relevant,
+				and useful.
+			</p>
 
 			<h2 id={aboutSections[2].id}>About contributors</h2>
 

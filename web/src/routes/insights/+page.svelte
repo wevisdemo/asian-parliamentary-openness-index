@@ -10,7 +10,7 @@
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
-	import MoreActionCard from '$lib/components/more-action-card.svelte';
+	import MoreActionsSection from '$lib/components/more-actions-section.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
 	import type { Chamber } from '$lib/constants/chambers';
 	import {
@@ -175,7 +175,7 @@
 
 		<Pagination options={dimensionOptions} value={selectedDimension} onselect={selectDimension} />
 
-		<MoreActionCard
+		<MoreActionsSection
 			title="Go deeper into the data"
 			description="Explore every country's full profile, or browse the index indicator by indicator."
 			actions={[

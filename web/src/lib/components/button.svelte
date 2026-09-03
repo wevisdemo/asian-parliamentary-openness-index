@@ -6,6 +6,7 @@
 		size?: 'big' | 'small';
 		disabled?: boolean;
 		href?: string;
+		target?: '_blank' | '_self';
 		download?: string;
 		type?: 'button' | 'submit';
 		icon?: Snippet;
@@ -19,6 +20,7 @@
 		size = 'big',
 		disabled = false,
 		href,
+		target,
 		download,
 		type = 'button',
 		icon,
@@ -55,6 +57,8 @@
 {#if href}
 	<a
 		href={disabled ? undefined : href}
+		{target}
+		rel={target === '_blank' ? 'noreferrer' : undefined}
 		{download}
 		aria-disabled={disabled}
 		class={classes}
