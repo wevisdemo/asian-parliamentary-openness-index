@@ -103,7 +103,7 @@
 				<div class="flex flex-row flex-wrap gap-2">
 					<h2 class="b1 font-bold">
 						{dimensionSummaries.length}
-						{dimensionSummaries.length === 1 ? 'Indicator' : 'Indicators'}
+						{dimensionSummaries.length === 1 ? 'indicator' : 'indicators'}
 					</h2>
 					<div class="mr-auto flex flex-row items-center gap-2 text-gray-6 md:mt-1">
 						<span class="b4 whitespace-nowrap">Sorted by</span>
@@ -122,8 +122,8 @@
 					<ListGroup
 						name={group.name}
 						postfix="({group.summaries.length} {group.summaries.length === 1
-							? 'Indicator'
-							: 'Indicators'})"
+							? 'indicator'
+							: 'indicators'})"
 					>
 						{#each group.summaries as summary (summary.indicator.number)}
 							<IndicatorCard {...summary} />

@@ -59,7 +59,7 @@
 	score,
 	totalApplicableScore
 }: (typeof chamberScores)[number])}
-	<span class="b5 text-gray-8 md:text-nowrap">{value} Chamber</span>
+	<span class="b5 text-gray-8 md:text-nowrap">{value} chamber</span>
 	{#if totalApplicableScore > 0}
 		<span class="flex flex-row flex-wrap font-mono">
 			<span class="font-bold">{score.toFixed(2)}</span>

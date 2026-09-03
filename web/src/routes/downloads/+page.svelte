@@ -33,13 +33,13 @@
 		/>
 
 		<div class="flex flex-1 flex-col gap-6 md:gap-8">
-			<h2 id={downloadSections[0].id}>Raw data</h2>
+			<h2 id={downloadSections[0].id}>Raw Data</h2>
 
 			{#each data.cycles as cycle (cycle.year)}
 				<div class="flex flex-row items-start justify-between gap-6 bg-gray-1 p-6">
 					<div class="flex flex-col gap-2">
 						<h3 class="font-bold">
-							{cycle.year} Asia Parliamentary Openness Index Result
+							{cycle.year} Asian Parliamentary Openness Index result
 						</h3>
 						<div class="b4 text-gray-8">
 							<p>Number of countries: {data.countryCount}</p>

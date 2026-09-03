@@ -35,7 +35,7 @@
 		<h3 class="b2 font-bold">{indicator.name}</h3>
 		<p class="b4 text-gray-6">
 			<span class="font-mono">{questionCount}</span>
-			{questionCount === 1 ? 'Question' : 'Questions'}
+			{questionCount === 1 ? 'question' : 'questions'}
 		</p>
 	</div>
 

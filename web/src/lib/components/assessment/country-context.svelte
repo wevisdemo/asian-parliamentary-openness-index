@@ -20,7 +20,7 @@
 
 <ul class={['space-y-1 b4', variantClasses[variant], className]}>
 	<li>
-		<strong>Government System:</strong>
+		<strong>Government system:</strong>
 		{country.governmentSystem}
 		{#if country.governmentSystemRemark}
 			{@render remark(country.governmentSystemRemark)}
@@ -33,9 +33,9 @@
 			{@render remark(country.parliamentTypeRemark)}
 		{/if}
 	</li>
-	<li><strong>Parliament Name:</strong> {country.parliamentName}</li>
+	<li><strong>Parliament name:</strong> {country.parliamentName}</li>
 	<li>
-		<strong>Parliament Official Website:</strong>
+		<strong>Parliament official website:</strong>
 		{#if country.parliamentWebsites.length > 1}
 			<ul class="list-disc pl-4 marker:text-gray-6">
 				{#each country.parliamentWebsites as website (website)}

@@ -1,1 +1,1 @@
-export const downloadSections = [{ id: 'raw-data', label: 'Raw data' }];
+export const downloadSections = [{ id: 'raw-data', label: 'Raw Data' }];

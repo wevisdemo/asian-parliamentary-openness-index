@@ -19,13 +19,13 @@
 
 	const exploreActions = [
 		{
-			title: 'Explore by country',
+			title: 'Explore by Country',
 			description: "See every country's chamber-by-chamber breakdown and indicator-level detail.",
 			label: 'Explore',
 			href: resolve('/countries')
 		},
 		{
-			title: 'Explore by indicator',
+			title: 'Explore by Indicator',
 			description: 'See how every country compares on a single indicator, question by question.',
 			label: 'Explore',
 			href: resolve('/indicators')
@@ -64,8 +64,8 @@
 			<p class="b2">A regional index tracking how openly Asia-Pacific parliaments operate.</p>
 			<div class="my-2 grid w-full grid-cols-1 gap-2 md:grid-cols-3">
 				<Button href={resolve('/insights')}>Insights</Button>
-				<Button href={resolve('/countries')} variant="secondary">Explore by country</Button>
-				<Button href={resolve('/indicators')} variant="secondary">Explore by indicator</Button>
+				<Button href={resolve('/countries')} variant="secondary">Explore by Country</Button>
+				<Button href={resolve('/indicators')} variant="secondary">Explore by Indicator</Button>
 			</div>
 			<Sharer />
 		</div>
@@ -76,7 +76,7 @@
 	<div class="mx-auto flex flex-col items-start gap-4 px-5 py-8 md:max-w-lg md:gap-6 md:py-16">
 		<div class="flex flex-col gap-1">
 			<h2 class="h5 font-bold">{page.data.cycle.year} Insight</h2>
-			<p class="b5 text-gray-6">Assessment Date: {page.data.cycle.assessmentDate}</p>
+			<p class="b5 text-gray-6">Assessment date: {page.data.cycle.assessmentDate}</p>
 		</div>
 		<p>
 			Across {data.countryCount} parliaments assessed this cycle, the regional lower chamber average sits
@@ -143,7 +143,7 @@
 <section>
 	<div class="content-container flex flex-col gap-6 md:gap-8">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-			<h2 class="h5 font-bold">About the index</h2>
+			<h2 class="h5 font-bold">About the Index</h2>
 			<p>
 				APOI assesses how openly national parliaments across the Asia-Pacific region disclose their
 				activities, hold their members accountable, and create meaningful avenues for citizen
@@ -153,7 +153,7 @@
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<h3 class="b2 font-bold text-gray-6">3 Dimensions</h3>
+			<h3 class="b2 font-bold text-gray-6">3 dimensions</h3>
 			<DimensionCards />
 		</div>
 
@@ -177,7 +177,7 @@
 
 <section class="bg-gray-1">
 	<div class="content-container flex flex-col gap-6 md:gap-8">
-		<h2 class="h5 font-bold">Who this is for</h2>
+		<h2 class="h5 font-bold">Who This Is For</h2>
 		<AudienceCards />
 	</div>
 </section>

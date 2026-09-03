@@ -45,7 +45,7 @@
 		/>
 
 		<div class="flex flex-1 flex-col gap-5 lg:gap-7.5">
-			<h2 id={aboutSections[0].id}>About the index</h2>
+			<h2 id={aboutSections[0].id}>About the Index</h2>
 
 			<p>
 				Asian Parliamentary Openness Index (APOI) is an assessment tool developed by the Asian
@@ -62,13 +62,13 @@
 				push policy reforms based on nationally comparable evidence.
 			</p>
 
-			<h3>3 Dimensions</h3>
+			<h3>3 dimensions</h3>
 
 			<p>The index consists of three main dimensions for thematic assessment.</p>
 
 			<DimensionCards detailed />
 
-			<h3>Index Structure</h3>
+			<h3>Index structure</h3>
 
 			<div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3">
 				<StructureGraphic />
@@ -86,7 +86,7 @@
 
 			<h2 id={aboutSections[1].id}>Methodology</h2>
 
-			<h3>Scope and Objectives</h3>
+			<h3>Scope and objectives</h3>
 
 			<TruncatableParagraph>
 				Effective democratic governance requires that legislatures operate with meaningful openness
@@ -100,7 +100,7 @@
 				demands in verifiable, cross-nationally comparable evidence.
 			</TruncatableParagraph>
 
-			<h3>Methodological Foundations</h3>
+			<h3>Methodological foundations</h3>
 
 			<TruncatableParagraph>
 				The APOI indicator framework builds on three established international precedents. The
@@ -123,7 +123,7 @@
 				frameworks to the Asian regional context.
 			</TruncatableParagraph>
 
-			<h3>Indicator Co-Construction Process</h3>
+			<h3>Indicator co-construction process</h3>
 
 			<TruncatableParagraph>
 				APOI's indicators were developed through a participatory co-construction process. Beginning
@@ -136,7 +136,7 @@
 				2026.
 			</TruncatableParagraph>
 
-			<h3>Assessment Framework and Scoring</h3>
+			<h3>Assessment framework and scoring</h3>
 
 			<TruncatableParagraph>
 				The APOI framework comprises three dimensions and {data.indicatorCount} assessment items. Dimension
@@ -159,7 +159,7 @@
 				range of openness, generating actionable diagnoses for reform.
 			</TruncatableParagraph>
 
-			<h3>De Facto Assessment Approach</h3>
+			<h3>De facto assessment approach</h3>
 
 			<TruncatableParagraph>
 				A defining methodological principle of APOI is its focus on de facto practice rather than de
@@ -172,7 +172,7 @@
 				safeguard against political regression.
 			</TruncatableParagraph>
 
-			<h3>Survey Implementation and Dissemination</h3>
+			<h3>Survey implementation and dissemination</h3>
 
 			<TruncatableParagraph>
 				In each country, the assessment is carried out by local PMOs or independent think tanks,
@@ -193,7 +193,7 @@
 				accountable to the people they serve.
 			</TruncatableParagraph>
 
-			<h3>Assessment Cycles</h3>
+			<h3>Assessment cycles</h3>
 
 			<p>Every 2 years, during July–August.</p>
 
@@ -202,7 +202,7 @@
 				<Button size="small" variant="secondary" href={resolve('/insights')}>2026</Button>
 			</div>
 
-			<h2>Submit your feedback</h2>
+			<h2>Submit Your Feedback</h2>
 
 			<p>
 				Your feedback helps us improve the accuracy, relevance, and usability of the index. You can
@@ -233,7 +233,7 @@
 				and useful.
 			</p>
 
-			<h2 id={aboutSections[2].id}>About contributors</h2>
+			<h2 id={aboutSections[2].id}>About Contributors</h2>
 
 			<div class="flex flex-col gap-4 md:flex-row md:gap-8">
 				<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />

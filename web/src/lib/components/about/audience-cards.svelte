@@ -12,25 +12,25 @@
 
 	const audiences = [
 		{
-			name: 'NGOs & Civil Society',
+			name: 'NGOs & civil society',
 			description:
 				'Plan advocacy activities and prioritize reform efforts using indicator-level evidence.',
 			image: ngoImage
 		},
 		{
-			name: 'Parliamentarians & Staff',
+			name: 'Parliamentarians & staff',
 			description:
 				'Identify institutional shortfalls and strengthen parliamentary openness practices.',
 			image: parliamentImage
 		},
 		{
-			name: 'Academics & Researchers',
+			name: 'Academics & researchers',
 			description:
 				'Analyze relationships between parliamentary openness, governance quality, democratic health, and public trust.',
 			image: academicsImage
 		},
 		{
-			name: 'The Press',
+			name: 'The press',
 			description:
 				'Report on transparency gaps to raise public awareness and hold parliaments accountable.',
 			image: pressImage

@@ -66,7 +66,7 @@
 			<h3 class="b2 font-bold">{indicator.name}</h3>
 			<p class="b4 text-gray-6">
 				<span class="font-mono">{questions.length}</span>
-				{questions.length === 1 ? 'Question' : 'Questions'}
+				{questions.length === 1 ? 'question' : 'questions'}
 			</p>
 		</div>
 	{/snippet}

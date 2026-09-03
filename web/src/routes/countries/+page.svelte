@@ -83,10 +83,10 @@
 					<ChevronDown class="shrink-0" size={16} />
 				{/if}
 			</button>
-			<span class="md:col-start-2 md:row-start-1">Country Name</span>
+			<span class="md:col-start-2 md:row-start-1">Country name</span>
 			<div class={scoresClasses}>
-				<span class={cellClasses.lowerChamber}>Lower Chamber</span>
-				<span class={cellClasses.upperChamber}>Upper Chamber</span>
+				<span class={cellClasses.lowerChamber}>Lower chamber</span>
+				<span class={cellClasses.upperChamber}>Upper chamber</span>
 			</div>
 		</div>
 

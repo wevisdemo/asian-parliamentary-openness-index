@@ -48,7 +48,7 @@
 					<p class="b2 font-bold text-gray-8">
 						Asian Parliamentary Openness Index {page.data.cycle.year}
 					</p>
-					<p class="b5 text-gray-6">Assessment Date: {page.data.cycle.assessmentDate}</p>
+					<p class="b5 text-gray-6">Assessment date: {page.data.cycle.assessmentDate}</p>
 				</div>
 				<div class="flex flex-row items-start gap-6 md:gap-8">
 					<Hyperlink class="b4" onclick={() => (openModal = 'about')}>About the Index</Hyperlink>

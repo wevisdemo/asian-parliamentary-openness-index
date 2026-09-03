@@ -77,7 +77,7 @@
 	<div class="flex flex-col gap-6">
 		<h1 class="h2 font-bold">Insights</h1>
 		<div class="flex flex-col gap-2">
-			<p class="b3 font-bold">{data.countryCount} Countries were assessed</p>
+			<p class="b3 font-bold">{data.countryCount} countries were assessed</p>
 			<p class="b5 text-gray-8">
 				As this is the inaugural assessment cycle, it includes only the {data.countryCount} founding member
 				countries of the AAPO network. The assessment will expand to include more countries in future
@@ -179,8 +179,8 @@
 			title="Go deeper into the data"
 			description="Explore every country's full profile, or browse the index indicator by indicator."
 			actions={[
-				{ label: 'Explore by country', href: resolve('/countries') },
-				{ label: 'Explore by indicator', href: resolve('/indicators') }
+				{ label: 'Explore by Country', href: resolve('/countries') },
+				{ label: 'Explore by Indicator', href: resolve('/indicators') }
 			]}
 		/>
 	</div>

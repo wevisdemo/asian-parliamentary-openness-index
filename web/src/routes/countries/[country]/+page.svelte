@@ -25,8 +25,8 @@
 	const { data } = $props();
 
 	const groupByOptions = [
-		{ label: 'Achievement Level', value: 'achievement-level' },
-		{ label: 'Dimension Relevance', value: 'dimension-relevance' }
+		{ label: 'Achievement level', value: 'achievement-level' },
+		{ label: 'Dimension relevance', value: 'dimension-relevance' }
 	];
 
 	let selectedChamber = $state(chamberOptions[0].value);
@@ -149,7 +149,7 @@
 				</p>
 			{/key}
 			<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
-				<h3 class="b1 font-bold">{dimensionIndicators.length} Indicators</h3>
+				<h3 class="b1 font-bold">{dimensionIndicators.length} indicators</h3>
 				<div class="mt-1 flex flex-row items-center gap-2 text-gray-6">
 					<span class="b4 whitespace-nowrap">Grouped by</span>
 					<Dropdown
@@ -167,8 +167,8 @@
 					<ListGroup
 						name={group.name}
 						postfix="({group.indicators.length} {group.indicators.length === 1
-							? 'Indicator'
-							: 'Indicators'})"
+							? 'indicator'
+							: 'indicators'})"
 						description={group.description}
 					>
 						{#each group.indicators as { indicator, questions }, index (`${selectedChamber}-${selectedDimension}-${group.name}-${index}`)}
@@ -198,7 +198,7 @@
 
 		{#if data.respondents.length}
 			<div class="mt-8 flex flex-col gap-6 md:mt-16">
-				<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the Respondent</h2>
+				<h2 class="border-t-4 border-gray-8 pt-6 b2 font-bold text-gray-8">About the respondent</h2>
 
 				{#each data.respondents as respondent, index (index)}
 					<div

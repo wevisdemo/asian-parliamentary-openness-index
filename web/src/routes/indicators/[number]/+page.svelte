@@ -79,8 +79,8 @@
 			<h1 class="h2 font-bold">{indicator.name}</h1>
 			<ul class="space-y-1 b4 text-gray-8">
 				<li><strong>Dimension:</strong> {indicator.dimension}</li>
-				<li><strong>Dimension Relevance:</strong> {indicator.dimensionRelevance}</li>
-				<li><strong>Number of question:</strong> {data.summary.questionCount}</li>
+				<li><strong>Dimension relevance:</strong> {indicator.dimensionRelevance}</li>
+				<li><strong>Number of questions:</strong> {data.summary.questionCount}</li>
 			</ul>
 		</div>
 
