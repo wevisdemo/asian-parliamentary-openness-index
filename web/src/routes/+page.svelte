@@ -10,6 +10,7 @@
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import { aboutSections } from '$lib/constants/about-sections';
+	import { academicPartners } from '$lib/constants/academic-partners';
 	import { dimensionSlugs } from '$lib/constants/dimensions';
 	import { insightSections } from '$lib/constants/insight-sections';
 	import { alliance } from '$lib/constants/contributors';
@@ -194,10 +195,17 @@
 			</div>
 		</div>
 
-		<h3 class="border-t-2 pt-3 b3 font-bold text-gray-8">Our team</h3>
+		<h3 class="border-t-2 pt-5 b3 font-bold text-gray-8">Our team</h3>
 		<div class="flex flex-row flex-wrap gap-2">
 			{#each data.teamLogos as { organization, logo } (organization)}
 				<img src={logo} alt={organization} title={organization} class="size-16 object-contain" />
+			{/each}
+		</div>
+
+		<h3 class="border-t-2 pt-5 b3 font-bold text-gray-8">Academic partners</h3>
+		<div class="flex flex-row flex-wrap gap-2">
+			{#each academicPartners as { name, logo } (name)}
+				<img src={logo} alt={name} title={name} class="size-16 object-contain" />
 			{/each}
 		</div>
 

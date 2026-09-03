@@ -5,7 +5,7 @@
 	import AudienceCards from '$lib/components/about/audience-cards.svelte';
 	import DimensionCards from '$lib/components/about/dimension-cards.svelte';
 	import StructureGraphic from '$lib/components/about/structure-graphic.svelte';
-	import RespondentOrganization from '$lib/components/about/respondent-organization.svelte';
+	import OrganizationInfo from '$lib/components/about/organization-info.svelte';
 	import Button from '$lib/components/button.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
@@ -13,6 +13,7 @@
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
 	import TruncatableParagraph from '$lib/components/truncatable-paragraph.svelte';
 	import { aboutSections } from '$lib/constants/about-sections';
+	import { academicPartners } from '$lib/constants/academic-partners';
 	import { alliance } from '$lib/constants/contributors';
 	import type { PageProps } from './$types';
 
@@ -234,7 +235,21 @@
 
 			<div class="flex flex-col">
 				{#each data.respondents as respondent, index (index)}
-					<RespondentOrganization {respondent} />
+					<OrganizationInfo
+						name={respondent.organization ?? ''}
+						logo={respondent.organizationLogo}
+						description={respondent.about}
+						caption={respondent.country}
+						contact={respondent.email}
+					/>
+				{/each}
+			</div>
+
+			<h3>Academic partners</h3>
+
+			<div class="flex flex-col">
+				{#each academicPartners as partner (partner.name)}
+					<OrganizationInfo {...partner} />
 				{/each}
 			</div>
 		</div>
