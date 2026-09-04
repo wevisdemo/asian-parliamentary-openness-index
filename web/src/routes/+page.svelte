@@ -14,6 +14,7 @@
 	import { dimensionSlugs } from '$lib/constants/dimensions';
 	import { insightSections } from '$lib/constants/insight-sections';
 	import { alliance } from '$lib/constants/contributors';
+	import { siteName, siteTagline } from '$lib/constants/site';
 	import type { PageProps } from './$types';
 	import Sharer from '$lib/components/sharer.svelte';
 
@@ -60,8 +61,8 @@
 		<div
 			class="flex w-full max-w-2xl flex-col items-center gap-4 text-center md:items-start md:text-left"
 		>
-			<h1 class="h2 font-bold">Asian Parliamentary Openness Index</h1>
-			<p class="b2">A regional index tracking how openly Asia-Pacific parliaments operate.</p>
+			<h1 class="h2 font-bold">{siteName}</h1>
+			<p class="b2">{siteTagline}</p>
 			<div class="my-2 grid w-full grid-cols-1 gap-2 md:grid-cols-3">
 				<Button href={resolve('/insights')}>Insights</Button>
 				<Button href={resolve('/countries')} variant="secondary">Explore by Country</Button>
