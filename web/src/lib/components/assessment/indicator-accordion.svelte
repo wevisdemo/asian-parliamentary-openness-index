@@ -58,7 +58,7 @@
 
 <Accordion
 	class="bg-white {className ?? ''}"
-	headerClass="p-4 hover:bg-gray-2 md:p-6"
+	toggleClass="p-4 hover:bg-gray-2 md:p-6"
 	contentClass="p-4 pt-0 md:px-6 md:pb-6"
 >
 	{#snippet header()}
@@ -72,7 +72,7 @@
 	{/snippet}
 
 	{#snippet trailing()}
-		<div class="flex flex-col gap-2 md:items-end">
+		<div class="flex flex-col gap-2 px-4 pb-4 md:items-end md:p-6">
 			<div class="flex flex-row items-center justify-between gap-4">
 				<span
 					class={[

@@ -73,7 +73,7 @@
 <Accordion
 	bind:open
 	class="bg-white {className ?? ''}"
-	headerClass="p-4 md:px-6 md:py-5"
+	toggleClass="p-4 hover:bg-gray-2 md:px-6 md:py-5"
 	contentClass="p-4 pt-0 md:px-6 md:pb-6"
 >
 	{#snippet header()}
@@ -81,18 +81,21 @@
 	{/snippet}
 
 	{#snippet trailing()}
-		<div class="flex flex-row items-center">
+		<div class="flex flex-row items-stretch">
 			{#each chamberScores as score (score.chamber)}
 				{#if !score.hasAnswers}
-					<div class="invisible flex flex-1 flex-col gap-0.5 p-2 md:px-4" aria-hidden="true">
+					<div
+						class="invisible flex flex-1 flex-col justify-center gap-0.5 p-4 md:px-4 md:py-5"
+						aria-hidden="true"
+					>
 						{@render chamberScore(score)}
 					</div>
 				{:else}
 					<button
 						type="button"
 						class={[
-							'flex flex-1 cursor-pointer flex-col gap-0.5 p-2 text-left transition-colors md:px-4',
-							open && score.chamber === selectedChamber ? 'bg-gray-2' : 'hover:bg-gray-1'
+							'flex flex-1 cursor-pointer flex-col justify-center gap-0.5 p-4 text-left transition-colors md:px-4 md:py-5',
+							open && score.chamber === selectedChamber ? 'bg-gray-2' : 'hover:bg-gray-2'
 						]}
 						onclick={() => selectChamber(score.chamber)}
 					>

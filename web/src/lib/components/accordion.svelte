@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ClassValue } from 'svelte/elements';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import Subtract from 'carbon-icons-svelte/lib/Subtract.svelte';
 	import { quickSlide } from '$lib/utils/transitions';
@@ -11,6 +12,7 @@
 		trailing?: Snippet;
 		open?: boolean;
 		headerClass?: string;
+		toggleClass?: string;
 		contentClass?: string;
 		iconClass?: string;
 		class?: string;
@@ -23,6 +25,7 @@
 		trailing,
 		open = $bindable(false),
 		headerClass,
+		toggleClass,
 		contentClass,
 		iconClass = 'text-purple-5',
 		class: className
@@ -31,9 +34,9 @@
 	const contentId = $props.id();
 </script>
 
-{#snippet toggle(toggleClass?: string)}
+{#snippet toggle(extraClass?: ClassValue)}
 	<button
-		class={['flex cursor-pointer flex-row gap-1 transition-colors', toggleClass]}
+		class={['flex cursor-pointer flex-row gap-1 transition-colors', extraClass]}
 		type="button"
 		aria-expanded={open}
 		aria-controls={contentId}
@@ -56,12 +59,12 @@
 
 <div class={['flex flex-col', className]}>
 	{#if trailing}
-		<div class={['flex flex-col gap-3 md:flex-row md:items-start md:gap-6', headerClass]}>
-			{@render toggle('flex-1 self-stretch')}
+		<div class={['flex flex-col md:flex-row md:items-stretch', headerClass]}>
+			{@render toggle(['flex-1 self-stretch', toggleClass])}
 			{@render trailing()}
 		</div>
 	{:else}
-		{@render toggle(headerClass)}
+		{@render toggle([headerClass, toggleClass])}
 	{/if}
 
 	{#if open}
