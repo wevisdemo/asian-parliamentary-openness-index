@@ -33,11 +33,10 @@ export const achievementLevelTabColorClasses: Record<
 
 export const achievementLevelDescriptions: Record<AchievementLevel, string> = {
 	Achieved:
-		'All questions within the indicator receive a full score across all chambers, excluding those that are not applicable to the country context.',
+		'All questions within the indicator receive a full score, excluding those that are not applicable to the country context.',
 	'Partly achieved':
 		'The indicator receives some score, excluding those that are not applicable to the country context.',
 	'Not achieved':
 		'All questions within the indicator receive a score of 0, excluding those that are not applicable to the country context.',
-	'N/A':
-		'All questions within the indicator are not applicable to the country context across all chambers.'
+	'N/A': 'All questions within the indicator are not applicable to the country context.'
 };
