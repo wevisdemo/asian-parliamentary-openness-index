@@ -11,16 +11,15 @@
 		questions: Question[];
 		answers: Answer[];
 		context?: IndicatorContext;
-		class?: string;
 	}
 
-	const { questions, answers, context, class: className }: Props = $props();
+	const { questions, answers, context }: Props = $props();
 
 	const answerOf = (question: Question) =>
 		answers.find(({ questionNumber }) => questionNumber === question.number);
 </script>
 
-<div class={['flex flex-1 flex-col gap-4', className]}>
+<div class="flex flex-1 flex-col gap-4">
 	{#each questions as question, index (question.number)}
 		<QuestionAnswer
 			{question}

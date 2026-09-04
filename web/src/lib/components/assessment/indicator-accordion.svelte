@@ -59,7 +59,7 @@
 <Accordion
 	class="bg-white {className ?? ''}"
 	toggleClass="p-4 hover:bg-gray-2 md:p-6"
-	contentClass="p-4 pt-0 md:px-6 md:pb-6"
+	contentClass="border-t-4 border-black p-4 md:px-6 md:pb-6"
 >
 	{#snippet header()}
 		<div class="flex flex-col text-left">
@@ -102,7 +102,7 @@
 
 	{#snippet content()}
 		<div class="flex flex-1 flex-col gap-4">
-			<IndicatorDetail {questions} {answers} {context} class="border-t-4 border-black pt-4" />
+			<IndicatorDetail {questions} {answers} {context} />
 
 			<Button href={indicatorHref} variant="secondary" class="self-end">
 				Explore this indicator

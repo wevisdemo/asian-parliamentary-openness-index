@@ -74,7 +74,7 @@
 	bind:open
 	class="bg-white {className ?? ''}"
 	toggleClass="p-4 hover:bg-gray-2 md:px-6 md:py-5"
-	contentClass="p-4 pt-0 md:px-6 md:pb-6"
+	contentClass="border-t-4 border-black p-4 md:px-6 md:pb-6"
 >
 	{#snippet header()}
 		<h3 class="text-left b2 font-bold">{country.name}</h3>
@@ -112,7 +112,6 @@
 				{questions}
 				answers={answers.filter((answer) => answer.chamber === selectedChamber)}
 				context={contexts.find(({ chamber: value }) => value === selectedChamber)}
-				class="border-t-4 border-black pt-4"
 			/>
 
 			<Button
