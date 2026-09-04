@@ -24,8 +24,10 @@
 	>
 		<h4 class="b2 font-bold">{name}</h4>
 		{#if description}
-			<TruncatableParagraph class="b4 whitespace-pre-line text-gray-8">
-				{description}
+			<TruncatableParagraph
+				class="b4 whitespace-pre-line text-gray-8 [&_a]:cursor-pointer [&_a]:text-gray-8 [&_a]:underline [&_a]:hover:text-purple-5"
+			>
+				{@html description}
 			</TruncatableParagraph>
 		{/if}
 		{#if contact}

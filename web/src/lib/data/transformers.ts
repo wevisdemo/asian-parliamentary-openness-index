@@ -23,8 +23,14 @@ renderer.link = function ({ href, title, tokens }) {
 };
 
 /**
+ * Render inline markdown into html, with links opening in a new tab
+ */
+export const parseInlineMarkdown = (value: string) =>
+	marked.parseInline(value, { async: false, renderer });
+
+/**
  * Transform a column of inline markdown into html, with links opening in a new tab
  */
 export const asMarkdownHtml = createTransformer({
-	decode: (value: string) => marked.parseInline(value, { async: false, renderer })
+	decode: parseInlineMarkdown
 });

@@ -7,6 +7,7 @@ import {
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
+import { asMarkdownHtml } from '$lib/data/transformers';
 
 export const respondentSchema = ObjectSchema({
 	country: Column('Country', asString()),
@@ -20,7 +21,7 @@ export const respondentSchema = ObjectSchema({
 		'Years of experience of parliament monitoring by the organization',
 		asString().optional()
 	),
-	about: Column('About the Respondent', asString().optional())
+	about: Column('About the Respondent', asMarkdownHtml.optional())
 });
 
 export type Respondent = StaticDecode<typeof respondentSchema> & {
