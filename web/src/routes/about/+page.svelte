@@ -202,7 +202,7 @@
 				<Button size="small" variant="secondary" href={resolve('/insights')}>2026</Button>
 			</div>
 
-			<h2>Submit Your Feedback</h2>
+			<h2 id={aboutSections[2].id}>Submit Your Feedback</h2>
 
 			<p>
 				Your feedback helps us improve the accuracy, relevance, and usability of the index. You can
@@ -233,7 +233,7 @@
 				and useful.
 			</p>
 
-			<h2 id={aboutSections[2].id}>About Contributors</h2>
+			<h2 id={aboutSections[3].id}>About Contributors</h2>
 
 			<div class="flex flex-col gap-4 md:flex-row md:gap-8">
 				<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />
