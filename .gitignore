@@ -18,3 +18,5 @@ __pycache__/
 
 # Vs Code
 .vscode/
+# direnv
+.direnv/

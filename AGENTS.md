@@ -2,12 +2,14 @@
 
 ## General Instructions
 
-- This is a moon monorepo with two projects:
+- This is a moon monorepo with three projects:
   - `web`: SvelteKit v2 (Svelte 5), Tailwind v4, and TypeScript
   - `data`: Python pipeline managed by uv, outputs CSV files to `data/output/`
+  - `scripts`: one-off Python maintenance scripts, also managed by uv
 - Always use pnpm as a package manager for JS, and uv for Python
-- On NixOS, the toolchain comes from `shell.nix`, so wrap every command below in `nix-shell --run "<command>"`. Other machines run them as-is
-- Skipping the wrapper on NixOS fails in confusing ways, e.g. `data:build` dies with `ImportError: Unable to import required dependency numpy`
+- The whole toolchain comes from `flake.nix` and is loaded by direnv, so an interactive shell in this repo runs every command below as-is
+- Non-interactive shells usually miss the direnv environment, and then fall back to whatever the host has. Check with `command -v moon`, and if it is missing, wrap each command in `nix develop --command <command>`
+- Running against host tools instead fails in confusing ways, e.g. `data:build` dies with `ImportError: Unable to import required dependency numpy`
 - Run tasks through moon when possible, e.g. `moon run web:dev`, `moon run data:build` (`web:build` depends on `data:build`)
 - Do not use CSS style block if not necessary, using Tailwind classes is preferable
 - Always name source code in kebab-case
