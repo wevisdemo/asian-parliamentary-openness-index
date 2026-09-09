@@ -215,7 +215,9 @@
 										<h3 class="font-bold">{respondent.organization}</h3>
 									{/if}
 									{#if respondent.about}
-										<p class="whitespace-pre-line">{respondent.about}</p>
+										<p class="whitespace-pre-line [&_a]:text-purple-5 [&_a]:hover:underline">
+											{@html respondent.about}
+										</p>
 									{/if}
 								</div>
 							{/if}
