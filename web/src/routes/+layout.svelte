@@ -3,6 +3,7 @@
 	import favicon from '$lib/assets/favicon.png';
 	import Navbar from '$lib/components/navbar.svelte';
 	import Footer from '$lib/components/footer.svelte';
+	import DraftBanner from '$lib/components/draft-banner.svelte';
 	import { createGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
 
 	let { data, children } = $props();
@@ -27,4 +28,6 @@
 	</main>
 
 	<Footer />
+
+	<DraftBanner />
 </div>
