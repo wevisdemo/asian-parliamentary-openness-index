@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="T extends string">
 	import { Select } from 'bits-ui';
 	import ChevronDown from 'carbon-icons-svelte/lib/ChevronDown.svelte';
 	import ChevronUp from 'carbon-icons-svelte/lib/ChevronUp.svelte';
@@ -15,12 +15,12 @@
 	} from '$lib/constants/control-styles';
 
 	interface Props {
-		options: SelectOption[];
-		value?: string;
+		options: SelectOption<T>[];
+		value?: T;
 		placeholder?: string;
 		color?: SelectColor;
 		variant?: SelectVariant;
-		onselect?: (value: string) => void;
+		onselect?: (value: T) => void;
 		class?: string;
 	}
 
@@ -40,7 +40,13 @@
 	const styles = $derived(selectColorClasses[color]);
 </script>
 
-<Select.Root type="single" items={options} {value} onValueChange={onselect} bind:open={isOpen}>
+<Select.Root
+	type="single"
+	items={options}
+	{value}
+	onValueChange={(selected) => onselect?.(selected as T)}
+	bind:open={isOpen}
+>
 	<Select.Trigger
 		class={[
 			selectTriggerClass,

@@ -8,7 +8,7 @@
 	import CountryContext from '$lib/components/assessment/country-context.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Tooltip from '$lib/components/tooltip.svelte';
-	import { chamberOptions, chambers, type Chamber } from '$lib/constants/chambers';
+	import { chamberOptions, type Chamber } from '$lib/constants/chambers';
 	import { parliamentTypes, type ParliamentType } from '$lib/constants/parliament-types';
 	import type { Country } from '$lib/data/countries';
 
@@ -140,7 +140,7 @@
 				options={chamberOptions}
 				value={compare}
 				color="light"
-				onselect={(value) => (compare = chambers.find((chamber) => chamber === value) ?? 'Lower')}
+				onselect={(chamber) => (compare = chamber)}
 			/>
 		</div>
 

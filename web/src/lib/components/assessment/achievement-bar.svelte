@@ -23,7 +23,7 @@
 		{#each levelCounts as { level, count } (level)}
 			{#if count}
 				<div
-					class={[isLoose ? 'h-6' : 'h-3', achievementLevelColorClasses[level]]}
+					class={[isLoose ? 'h-5' : 'h-3', achievementLevelColorClasses[level]]}
 					style="flex-grow: {count}"
 				></div>
 			{/if}
@@ -31,13 +31,15 @@
 	</div>
 
 	<div
-		class={['flex gap-x-3 gap-y-1 b5', isLoose ? 'flex-col' : 'flex-row flex-wrap items-center']}
+		class={['flex gap-x-3 gap-y-1 b4', isLoose ? 'flex-col' : 'flex-row flex-wrap items-center']}
 	>
 		<span class="text-gray-6">Number of countries</span>
 
 		<div class="flex flex-row flex-wrap items-center gap-x-3 gap-y-1">
 			{#each levelCounts as { level, count } (level)}
-				<span class={['flex flex-row items-center gap-1', isLoose ? 'text-black' : 'text-gray-8']}>
+				<span
+					class={['flex flex-row items-center gap-1.5', isLoose ? 'text-black' : 'text-gray-8']}
+				>
 					<span class={['size-3 border border-gray-8', achievementLevelColorClasses[level]]}></span>
 					<span class={['font-mono', isLoose && 'font-bold']}>{count}</span>
 					{#if isLoose}

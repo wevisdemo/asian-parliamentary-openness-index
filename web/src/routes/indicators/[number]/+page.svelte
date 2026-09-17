@@ -15,6 +15,7 @@
 		achievementLevelTabColorClasses,
 		type AchievementLevel
 	} from '$lib/constants/achievements';
+	import { chamberOptions, type Chamber } from '$lib/constants/chambers';
 	import { quickFade } from '$lib/utils/transitions';
 	import type { PageProps } from './$types';
 
@@ -22,14 +23,25 @@
 
 	const { data }: PageProps = $props();
 
+	let chamber = $state<Chamber>();
 	let status = $state<AchievementLevel>();
 	let statusTabs = $state<ReturnType<typeof Tabs<AchievementLevel>>>();
 
-	const indicator = $derived(data.summary.indicator);
+	const indicator = $derived(data.indicator);
+
+	const chamberTabOptions = $derived(
+		chamberOptions.filter(({ value }) =>
+			data.chamberResults.some((result) => result.chamber === value)
+		)
+	);
+
+	const chamberResult = $derived(
+		data.chamberResults.find((result) => result.chamber === chamber) ?? data.chamberResults[0]
+	);
 
 	const statusOptions = $derived(
 		statusLevels.map((level) => ({
-			label: `${level} (${data.countryResults.filter((result) => result.level === level).length})`,
+			label: `${level} (${chamberResult.countryResults.filter((result) => result.level === level).length})`,
 			value: level,
 			colorClasses: achievementLevelTabColorClasses[level]
 		}))
@@ -40,7 +52,7 @@
 	const selectedStatus = $derived(status ?? statusLevels[0]);
 
 	const filteredResults = $derived(
-		data.countryResults.filter(({ level }) => level === selectedStatus)
+		chamberResult.countryResults.filter(({ level }) => level === selectedStatus)
 	);
 
 	const selectStatus = (level: AchievementLevel) => {
@@ -80,25 +92,40 @@
 			<ul class="space-y-1 b4 text-gray-8">
 				<li><strong>Dimension:</strong> {indicator.dimension}</li>
 				<li><strong>Dimension relevance:</strong> {indicator.dimensionRelevance}</li>
-				<li><strong>Number of questions:</strong> {data.summary.questionCount}</li>
+				<li><strong>Number of questions:</strong> {data.questions.length}</li>
 			</ul>
 		</div>
 
-		<div class="flex h-fit flex-col gap-4 bg-white p-5 md:gap-8 md:p-8">
-			<p class="flex flex-row flex-wrap items-end gap-x-3 gap-y-1">
-				<span class="h3 leading-none font-bold text-data-achieved">
-					{data.summary.achievedPercentage.toFixed(2)}%
-				</span>
-				<span class="flex-1">of countries <strong>achieved</strong> this indicator</span>
-			</p>
+		<div class="flex h-fit flex-col gap-4 md:flex-row">
+			{#each data.chamberResults as { chamber: resultChamber, summary } (resultChamber)}
+				<div class="flex flex-1 flex-col gap-3 bg-white p-5 md:p-7">
+					{#if data.chamberResults.length > 1}
+						<p class="b3 font-bold">{resultChamber} chamber</p>
+					{/if}
+					<p class="flex flex-col gap-y-2">
+						<span class="h4 leading-none font-bold text-data-achieved">
+							{summary.achievedPercentage.toFixed(2)}%
+						</span>
+						<span class="flex-1">of countries <strong>achieved</strong> this indicator</span>
+					</p>
 
-			<AchievementBar countryCountByLevel={data.summary.countryCountByLevel} variant="loose" />
+					<AchievementBar countryCountByLevel={summary.countryCountByLevel} variant="loose" />
+				</div>
+			{/each}
 		</div>
 	</Hero>
 </section>
 
 <div class="flex flex-col bg-gray-1">
 	<section class="relative content-container flex flex-col gap-6 md:gap-8">
+		{#if chamberTabOptions.length > 1}
+			<Tabs
+				options={chamberTabOptions}
+				value={chamberResult.chamber}
+				onselect={(value) => (chamber = value)}
+			/>
+		{/if}
+
 		<Tabs
 			bind:this={statusTabs}
 			options={statusOptions}
@@ -109,12 +136,12 @@
 		/>
 
 		<div class="flex flex-col gap-6 md:gap-8">
-			{#key selectedStatus}
+			{#key `${chamberResult.chamber}-${selectedStatus}`}
 				<p in:quickFade class="b3">{achievementLevelDescriptions[selectedStatus]}</p>
 
 				<div in:quickFade class="flex flex-col gap-4">
-					{#each filteredResults as { country, answers, contexts } (country.slug)}
-						<CountryAccordion {country} questions={data.questions} {answers} {contexts} />
+					{#each filteredResults as { country, answers, context } (country.slug)}
+						<CountryAccordion {country} questions={data.questions} {answers} {context} />
 					{:else}
 						<p class="px-4 py-10 text-center text-gray-8">No countries in this category.</p>
 					{/each}

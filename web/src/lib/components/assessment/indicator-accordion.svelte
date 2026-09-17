@@ -6,7 +6,7 @@
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
 	import type { AchievementLevel } from '$lib/constants/achievements';
-	import { getAchievementLevel, type Answer } from '$lib/data/answers';
+	import { getAchievementLevel, getScoreTotals, type Answer } from '$lib/data/answers';
 	import type { IndicatorContext } from '$lib/data/indicator-contexts';
 	import type { Indicator } from '$lib/data/indicators';
 	import type { Question } from '$lib/data/questions';
@@ -47,11 +47,7 @@
 		questions.map(answerOf).filter((answer) => answer !== undefined)
 	);
 
-	const score = $derived(indicatorAnswers.reduce((sum, { score }) => sum + score, 0));
-
-	const totalApplicableScore = $derived(
-		indicatorAnswers.reduce((sum, { totalApplicableScore }) => sum + totalApplicableScore, 0)
-	);
+	const { score, totalApplicableScore } = $derived(getScoreTotals(indicatorAnswers));
 
 	const status = $derived(getAchievementLevel(indicatorAnswers));
 </script>

@@ -1,8 +1,8 @@
-import { chambers, type Chamber } from '$lib/constants/chambers';
+import { byChamber, type Chamber } from '$lib/constants/chambers';
 import { dimensions } from '$lib/constants/dimensions';
 import { answers, type Answer } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
-import { indicatorSummaries, sortByAchieved } from '$lib/data/indicators';
+import { indicators, indicatorSummariesByChamber } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import { getWeightedScorePercentage, hasApplicableScore } from '$lib/data/scores';
 import type { PageServerLoad } from './$types';
@@ -23,31 +23,37 @@ const getCountryScores = (scopedAnswers: Answer[]) =>
 
 		return {
 			country,
-			chamberScores: Object.fromEntries(
-				chambers.map((chamber) => [chamber, chamberScore(chamber)])
-			) as Partial<Record<Chamber, number>>
+			chamberScores: byChamber(chamberScore)
 		};
 	});
 
 export const load: PageServerLoad = () => {
 	const dimensionInsights = dimensions.map((dimension) => {
-		const ranked = sortByAchieved(
-			indicatorSummaries.filter(({ indicator }) => indicator.dimension === dimension)
-		);
+		const dimensionIndicators = indicators.filter((indicator) => indicator.dimension === dimension);
 
 		const questionNumbers = new Set(
 			questions
 				.filter(({ indicatorNumber }) =>
-					ranked.some(({ indicator }) => indicator.number === indicatorNumber)
+					dimensionIndicators.some(({ number }) => number === indicatorNumber)
 				)
 				.map(({ number }) => number)
 		);
 
+		const topIndicators = byChamber((chamber) => {
+			const ranked = indicatorSummariesByChamber[chamber].filter(
+				({ indicator }) => indicator.dimension === dimension
+			);
+
+			return {
+				mostAchieved: ranked.slice(0, TOP_COUNT),
+				leastAchieved: ranked.slice(Math.max(TOP_COUNT, ranked.length - TOP_COUNT)).reverse()
+			};
+		});
+
 		return {
 			dimension,
-			indicatorCount: ranked.length,
-			mostAchieved: ranked.slice(0, TOP_COUNT),
-			leastAchieved: ranked.slice(Math.max(TOP_COUNT, ranked.length - TOP_COUNT)).reverse(),
+			indicatorCount: dimensionIndicators.length,
+			topIndicators,
 			countryScores: getCountryScores(
 				answers.filter(({ questionNumber }) => questionNumbers.has(questionNumber))
 			)

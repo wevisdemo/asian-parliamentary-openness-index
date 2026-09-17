@@ -63,10 +63,18 @@ export type Answer = StaticDecode<typeof answerSchema>;
 
 export const answers: Answer[] = parseCsv(answersCsv, answerSchema);
 
-export const getScorePercentage = (answers: Answer[]): number => {
-	const total = answers.reduce((sum, { totalApplicableScore }) => sum + totalApplicableScore, 0);
+export const getScoreTotals = (answers: Answer[]) => ({
+	score: answers.reduce((sum, { score }) => sum + score, 0),
+	totalApplicableScore: answers.reduce(
+		(sum, { totalApplicableScore }) => sum + totalApplicableScore,
+		0
+	)
+});
 
-	return total ? (answers.reduce((sum, { score }) => sum + score, 0) / total) * 100 : 0;
+export const getScorePercentage = (answers: Answer[]): number => {
+	const { score, totalApplicableScore } = getScoreTotals(answers);
+
+	return totalApplicableScore ? (score / totalApplicableScore) * 100 : 0;
 };
 
 export const getAchievementLevel = (answers: Answer[]): AchievementLevel => {

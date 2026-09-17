@@ -182,7 +182,9 @@
 									{indicator}
 									{questions}
 									answers={chamberAnswers}
-									achievedCountryCount={data.achievedCountryCounts[indicator.number]}
+									achievedCountryCount={data.achievedCountryCounts[selectedChamber][
+										indicator.number
+									]}
 									context={chamberContexts.find(
 										({ indicatorNumber }) => indicatorNumber === indicator.number
 									)}

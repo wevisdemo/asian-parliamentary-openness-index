@@ -1,8 +1,9 @@
 import { error } from '@sveltejs/kit';
+import { chambers, type Chamber } from '$lib/constants/chambers';
 import { answers, getAchievementLevel, getScorePercentage } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
 import { indicatorContexts } from '$lib/data/indicator-contexts';
-import { indicators, indicatorSummaries } from '$lib/data/indicators';
+import { indicators, indicatorSummariesByChamber } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
@@ -14,35 +15,54 @@ const indicatorOptions = indicators
 	.sort((a, b) => a.label.localeCompare(b.label));
 
 export const load: PageServerLoad = ({ params }) => {
-	const summary = indicatorSummaries.find(
-		({ indicator }) => `${indicator.number}` === params.number
-	);
+	const indicator = indicators.find(({ number }) => `${number}` === params.number);
 
-	if (!summary) error(404, `Indicator "${params.number}" not found`);
+	if (!indicator) error(404, `Indicator "${params.number}" not found`);
 
 	const indicatorQuestions = questions.filter(
-		({ indicatorNumber }) => indicatorNumber === summary.indicator.number
+		({ indicatorNumber }) => indicatorNumber === indicator.number
 	);
 	const questionNumbers = new Set(indicatorQuestions.map(({ number }) => number));
 
-	const countryResults = countries
-		.map((country) => ({
-			country,
-			answers: answers.filter(
-				({ country: name, questionNumber }) =>
-					name === country.name && questionNumbers.has(questionNumber)
-			),
-			contexts: indicatorContexts.filter(
-				({ country: name, indicatorNumber }) =>
-					name === country.name && indicatorNumber === summary.indicator.number
-			)
-		}))
-		.map((result) => ({
-			...result,
-			score: getScorePercentage(result.answers),
-			level: getAchievementLevel(result.answers)
-		}))
-		.sort((a, b) => b.score - a.score || a.country.name.localeCompare(b.country.name));
+	const getCountryResults = (chamber: Chamber) =>
+		countries
+			.map((country) => ({
+				country,
+				answers: answers.filter(
+					(answer) =>
+						answer.country === country.name &&
+						answer.chamber === chamber &&
+						questionNumbers.has(answer.questionNumber)
+				),
+				context: indicatorContexts.find(
+					(context) =>
+						context.country === country.name &&
+						context.chamber === chamber &&
+						context.indicatorNumber === indicator.number
+				)
+			}))
+			.filter((result) => result.answers.length)
+			.map((result) => ({
+				...result,
+				score: getScorePercentage(result.answers),
+				level: getAchievementLevel(result.answers)
+			}))
+			.sort((a, b) => b.score - a.score || a.country.name.localeCompare(b.country.name));
 
-	return { summary, indicatorOptions, questions: indicatorQuestions, countryResults };
+	const chamberResults = chambers
+		.map((chamber) => ({
+			chamber,
+			summary: indicatorSummariesByChamber[chamber].find(
+				(summary) => summary.indicator.number === indicator.number
+			)!,
+			countryResults: getCountryResults(chamber)
+		}))
+		.filter(({ countryResults }) => countryResults.length);
+
+	return {
+		indicator,
+		indicatorOptions,
+		questions: indicatorQuestions,
+		chamberResults
+	};
 };

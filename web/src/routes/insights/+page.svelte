@@ -8,12 +8,13 @@
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorCard from '$lib/components/assessment/indicator-card.svelte';
 	import ScoreComparison from '$lib/components/assessment/score-comparison.svelte';
+	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import MoreActionsSection from '$lib/components/more-actions-section.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
-	import type { Chamber } from '$lib/constants/chambers';
+	import { chamberOptions, type Chamber } from '$lib/constants/chambers';
 	import {
 		dimensionDescriptions,
 		dimensionKeyIndicators,
@@ -55,12 +56,12 @@
 		{
 			title: 'Most achieved',
 			description: 'Indicator with the most countries achieving it',
-			indicators: insight?.mostAchieved ?? []
+			indicators: insight?.topIndicators[comparedChamber].mostAchieved ?? []
 		},
 		{
 			title: 'Least achieved',
 			description: 'Indicator with the least countries achieving it',
-			indicators: insight?.leastAchieved ?? []
+			indicators: insight?.topIndicators[comparedChamber].leastAchieved ?? []
 		}
 	]);
 </script>
@@ -162,14 +163,22 @@
 		/>
 
 		<div class="flex flex-col gap-4 bg-gray-1 p-5 md:p-7">
-			<div class="flex flex-row flex-wrap items-end gap-2">
-				<h3 class="mr-auto b1 font-bold">Top indicators in this dimension:</h3>
+			<div class="flex flex-row flex-wrap items-center gap-2">
+				<div class="mr-auto flex flex-row flex-wrap items-center gap-3">
+					<h3 class="b1 font-bold">Top indicators in:</h3>
+					<Dropdown
+						options={chamberOptions}
+						value={comparedChamber}
+						color="gray"
+						onselect={(chamber) => (comparedChamber = chamber)}
+					/>
+				</div>
 				<AchievementLegend />
 			</div>
 
 			{#each indicatorGroups as group (group.title)}
 				<ListGroup name={group.title} description={group.description}>
-					{#each group.indicators as summary, index (`${selectedDimension}-${group.title}-${index}`)}
+					{#each group.indicators as summary, index (`${selectedDimension}-${comparedChamber}-${group.title}-${index}`)}
 						<IndicatorCard {...summary} />
 					{/each}
 				</ListGroup>

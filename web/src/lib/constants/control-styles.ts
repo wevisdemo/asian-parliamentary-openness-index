@@ -2,9 +2,9 @@ export type SelectColor = 'purple' | 'gray' | 'light';
 
 export type SelectVariant = 'compact' | 'loose';
 
-export interface SelectOption {
+export interface SelectOption<T extends string = string> {
 	label: string;
-	value: string;
+	value: T;
 }
 
 export const selectTriggerClass =

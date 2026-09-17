@@ -8,9 +8,11 @@
 	import MoreActionsSection from '$lib/components/more-actions-section.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
+	import Tabs from '$lib/components/tabs.svelte';
 	import AchievementLegend from '$lib/components/assessment/achievement-legend.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorCard from '$lib/components/assessment/indicator-card.svelte';
+	import { chamberOptions } from '$lib/constants/chambers';
 	import {
 		dimensionDescriptions,
 		dimensionOptions,
@@ -26,6 +28,7 @@
 		{ label: 'Dimension relevance', value: 'dimension-relevance' }
 	];
 
+	let selectedChamber = $state(chamberOptions[0].value);
 	let selectedDimension = $state(dimensionOptions[0].value);
 	let selectedSortBy = $state(sortByOptions[0].value);
 
@@ -37,7 +40,9 @@
 	};
 
 	const dimensionSummaries = $derived(
-		data.indicatorSummaries.filter(({ indicator }) => indicator.dimension === selectedDimension)
+		data.indicatorSummariesByChamber[selectedChamber].filter(
+			({ indicator }) => indicator.dimension === selectedDimension
+		)
 	);
 
 	const indicatorGroups = $derived.by(() =>
@@ -85,6 +90,12 @@
 
 <div class="flex flex-col bg-gray-1">
 	<section class="relative content-container flex flex-col gap-6 md:gap-8">
+		<Tabs
+			options={chamberOptions}
+			value={selectedChamber}
+			onselect={(chamber) => (selectedChamber = chamber)}
+		/>
+
 		<DimensionTabs
 			bind:this={dimensionTabs}
 			value={selectedDimension}
@@ -125,7 +136,7 @@
 							? 'indicator'
 							: 'indicators'})"
 					>
-						{#each group.summaries as summary (summary.indicator.number)}
+						{#each group.summaries as summary (`${selectedChamber}-${summary.indicator.number}`)}
 							<IndicatorCard {...summary} />
 						{/each}
 					</ListGroup>

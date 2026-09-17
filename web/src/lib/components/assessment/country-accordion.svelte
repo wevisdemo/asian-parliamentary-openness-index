@@ -3,8 +3,7 @@
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
 	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
-	import { chambers, type Chamber } from '$lib/constants/chambers';
-	import type { Answer } from '$lib/data/answers';
+	import { getScoreTotals, type Answer } from '$lib/data/answers';
 	import type { Country } from '$lib/data/countries';
 	import type { IndicatorContext } from '$lib/data/indicator-contexts';
 	import type { Question } from '$lib/data/questions';
@@ -14,105 +13,37 @@
 		country: Country;
 		questions: Question[];
 		answers: Answer[];
-		contexts: IndicatorContext[];
+		context?: IndicatorContext;
 		class?: string;
 	}
 
-	const { country, questions, answers, contexts, class: className }: Props = $props();
+	const { country, questions, answers, context, class: className }: Props = $props();
 
-	let open = $state(false);
-	let chamber = $state<Chamber>();
-
-	const chamberScores = $derived(
-		chambers
-			.map((value) => ({
-				chamber: value,
-				answers: answers.filter((answer) => answer.chamber === value)
-			}))
-			.map(({ chamber: value, answers: chamberAnswers }) => ({
-				chamber: value,
-				hasAnswers: chamberAnswers.length > 0,
-				score: chamberAnswers.reduce((sum, { score }) => sum + score, 0),
-				totalApplicableScore: chamberAnswers.reduce(
-					(sum, { totalApplicableScore }) => sum + totalApplicableScore,
-					0
-				)
-			}))
-	);
-
-	const assessedChambers = $derived(chamberScores.filter(({ hasAnswers }) => hasAnswers));
-	const selectedChamber = $derived(chamber ?? assessedChambers[0]?.chamber);
-
-	const selectChamber = (value: Chamber) => {
-		if (assessedChambers.length < 2) {
-			open = !open;
-			return;
-		}
-
-		chamber = value;
-		open = true;
-	};
+	const { score, totalApplicableScore } = $derived(getScoreTotals(answers));
 </script>
 
-{#snippet chamberScore({
-	chamber: value,
-	score,
-	totalApplicableScore
-}: (typeof chamberScores)[number])}
-	<span class="b5 text-gray-8 md:text-nowrap">{value} chamber</span>
-	{#if totalApplicableScore > 0}
-		<span class="flex flex-row flex-wrap font-mono">
-			<span class="font-bold">{score.toFixed(2)}</span>
-			<span class="text-gray-6">/{totalApplicableScore.toFixed(2)}</span>
-		</span>
-	{:else}
-		<span class="font-bold text-gray-4">N/A</span>
-	{/if}
-{/snippet}
-
 <Accordion
-	bind:open
 	class="bg-white {className ?? ''}"
-	toggleClass="p-4 hover:bg-gray-2 md:px-6 md:py-5"
+	headerClass="p-4 hover:bg-gray-2 md:p-6"
 	contentClass="border-t-4 border-black p-4 md:px-6 md:pb-6"
 >
 	{#snippet header()}
-		<h3 class="text-left b2 font-bold">{country.name}</h3>
-	{/snippet}
-
-	{#snippet trailing()}
-		<div class="flex flex-row items-stretch">
-			{#each chamberScores as score (score.chamber)}
-				{#if !score.hasAnswers}
-					<div
-						class="invisible flex flex-1 flex-col justify-center gap-0.5 p-4 md:px-4 md:py-5"
-						aria-hidden="true"
-					>
-						{@render chamberScore(score)}
-					</div>
-				{:else}
-					<button
-						type="button"
-						class={[
-							'flex flex-1 cursor-pointer flex-col justify-center gap-0.5 p-4 text-left transition-colors md:px-4 md:py-5',
-							open && score.chamber === selectedChamber ? 'bg-gray-2' : 'hover:bg-gray-2'
-						]}
-						onclick={() => selectChamber(score.chamber)}
-					>
-						{@render chamberScore(score)}
-					</button>
-				{/if}
-			{/each}
-		</div>
+		<span class="flex flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1 b2">
+			<h3 class="text-left font-bold">{country.name}</h3>
+			{#if totalApplicableScore > 0}
+				<span class="flex flex-row flex-wrap font-mono">
+					<span class="font-bold">{score.toFixed(2)}</span>
+					<span class="text-gray-6">/{totalApplicableScore.toFixed(2)}</span>
+				</span>
+			{:else}
+				<span class="font-bold text-gray-4">N/A</span>
+			{/if}
+		</span>
 	{/snippet}
 
 	{#snippet content()}
 		<div in:quickFade class="flex flex-1 flex-col gap-4">
-			<IndicatorDetail
-				{questions}
-				answers={answers.filter((answer) => answer.chamber === selectedChamber)}
-				context={contexts.find(({ chamber: value }) => value === selectedChamber)}
-			/>
+			<IndicatorDetail {questions} {answers} {context} />
 
 			<Button
 				href={resolve('/countries/[country]', { country: country.slug })}
