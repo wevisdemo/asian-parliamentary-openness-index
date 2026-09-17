@@ -45,7 +45,7 @@ export const load: PageServerLoad = () => {
 
 		return {
 			dimension,
-			points: ranked.reduce((sum, { questionCount }) => sum + questionCount, 0),
+			indicatorCount: ranked.length,
 			mostAchieved: ranked.slice(0, TOP_COUNT),
 			leastAchieved: ranked.slice(Math.max(TOP_COUNT, ranked.length - TOP_COUNT)).reverse(),
 			countryScores: getCountryScores(
@@ -56,7 +56,6 @@ export const load: PageServerLoad = () => {
 
 	return {
 		countryCount: countries.length,
-		totalPoints: questions.length,
 		countryScores: getCountryScores(answers),
 		dimensionInsights
 	};

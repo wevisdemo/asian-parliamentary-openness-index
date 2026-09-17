@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import countryHeroImage from '$lib/assets/images/hero/country.png';
 	import CountryContext from '$lib/components/assessment/country-context.svelte';
+	import DimensionCalculation from '$lib/components/assessment/dimension-calculation.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorAccordion from '$lib/components/assessment/indicator-accordion.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
@@ -144,9 +145,13 @@
 
 		<div class="flex flex-col gap-6 md:gap-8">
 			{#key `${selectedChamber}-${selectedDimension}`}
-				<p in:quickFade class="b3">
-					{dimensionDescriptions[selectedDimension]}
-				</p>
+				<div in:quickFade class="flex flex-col gap-2">
+					<p class="b3">{dimensionDescriptions[selectedDimension]}</p>
+					<DimensionCalculation
+						dimension={selectedDimension}
+						indicatorCount={dimensionIndicators.length}
+					/>
+				</div>
 			{/key}
 			<div class="flex flex-col items-start gap-1 md:flex-row md:items-center md:gap-3">
 				<h3 class="b1 font-bold">{dimensionIndicators.length} indicators</h3>

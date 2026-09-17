@@ -4,6 +4,7 @@
 	import { resolve } from '$app/paths';
 	import insightHeroImage from '$lib/assets/images/hero/insight.png';
 	import AchievementLegend from '$lib/components/assessment/achievement-legend.svelte';
+	import DimensionCalculation from '$lib/components/assessment/dimension-calculation.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorCard from '$lib/components/assessment/indicator-card.svelte';
 	import ScoreComparison from '$lib/components/assessment/score-comparison.svelte';
@@ -142,14 +143,14 @@
 
 		{#key selectedDimension}
 			<div in:quickFade class="flex flex-col gap-2 text-gray-8">
-				<p class="font-bold">
-					{selectedDimension} contributes [{insight?.points}] out of {data.totalPoints} points to the
-					total score.
-				</p>
 				<p>
 					{dimensionDescriptions[selectedDimension]}
 					{dimensionKeyIndicators[selectedDimension]}
 				</p>
+				<DimensionCalculation
+					dimension={selectedDimension}
+					indicatorCount={insight?.indicatorCount ?? 0}
+				/>
 			</div>
 		{/key}
 
