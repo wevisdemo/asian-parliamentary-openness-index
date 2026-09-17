@@ -38,7 +38,6 @@ const getDimensionAnswers = (dimension: Dimension) => {
 
 export const load: PageServerLoad = () => ({
 	countryCount: countries.length,
-	indicatorCount: indicators.length,
 	averageScore: getAverageScore(lowerChamberAnswers),
 	countryScores: getCountryScores(lowerChamberAnswers).toSorted((a, b) => b.score - a.score),
 	dimensionScores: dimensions.map((dimension) => ({

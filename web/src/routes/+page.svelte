@@ -9,8 +9,12 @@
 	import Button from '$lib/components/button.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
-	import { aboutSections } from '$lib/constants/about-sections';
-	import { academicPartners } from '$lib/constants/academic-partners';
+	import {
+		aboutSections,
+		aboutTheIndexSummary,
+		getMethodologySummary
+	} from '$lib/constants/about-sections';
+	import { partners } from '$lib/constants/partners';
 	import { dimensionSlugs } from '$lib/constants/dimensions';
 	import { insightSections } from '$lib/constants/insight-sections';
 	import { alliance } from '$lib/constants/contributors';
@@ -97,7 +101,7 @@
 			<div class="flex flex-col gap-1">
 				<h3 class="h5 font-bold">Score</h3>
 				<p class="b4 text-purple-2">
-					Average lower chamber score for {data.countryCount} countries
+					Average lower chamber score across 3 dimensions for {data.countryCount} countries
 				</p>
 				<p class="mt-1 h1 font-bold text-purple-2">{percentage(data.averageScore)}</p>
 			</div>
@@ -145,12 +149,7 @@
 	<div class="content-container flex flex-col gap-6 md:gap-8">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
 			<h2 class="h5 font-bold">About the Index</h2>
-			<p>
-				APOI assesses how openly national parliaments across the Asia-Pacific region disclose their
-				activities, hold their members accountable, and create meaningful avenues for citizen
-				participation. Parliaments are assessed using a standardized set of indicators organized
-				into three core dimensions of openness.
-			</p>
+			<p>{aboutTheIndexSummary}</p>
 		</div>
 
 		<div class="flex flex-col gap-4">
@@ -164,11 +163,8 @@
 			class="grid grid-cols-1 gap-4 border-t-2 border-black pt-6 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"
 		>
 			<h2 class="b1 font-bold">Methodology</h2>
-			<p>
-				The assessment covers {data.indicatorCount} indicators across three dimensions. It is conducted
-				independently every two years (first launched in {page.data.cycle.year}) by local PMOs or
-				think tanks using only publicly available information, with the findings verified by
-				academic experts.
+			<p class="whitespace-pre-line">
+				{getMethodologySummary(data.indicatorCount, data.cycle.year)}
 			</p>
 		</div>
 
@@ -203,9 +199,9 @@
 			{/each}
 		</div>
 
-		<h3 class="border-t-2 pt-5 b3 font-bold text-gray-8">Academic partners</h3>
+		<h3 class="border-t-2 pt-5 b3 font-bold text-gray-8">Academic and technical partners</h3>
 		<div class="flex flex-row flex-wrap gap-2">
-			{#each academicPartners as { name, logo } (name)}
+			{#each partners as { name, logo } (name)}
 				<img src={logo} alt={name} title={name} class="size-16 object-contain" />
 			{/each}
 		</div>

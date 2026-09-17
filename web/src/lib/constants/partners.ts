@@ -1,15 +1,16 @@
-import asianCivilSocietyResearchNetworkLogo from '$lib/assets/images/academic-partners/asian-civil-society-research-network.png';
-import universityOfMelbourneLogo from '$lib/assets/images/academic-partners/university-of-melbourne.png';
+import asianCivilSocietyResearchNetworkLogo from '$lib/assets/images/partners/asian-civil-society-research-network.png';
+import directorioLegislativoLogo from '$lib/assets/images/partners/directorio-legislativo.png';
+import universityOfMelbourneLogo from '$lib/assets/images/partners/university-of-melbourne.png';
 import { parseInlineMarkdown } from '$lib/data/transformers';
 
-export interface AcademicPartner {
+export interface Partner {
 	name: string;
 	logo: string;
 	description: string;
-	contact: string;
+	contact?: string;
 }
 
-export const academicPartners: AcademicPartner[] = [
+export const partners: Partner[] = [
 	{
 		name: 'Asian Civil Society Research Network',
 		logo: asianCivilSocietyResearchNetworkLogo,
@@ -25,5 +26,12 @@ export const academicPartners: AcademicPartner[] = [
 			"[The Research Cluster on Asian Civil Society at the University of Melbourne](https://arts.unimelb.edu.au/asia-institute/our-research/asian-civil-society)’s Asia Institute employs an interdisciplinary approach to examine the dynamically expanding role of civil society across contemporary Asia. Moving beyond Western frameworks, the cluster investigates how distinct cultural values, traditions, and political environments shape state-society relations and influence regional policies. Working closely with the Asian Civil Society Research Network, its scholars explore pressing issues ranging from grassroots activism and transnational networks to authoritarian constraints and human rights advocacy. Through high-impact research, journal special issues, and influential edited volumes, the cluster fosters critical insights into Asia's diverse civic landscapes."
 		),
 		contact: 'akihiro.ogawa@unimelb.edu.au'
+	},
+	{
+		name: 'Directorio Legislativo (DL)',
+		logo: directorioLegislativoLogo,
+		description: parseInlineMarkdown(
+			'[Directorio Legislativo (DL)](https://directoriolegislativo.org/en/) is a Latin American non-partisan, non-profit organization committed to strengthening democratic institutions by promoting transparency, accountability, and citizen participation. DL works to strengthen PMO alliances across the globe, fostering regional cooperation and advancing parliamentary openness and civic engagement as essential components of democratic progress.'
+		)
 	}
 ];

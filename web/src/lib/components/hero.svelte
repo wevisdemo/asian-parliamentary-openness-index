@@ -2,7 +2,11 @@
 	import type { Snippet } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { aboutSections } from '$lib/constants/about-sections';
+	import {
+		aboutSections,
+		aboutTheIndexSummary,
+		getMethodologySummary
+	} from '$lib/constants/about-sections';
 	import Breadcrumb from './breadcrumb.svelte';
 	import Button from './button.svelte';
 	import Hyperlink from './hyperlink.svelte';
@@ -64,12 +68,7 @@
 </div>
 
 <Modal open={openModal === 'about'} title="About the Index" onclose={() => (openModal = undefined)}>
-	<p>
-		The index assesses how openly national parliaments across Asia-Pacific operate, so citizens,
-		media, and reformers can see exactly where each parliament stands. Every parliament is scored
-		against the same set of questions, organized into three dimensions of openness: Transparency,
-		Accountability, and Citizen Participation.
-	</p>
+	<p>{aboutTheIndexSummary}</p>
 	{@render seeMore(aboutSections[0].id)}
 </Modal>
 
@@ -78,10 +77,8 @@
 	title="Methodology"
 	onclose={() => (openModal = undefined)}
 >
-	<p>
-		The assessment covers 31 indicators across three dimensions. It is conducted independently every
-		two years (first launched in 2026) by local PMOs or think tanks using only publicly available
-		information, with the findings verified by academic experts.
+	<p class="whitespace-pre-line">
+		{getMethodologySummary(page.data.indicatorCount, page.data.cycle.year)}
 	</p>
 	{@render seeMore(aboutSections[1].id)}
 </Modal>

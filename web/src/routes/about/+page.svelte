@@ -13,7 +13,7 @@
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
 	import TruncatableParagraph from '$lib/components/truncatable-paragraph.svelte';
 	import { aboutSections } from '$lib/constants/about-sections';
-	import { academicPartners } from '$lib/constants/academic-partners';
+	import { partners } from '$lib/constants/partners';
 	import { alliance } from '$lib/constants/contributors';
 	import { feedbackCategories, feedbackFormUrl } from '$lib/constants/feedback';
 	import type { PageProps } from './$types';
@@ -64,7 +64,7 @@
 
 			<h3>3 dimensions</h3>
 
-			<p>The index consists of three main dimensions for thematic assessment.</p>
+			<p>The index consists of three equally weighted dimensions for thematic assessment.</p>
 
 			<DimensionCards detailed />
 
@@ -277,10 +277,10 @@
 				{/each}
 			</div>
 
-			<h3>Academic partners</h3>
+			<h3>Academic and technical partners</h3>
 
 			<div class="flex flex-col">
-				{#each academicPartners as partner (partner.name)}
+				{#each partners as partner (partner.name)}
 					<OrganizationInfo {...partner} />
 				{/each}
 			</div>
