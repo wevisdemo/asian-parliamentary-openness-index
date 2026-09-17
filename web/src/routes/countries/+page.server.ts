@@ -1,16 +1,7 @@
-import { answers, type Answer } from '$lib/data/answers';
+import { answers } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
-import { getWeightedScorePercentage, hasApplicableScore } from '$lib/data/scores';
-import type { Chamber } from '$lib/constants/chambers';
+import { getChamberScore } from '$lib/data/scores';
 import type { PageServerLoad } from './$types';
-
-const chamberScore = (countryAnswers: Answer[], chamber: Chamber) => {
-	const chamberAnswers = countryAnswers.filter((answer) => answer.chamber === chamber);
-
-	return hasApplicableScore(chamberAnswers)
-		? getWeightedScorePercentage(chamberAnswers)
-		: undefined;
-};
 
 const scores = countries
 	.map((country) => {
@@ -19,8 +10,8 @@ const scores = countries
 		return {
 			slug: country.slug,
 			name: country.name,
-			lowerChamberScore: chamberScore(countryAnswers, 'Lower'),
-			upperChamberScore: chamberScore(countryAnswers, 'Upper')
+			lowerChamberScore: getChamberScore(countryAnswers, 'Lower'),
+			upperChamberScore: getChamberScore(countryAnswers, 'Upper')
 		};
 	})
 	.sort((a, b) => (b.lowerChamberScore ?? -1) - (a.lowerChamberScore ?? -1));

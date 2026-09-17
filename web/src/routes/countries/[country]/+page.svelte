@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import countryHeroImage from '$lib/assets/images/hero/country.png';
 	import CountryContext from '$lib/components/assessment/country-context.svelte';
+	import CountryStatsCard from '$lib/components/assessment/country-stats-card.svelte';
 	import DimensionCalculation from '$lib/components/assessment/dimension-calculation.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorAccordion from '$lib/components/assessment/indicator-accordion.svelte';
@@ -122,6 +123,12 @@
 					<p>{data.country.keyFindings}</p>
 				</div>
 			{/if}
+		</div>
+
+		<div class="flex h-fit flex-col gap-2 sm:flex-row">
+			{#each data.chamberScores as chamberScore (chamberScore.chamber)}
+				<CountryStatsCard {...chamberScore} class="flex-1" />
+			{/each}
 		</div>
 	</Hero>
 </section>

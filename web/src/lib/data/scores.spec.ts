@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Dimension } from '$lib/constants/dimensions';
 import type { Answer } from './answers';
-import { getWeightedScorePercentage, hasApplicableScore } from './scores';
+import { getDimensionScores, getWeightedScorePercentage, hasApplicableScore } from './scores';
 
 const dimensionOf = (questionNumber: string) => questionNumber.split('-')[0] as Dimension;
 
@@ -61,6 +61,38 @@ describe('getWeightedScorePercentage', () => {
 				dimensionOf
 			)
 		).toBe(50);
+	});
+});
+
+describe('getDimensionScores', () => {
+	it('returns the score percentage of every dimension in order', () => {
+		expect(
+			getDimensionScores(
+				asAnswers(
+					['Transparency-1', 1, 2],
+					['Accountability-1', 1, 1],
+					['Citizen Participation-1', 0, 1]
+				),
+				dimensionOf
+			)
+		).toEqual([
+			{ dimension: 'Transparency', score: 50 },
+			{ dimension: 'Accountability', score: 100 },
+			{ dimension: 'Citizen Participation', score: 0 }
+		]);
+	});
+
+	it('leaves the score undefined for dimensions without an applicable score', () => {
+		expect(
+			getDimensionScores(
+				asAnswers(['Transparency-1', 1, 1], ['Accountability-1', 0, 0]),
+				dimensionOf
+			)
+		).toEqual([
+			{ dimension: 'Transparency', score: 100 },
+			{ dimension: 'Accountability', score: undefined },
+			{ dimension: 'Citizen Participation', score: undefined }
+		]);
 	});
 });
 

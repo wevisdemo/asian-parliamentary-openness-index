@@ -1,11 +1,12 @@
 import { error } from '@sveltejs/kit';
-import { byChamber } from '$lib/constants/chambers';
+import { byChamber, chambers } from '$lib/constants/chambers';
 import { answers } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
 import { indicatorContexts } from '$lib/data/indicator-contexts';
 import { indicators, indicatorSummariesByChamber } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import { respondents } from '$lib/data/respondents';
+import { getChamberScore, getDimensionScores } from '$lib/data/scores';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = () => countries.map(({ slug }) => ({ country: slug }));
@@ -34,13 +35,32 @@ export const load: PageServerLoad = ({ params }) => {
 
 	if (!country) error(404, `Country "${params.country}" not found`);
 
+	const countryAnswers = answers.filter(({ country: name }) => name === country.name);
+
+	const chamberScores = chambers.flatMap((chamber) => {
+		const score = getChamberScore(countryAnswers, chamber);
+
+		return score === undefined
+			? []
+			: [
+					{
+						chamber,
+						score,
+						dimensionScores: getDimensionScores(
+							countryAnswers.filter((answer) => answer.chamber === chamber)
+						)
+					}
+				];
+	});
+
 	return {
+		chamberScores,
 		country,
 		countryOptions,
 		respondents: respondents.filter(({ country: name }) => name === country.name),
 		indicatorQuestions,
 		achievedCountryCounts,
-		answers: answers.filter(({ country: name }) => name === country.name),
+		answers: countryAnswers,
 		indicatorContexts: indicatorContexts.filter(({ country: name }) => name === country.name)
 	};
 };
