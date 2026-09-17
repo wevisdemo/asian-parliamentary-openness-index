@@ -1,4 +1,4 @@
 export const insightSections = {
-	countryComparison: 'compare-by-country',
+	overallScore: 'overall-score',
 	dimensionComparison: 'compare-by-dimension'
 } as const;

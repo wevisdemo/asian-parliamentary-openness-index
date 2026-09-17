@@ -93,13 +93,13 @@
 	</div>
 	<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
 		<a
-			href="{resolve('/insights')}#{insightSections.countryComparison}"
+			href="{resolve('/insights')}#{insightSections.overallScore}"
 			class="relative flex flex-col justify-between gap-6 bg-black p-5 text-white transition-colors hover:bg-gray-10 md:p-7"
 		>
 			<ChevronRight size={20} class="absolute top-5 right-5 text-purple-2 md:top-7 md:right-7" />
 
 			<div class="flex flex-col gap-1">
-				<h3 class="h5 font-bold">Score</h3>
+				<h3 class="h5 font-bold">Overall score</h3>
 				<p class="b4 text-purple-2">
 					Average lower chamber score across 3 dimensions for {data.countryCount} countries
 				</p>

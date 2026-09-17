@@ -89,12 +89,12 @@
 </Hero>
 
 <section
-	id={insightSections.countryComparison}
+	id={insightSections.overallScore}
 	class="scroll-mt-(--navbar-height) bg-gray-2 md:scroll-mt-(--navbar-height-md)"
 >
 	<div class="content-container flex flex-col gap-6 md:gap-8">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-0">
-			<h2 class="h4 font-bold md:px-6">Compare by Country</h2>
+			<h2 class="h4 font-bold md:px-6">Overall Score</h2>
 			<div class="flex flex-col gap-2 border-l-2 border-gray-6 pl-4 md:pl-8">
 				<span class="font-bold text-gray-10">Key finding:</span>
 				<p>
@@ -107,6 +107,7 @@
 		</div>
 		<ScoreComparison
 			scores={data.countryScores}
+			scoreLabel="Overall score"
 			bind:compare={comparedChamber}
 			bind:highlighted={highlightedCountries}
 		/>
@@ -154,6 +155,7 @@
 
 		<ScoreComparison
 			scores={insight?.countryScores ?? []}
+			scoreLabel="Dimension score"
 			bind:compare={comparedChamber}
 			bind:highlighted={highlightedCountries}
 		/>

@@ -49,7 +49,7 @@
 </ul>
 
 {#snippet remark(content: string)}
-	<Tooltip size="big" triggerClass="align-middle">
+	<Tooltip triggerClass="align-middle">
 		{#snippet trigger()}
 			<WarningAlt size={18} class="-translate-y-0.5 text-purple-3 md:ml-0.5" />
 		{/snippet}

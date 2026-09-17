@@ -19,6 +19,7 @@
 
 	interface Props {
 		scores: CountryScore[];
+		scoreLabel: string;
 		compare?: Chamber;
 		highlighted?: string[];
 		class?: string;
@@ -26,6 +27,7 @@
 
 	let {
 		scores,
+		scoreLabel,
 		compare = $bindable('Lower'),
 		highlighted = $bindable([]),
 		class: className
@@ -174,11 +176,20 @@
 				<span class="col-start-2 row-start-1 justify-self-end md:justify-self-start">
 					<Tooltip triggerClass="text-gray-4">
 						{#snippet trigger()}
-							Score
+							{scoreLabel}
 							<Information size={16} class="text-purple-3" />
 						{/snippet}
-						Percentage of the applicable points a parliament achieved in the selected chamber, across
-						all questions of the index.
+						<strong>How the score is calculated</strong>
+						<br /><br />
+						<strong>1. Overall Score = (Sum of 3 Dimension score) ÷ 3 </strong><br />
+						The overall score is the average of the three dimension scores, giving each dimension equal
+						weight.<br /><br />
+						<strong>2. Dimension Score = (Raw Score ÷ Total Applicable Score) × 100</strong><br />
+						Because each dimension contains a different number of indicators and questions, each raw score
+						needs to be converted to a percentage. <br /><br />
+						The total applicable score may vary between countries because some questions may not apply
+						to certain national contexts. These questions are excluded from the calculation, so each parliament
+						is scored only on the questions relevant to its context.
 					</Tooltip>
 				</span>
 				<span class="hidden md:col-start-3 md:block md:w-18"></span>
