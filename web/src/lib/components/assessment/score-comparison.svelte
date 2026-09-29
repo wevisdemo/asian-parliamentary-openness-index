@@ -34,16 +34,15 @@
 	}: Props = $props();
 
 	const compared = $derived(
-		scores
-			.map(({ country, chamberScores }) => ({
-				country,
-				score: chamberScores[compare]
-			}))
-			.filter((item): item is { country: Country; score: number } => item.score !== undefined)
+		scores.map(({ country, chamberScores }) => ({
+			country,
+			score: chamberScores[compare]
+		}))
 	);
 
 	const ranked = $derived(
 		compared
+			.filter((item): item is { country: Country; score: number } => item.score !== undefined)
 			.toSorted((a, b) => b.score - a.score)
 			.map((item, index, sorted) => ({
 				...item,
@@ -55,15 +54,18 @@
 		ranked.length ? ranked.reduce((sum, { score }) => sum + score, 0) / ranked.length : 0
 	);
 
-	const rows = $derived(
-		[
+	const rows = $derived([
+		...[
 			...ranked.map((item) => ({ key: item.country.slug, ...item })),
 			{ key: 'average', country: undefined, rank: undefined, score: average }
-		].toSorted((a, b) => b.score - a.score)
-	);
+		].toSorted((a, b) => b.score - a.score),
+		...compared
+			.filter(({ score }) => score === undefined)
+			.map(({ country }) => ({ key: country.slug, country, rank: undefined, score: undefined }))
+	]);
 
 	const highlightOptions = $derived(
-		compared
+		scores
 			.map(({ country }) => ({ label: country.name, value: country.slug }))
 			.toSorted((a, b) => a.label.localeCompare(b.label))
 	);
@@ -81,7 +83,12 @@
 	>
 {/snippet}
 
-{#snippet scoreRow(label: string, score: number, type?: ParliamentType, isHighlighted?: boolean)}
+{#snippet scoreRow(
+	label: string,
+	score: number | undefined,
+	type?: ParliamentType,
+	isHighlighted?: boolean
+)}
 	<div
 		class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-1 gap-y-2 text-left md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
 	>
@@ -106,9 +113,9 @@
 					'h-full transition-[width,background-color] duration-300',
 					!type ? 'bg-purple-2' : isHighlighted ? 'bg-data-partly-achieved' : 'bg-white'
 				]}
-				style="width: {score}%"
+				style="width: {score ?? 0}%"
 			></div>
-			{#if type}
+			{#if type && score !== undefined}
 				<div
 					class={[
 						'absolute inset-y-0 -translate-x-px border-l-2 border-dashed transition-[left,border-color] duration-300',
@@ -127,7 +134,7 @@
 				isHighlighted && 'text-data-partly-achieved'
 			]}
 		>
-			{score.toFixed(2)}%
+			{score === undefined ? 'N/A' : `${score.toFixed(2)}%`}
 		</span>
 	</div>
 {/snippet}
@@ -206,11 +213,12 @@
 				{#if row.country}
 					<Accordion
 						headerClass="{rowClass} {rowPaddingClass} hover:bg-gray-9"
+						toggleClass={row.score === undefined ? 'opacity-40' : undefined}
 						contentClass="px-4 pt-0 pb-4 md:pb-6"
 						iconClass="text-purple-3 self-start md:self-center -my-0.5 md:my-0"
 					>
 						{#snippet leading()}
-							<span class={[rankClass, 'font-mono']}>{row.rank}</span>
+							<span class={[rankClass, 'font-mono']}>{row.rank ?? '-'}</span>
 						{/snippet}
 
 						{#snippet header()}
