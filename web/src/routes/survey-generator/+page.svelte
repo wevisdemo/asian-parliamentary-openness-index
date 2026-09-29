@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAltFilled.svelte';
 	import Button from '$lib/components/button.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
@@ -85,8 +86,8 @@
 		return () => clearTimeout(timeout);
 	});
 
-	const reset = () => {
-		if (!confirm('Reset all answers? This cannot be undone.')) {
+	const clearDraft = () => {
+		if (!confirm('Clear all answers? This cannot be undone.')) {
 			return;
 		}
 
@@ -158,9 +159,14 @@
 		)
 	);
 
-	const fileName = $derived(
-		`${draft.country.trim().toLowerCase().replaceAll(/\s+/g, '-')}-${draft.chamber.toLowerCase()}-chamber.csv`
+	const fileBaseName = $derived(
+		`${draft.country.trim().toLowerCase().replaceAll(/\s+/g, '-')}-${draft.chamber.toLowerCase()}-chamber`
 	);
+
+	const pad = (value: number) => String(value).padStart(2, '0');
+
+	const formatTimestamp = (date: Date) =>
+		`${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}-${pad(date.getHours())}${pad(date.getMinutes())}`;
 
 	const goTo = (index: number) => {
 		step = index;
@@ -174,7 +180,7 @@
 		const link = document.createElement('a');
 
 		link.href = url;
-		link.download = fileName;
+		link.download = `${fileBaseName}-${formatTimestamp(new Date())}.csv`;
 		link.click();
 		setTimeout(() => URL.revokeObjectURL(url));
 	};
@@ -204,7 +210,7 @@
 				<Button variant="secondary" size="small" onclick={() => importInput?.click()}>
 					Import CSV
 				</Button>
-				<Button variant="secondary" size="small" onclick={reset}>Reset</Button>
+				<Button variant="secondary" size="small" onclick={clearDraft}>Clear</Button>
 			</div>
 		</div>
 
@@ -248,6 +254,19 @@
 
 	<div class="flex min-w-0 flex-1 flex-col gap-10">
 		{#if dimension}
+			<div class="flex items-start gap-2 bg-data-partly-achieved p-4 b5" role="note">
+				<WarningAltFilled size={16} class="shrink-0" aria-hidden="true" />
+				<p>
+					Answers are saved automatically in this browser, but the browser may clear them without
+					warning if you don't return for a few days. We recommend downloading the CSV from the
+					<button
+						type="button"
+						class="cursor-pointer text-purple-5 underline"
+						onclick={() => goTo(generateStep)}>Generate CSV</button
+					> step as a backup. You can import it later to continue in any browser.
+				</p>
+			</div>
+
 			<h2 class="h3 font-bold">{dimension.name}</h2>
 
 			{#each dimension.themes as theme (theme.name)}
@@ -328,7 +347,9 @@
 					</div>
 				</fieldset>
 
-				<p class="b4 text-gray-8">File name: {draft.country.trim() ? fileName : '-'}</p>
+				<p class="b4 text-gray-8">
+					File name: {draft.country.trim() ? `${fileBaseName}-<download date and time>.csv` : '-'}
+				</p>
 
 				<Button class="self-start" disabled={!draft.country.trim()} onclick={download}>
 					Download CSV
