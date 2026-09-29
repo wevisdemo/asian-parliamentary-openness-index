@@ -32,6 +32,7 @@ export const partners: Partner[] = [
 		logo: directorioLegislativoLogo,
 		description: parseInlineMarkdown(
 			'[Directorio Legislativo (DL)](https://directoriolegislativo.org/en/) is a Latin American non-partisan, non-profit organization committed to strengthening democratic institutions by promoting transparency, accountability, and citizen participation. DL works to strengthen PMO alliances across the globe, fostering regional cooperation and advancing parliamentary openness and civic engagement as essential components of democratic progress.'
-		)
+		),
+		contact: 'jkrahl@directoriolegislativo.org'
 	}
 ];
