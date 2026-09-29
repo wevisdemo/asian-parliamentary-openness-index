@@ -125,9 +125,14 @@
 			{/if}
 		</div>
 
-		<div class="flex h-fit flex-col gap-2 sm:flex-row">
+		<div class="grid h-fit grid-cols-1 gap-2 sm:grid-cols-2">
 			{#each data.chamberScores as chamberScore (chamberScore.chamber)}
-				<CountryStatsCard {...chamberScore} class="flex-1" />
+				<CountryStatsCard
+					{...chamberScore}
+					class={chamberScore.chamber === 'Both' || data.chamberScores.length === 1
+						? 'sm:col-span-2'
+						: undefined}
+				/>
 			{/each}
 		</div>
 	</Hero>

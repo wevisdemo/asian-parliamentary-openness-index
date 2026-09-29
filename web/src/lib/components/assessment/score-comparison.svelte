@@ -8,19 +8,19 @@
 	import CountryContext from '$lib/components/assessment/country-context.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Tooltip from '$lib/components/tooltip.svelte';
-	import { chamberOptions, type Chamber } from '$lib/constants/chambers';
+	import { chamberScopeOptions, type ChamberScope } from '$lib/constants/chambers';
 	import { parliamentTypes, type ParliamentType } from '$lib/constants/parliament-types';
 	import type { Country } from '$lib/data/countries';
 
 	interface CountryScore {
 		country: Country;
-		chamberScores: Partial<Record<Chamber, number>>;
+		chamberScores: Partial<Record<ChamberScope, number>>;
 	}
 
 	interface Props {
 		scores: CountryScore[];
 		scoreLabel: string;
-		compare?: Chamber;
+		compare?: ChamberScope;
 		highlighted?: string[];
 		class?: string;
 	}
@@ -137,7 +137,7 @@
 		<div class="flex min-w-0 flex-row items-center gap-3">
 			<span class="font-bold text-gray-4">Compare</span>
 			<Dropdown
-				options={chamberOptions}
+				options={chamberScopeOptions}
 				value={compare}
 				color="light"
 				onselect={(chamber) => (compare = chamber)}
@@ -189,7 +189,12 @@
 						needs to be converted to a percentage. <br /><br />
 						The total applicable score may vary between countries because some questions may not apply
 						to certain national contexts. These questions are excluded from the calculation, so each parliament
-						is scored only on the questions relevant to its context.
+						is scored only on the questions relevant to its context.<br /><br />
+						<strong
+							>3. Average overall/dimension score = (Lower chamber score + Upper chamber score) ÷ 2</strong
+						><br />
+						For bicameral countries, the scores of the two chambers are averaged to produce a single score
+						for the Parliament as a whole.
 					</Tooltip>
 				</span>
 				<span class="hidden md:col-start-3 md:block md:w-18"></span>

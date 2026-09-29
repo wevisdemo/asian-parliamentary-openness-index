@@ -9,3 +9,18 @@ export const chamberOptions = chambers.map((chamber) => ({
 	label: `${chamber} chamber`,
 	value: chamber
 }));
+
+export const chamberScopes = [...chambers, 'Both'] as const;
+
+export type ChamberScope = (typeof chamberScopes)[number];
+
+export const byChamberScope = <T>(getValue: (scope: ChamberScope) => T) =>
+	Object.fromEntries(chamberScopes.map((scope) => [scope, getValue(scope)])) as Record<
+		ChamberScope,
+		T
+	>;
+
+export const chamberScopeOptions = [
+	...chamberOptions,
+	{ label: 'Both chambers', value: 'Both' as const }
+];

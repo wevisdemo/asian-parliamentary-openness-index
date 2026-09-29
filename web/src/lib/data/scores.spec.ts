@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import type { Dimension } from '$lib/constants/dimensions';
 import type { Answer } from './answers';
-import { getDimensionScores, getWeightedScorePercentage, hasApplicableScore } from './scores';
+import {
+	getChamberDimensionScores,
+	getChamberScore,
+	getDimensionScores,
+	getWeightedScorePercentage,
+	hasApplicableScore
+} from './scores';
 
 const dimensionOf = (questionNumber: string) => questionNumber.split('-')[0] as Dimension;
 
@@ -93,6 +99,39 @@ describe('getDimensionScores', () => {
 		).toEqual([
 			{ dimension: 'Openness on Information', score: 100 },
 			{ dimension: 'Openness on Accountability', score: undefined },
+			{ dimension: 'Openness on Citizen Participation', score: undefined }
+		]);
+	});
+});
+
+describe('getChamberScore', () => {
+	const bicameral = [
+		...asAnswers(['Openness on Information-1', 1, 1], ['Openness on Accountability-1', 0, 1]),
+		...asAnswers(['Openness on Information-1', 0, 1], ['Openness on Accountability-1', 1, 2]).map(
+			(answer) => ({ ...answer, chamber: 'Upper' as const })
+		)
+	];
+
+	it('scores a single chamber', () => {
+		expect(getChamberScore(bicameral, 'Lower', dimensionOf)).toBe(50);
+		expect(getChamberScore(bicameral, 'Upper', dimensionOf)).toBe(25);
+	});
+
+	it('averages both chambers', () => {
+		expect(getChamberScore(bicameral, 'Both', dimensionOf)).toBe(37.5);
+	});
+
+	it('leaves both chambers undefined when a chamber is missing', () => {
+		const unicameral = asAnswers(['Openness on Information-1', 1, 1]);
+
+		expect(getChamberScore(unicameral, 'Lower', dimensionOf)).toBe(100);
+		expect(getChamberScore(unicameral, 'Both', dimensionOf)).toBeUndefined();
+	});
+
+	it('averages each dimension across both chambers', () => {
+		expect(getChamberDimensionScores(bicameral, 'Both', dimensionOf)).toEqual([
+			{ dimension: 'Openness on Information', score: 50 },
+			{ dimension: 'Openness on Accountability', score: 25 },
 			{ dimension: 'Openness on Citizen Participation', score: undefined }
 		]);
 	});

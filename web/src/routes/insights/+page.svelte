@@ -14,7 +14,7 @@
 	import Metadata from '$lib/components/metadata.svelte';
 	import MoreActionsSection from '$lib/components/more-actions-section.svelte';
 	import Pagination from '$lib/components/pagination.svelte';
-	import { chamberOptions, type Chamber } from '$lib/constants/chambers';
+	import { chamberScopeOptions, type ChamberScope } from '$lib/constants/chambers';
 	import {
 		dimensionDescriptions,
 		dimensionKeyIndicators,
@@ -38,7 +38,7 @@
 		pickedDimension ?? linkedDimension ?? dimensionOptions[0].value
 	);
 
-	let comparedChamber = $state<Chamber>('Lower');
+	let comparedChamber = $state<ChamberScope>('Lower');
 	let highlightedCountries = $state<string[]>([]);
 
 	let dimensionTabs = $state<ReturnType<typeof DimensionTabs>>();
@@ -109,7 +109,7 @@
 		</div>
 		<ScoreComparison
 			scores={data.countryScores}
-			scoreLabel="Overall score"
+			scoreLabel={comparedChamber === 'Both' ? 'Average overall score' : 'Overall score'}
 			bind:compare={comparedChamber}
 			bind:highlighted={highlightedCountries}
 		/>
@@ -157,7 +157,7 @@
 
 		<ScoreComparison
 			scores={insight?.countryScores ?? []}
-			scoreLabel="Dimension score"
+			scoreLabel={comparedChamber === 'Both' ? 'Average dimension score' : 'Dimension score'}
 			bind:compare={comparedChamber}
 			bind:highlighted={highlightedCountries}
 		/>
@@ -167,7 +167,7 @@
 				<div class="mr-auto flex flex-row flex-wrap items-center gap-3">
 					<h3 class="b1 font-bold">Top indicators in:</h3>
 					<Dropdown
-						options={chamberOptions}
+						options={chamberScopeOptions}
 						value={comparedChamber}
 						color="gray"
 						onselect={(chamber) => (comparedChamber = chamber)}

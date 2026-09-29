@@ -1,4 +1,4 @@
-import { byChamber } from '$lib/constants/chambers';
+import { byChamberScope } from '$lib/constants/chambers';
 import { dimensions } from '$lib/constants/dimensions';
 import { answers, type Answer } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
@@ -15,7 +15,7 @@ const getCountryScores = (scopedAnswers: Answer[]) =>
 
 		return {
 			country,
-			chamberScores: byChamber((chamber) => getChamberScore(countryAnswers, chamber))
+			chamberScores: byChamberScope((scope) => getChamberScore(countryAnswers, scope))
 		};
 	});
 
@@ -31,8 +31,8 @@ export const load: PageServerLoad = () => {
 				.map(({ number }) => number)
 		);
 
-		const topIndicators = byChamber((chamber) => {
-			const ranked = indicatorSummariesByChamber[chamber].filter(
+		const topIndicators = byChamberScope((scope) => {
+			const ranked = indicatorSummariesByChamber[scope].filter(
 				({ indicator }) => indicator.dimension === dimension
 			);
 

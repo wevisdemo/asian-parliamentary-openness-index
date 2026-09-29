@@ -11,7 +11,8 @@ const scores = countries
 			slug: country.slug,
 			name: country.name,
 			lowerChamberScore: getChamberScore(countryAnswers, 'Lower'),
-			upperChamberScore: getChamberScore(countryAnswers, 'Upper')
+			upperChamberScore: getChamberScore(countryAnswers, 'Upper'),
+			averageScore: getChamberScore(countryAnswers, 'Both')
 		};
 	})
 	.sort((a, b) => (b.lowerChamberScore ?? -1) - (a.lowerChamberScore ?? -1));

@@ -6,7 +6,7 @@ import { indicatorContexts } from '$lib/data/indicator-contexts';
 import { indicators, indicatorSummariesByChamber } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import { respondents } from '$lib/data/respondents';
-import { getChamberScore, getDimensionScores } from '$lib/data/scores';
+import { getChamberDimensionScores, getChamberScore } from '$lib/data/scores';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = () => countries.map(({ slug }) => ({ country: slug }));
@@ -37,7 +37,7 @@ export const load: PageServerLoad = ({ params }) => {
 
 	const countryAnswers = answers.filter(({ country: name }) => name === country.name);
 
-	const chamberScores = chambers.flatMap((chamber) => {
+	const chamberScores = (['Both', ...chambers] as const).flatMap((chamber) => {
 		const score = getChamberScore(countryAnswers, chamber);
 
 		return score === undefined
@@ -46,9 +46,7 @@ export const load: PageServerLoad = ({ params }) => {
 					{
 						chamber,
 						score,
-						dimensionScores: getDimensionScores(
-							countryAnswers.filter((answer) => answer.chamber === chamber)
-						)
+						dimensionScores: getChamberDimensionScores(countryAnswers, chamber)
 					}
 				];
 	});

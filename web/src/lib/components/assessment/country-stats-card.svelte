@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Chamber } from '$lib/constants/chambers';
+	import type { ChamberScope } from '$lib/constants/chambers';
 	import type { getDimensionScores } from '$lib/data/scores';
 
 	interface Props {
-		chamber: Chamber;
+		chamber: ChamberScope;
 		score: number;
 		dimensionScores: ReturnType<typeof getDimensionScores>;
 		class?: string;
@@ -18,8 +18,12 @@
 
 <div class={['flex flex-col gap-5 bg-black p-7 text-white', className]}>
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h2 class="b3 font-bold">{chamber} chamber</h2>
-		<p class="b5 text-gray-6">Average across {scoredDimensionCount} dimensions</p>
+		<h2 class="b3 font-bold">{chamber === 'Both' ? 'Average score' : `${chamber} chamber`}</h2>
+		<p class="b5 text-gray-6">
+			{chamber === 'Both'
+				? 'Average across both chambers'
+				: `Average across ${scoredDimensionCount} dimensions`}
+		</p>
 		<p class="h4 font-bold">{score.toFixed(2)}%</p>
 	</div>
 

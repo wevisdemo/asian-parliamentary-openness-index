@@ -9,9 +9,10 @@ import {
 	type StaticDecode
 } from 'sheethuahua';
 import { achievementLevels, type AchievementLevel } from '$lib/constants/achievements';
-import { byChamber, type Chamber } from '$lib/constants/chambers';
+import { byChamberScope, type ChamberScope } from '$lib/constants/chambers';
 import { dimensions, type Dimension } from '$lib/constants/dimensions';
 import { answers, getAchievementLevel, type Answer } from '$lib/data/answers';
+import { countries } from '$lib/data/countries';
 import { questions } from '$lib/data/questions';
 
 const dimensionBySheetName: Record<string, Dimension> = {
@@ -74,7 +75,14 @@ const sortByAchieved = (summaries: IndicatorSummary[]): IndicatorSummary[] =>
 			b.countryCountByLevel['N/A'] - a.countryCountByLevel['N/A']
 	);
 
-const getIndicatorSummaries = (chamber: Chamber): IndicatorSummary[] =>
+const bicameralCountries = new Set(
+	countries.filter(({ parliamentType }) => parliamentType === 'Bicameral').map(({ name }) => name)
+);
+
+const isInScope = (answer: Answer, scope: ChamberScope) =>
+	scope === 'Both' ? bicameralCountries.has(answer.country) : answer.chamber === scope;
+
+const getIndicatorSummaries = (scope: ChamberScope): IndicatorSummary[] =>
 	sortByAchieved(
 		indicators.map((indicator) => {
 			const indicatorQuestions = questions.filter(
@@ -82,7 +90,7 @@ const getIndicatorSummaries = (chamber: Chamber): IndicatorSummary[] =>
 			);
 			const questionNumbers = new Set(indicatorQuestions.map(({ number }) => number));
 			const indicatorAnswers = answers.filter(
-				(answer) => questionNumbers.has(answer.questionNumber) && answer.chamber === chamber
+				(answer) => questionNumbers.has(answer.questionNumber) && isInScope(answer, scope)
 			);
 
 			const countryCountByLevel = countCountriesByLevel(indicatorAnswers);
@@ -102,4 +110,4 @@ const getIndicatorSummaries = (chamber: Chamber): IndicatorSummary[] =>
 		})
 	);
 
-export const indicatorSummariesByChamber = byChamber(getIndicatorSummaries);
+export const indicatorSummariesByChamber = byChamberScope(getIndicatorSummaries);

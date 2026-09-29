@@ -1,4 +1,4 @@
-import type { Chamber } from '$lib/constants/chambers';
+import { chambers, type ChamberScope } from '$lib/constants/chambers';
 import { dimensions, type Dimension } from '$lib/constants/dimensions';
 import { getScorePercentage, type Answer } from '$lib/data/answers';
 import { indicators } from '$lib/data/indicators';
@@ -34,12 +34,47 @@ export const getWeightedScorePercentage = (
 		: 0;
 };
 
-export const getChamberScore = (answers: Answer[], chamber: Chamber): number | undefined => {
-	const chamberAnswers = answers.filter((answer) => answer.chamber === chamber);
+const averageOf = (scores: (number | undefined)[]): number | undefined =>
+	scores.every((score): score is number => score !== undefined)
+		? scores.reduce((sum, score) => sum + score, 0) / scores.length
+		: undefined;
+
+export const getChamberScore = (
+	answers: Answer[],
+	scope: ChamberScope,
+	dimensionOf: (questionNumber: string) => Dimension | undefined = questionDimension
+): number | undefined => {
+	if (scope === 'Both') {
+		return averageOf(chambers.map((chamber) => getChamberScore(answers, chamber, dimensionOf)));
+	}
+
+	const chamberAnswers = answers.filter((answer) => answer.chamber === scope);
 
 	return hasApplicableScore(chamberAnswers)
-		? getWeightedScorePercentage(chamberAnswers)
+		? getWeightedScorePercentage(chamberAnswers, dimensionOf)
 		: undefined;
+};
+
+export const getChamberDimensionScores = (
+	answers: Answer[],
+	scope: ChamberScope,
+	dimensionOf: (questionNumber: string) => Dimension | undefined = questionDimension
+): ReturnType<typeof getDimensionScores> => {
+	if (scope === 'Both') {
+		const chamberDimensionScores = chambers.map((chamber) =>
+			getChamberDimensionScores(answers, chamber, dimensionOf)
+		);
+
+		return dimensions.map((dimension, index) => ({
+			dimension,
+			score: averageOf(chamberDimensionScores.map((scores) => scores[index].score))
+		}));
+	}
+
+	return getDimensionScores(
+		answers.filter((answer) => answer.chamber === scope),
+		dimensionOf
+	);
 };
 
 export const getDimensionScores = (
