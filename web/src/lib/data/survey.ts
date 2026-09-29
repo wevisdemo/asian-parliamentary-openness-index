@@ -123,7 +123,8 @@ export const isReferenceComplete = ({ websiteName, url, accessedDate }: SurveyRe
 	websiteName.trim().length > 0 && urlPattern.test(url.trim()) && accessedDate.trim().length > 0;
 
 /**
- * Encodes an answer the same way respondents fill the sheet, e.g. `a`, `n/a` or `a;c;d(n/a)` where unlisted options mean no
+ * Encodes an answer the same way respondents fill the sheet, e.g. `a`, `n/a` or `a(yes);b(no);c(n/a)`.
+ * Unanswered options are left out, so a work in progress survey can be exported
  */
 export const encodeAnswer = (question: SurveyQuestion, choices: SurveyDraft['choices']) =>
 	question.answerType === 'single'
@@ -132,8 +133,8 @@ export const encodeAnswer = (question: SurveyQuestion, choices: SurveyDraft['cho
 			: ''
 		: question.answerOptions.options
 				.map(({ letter }) => ({ letter, choice: choices[choiceKey(question, letter)] }))
-				.filter(({ choice }) => choice === 'yes' || choice === 'n/a')
-				.map(({ letter, choice }) => (choice === 'n/a' ? `${letter}(n/a)` : letter))
+				.filter(({ choice }) => choice === 'yes' || choice === 'no' || choice === 'n/a')
+				.map(({ letter, choice }) => `${letter}(${choice})`)
 				.join(';');
 
 export const decodeAnswer = (question: SurveyQuestion, answer: string): [string, string][] => {
@@ -145,12 +146,16 @@ export const decodeAnswer = (question: SurveyQuestion, answer: string): [string,
 
 	const tokens = answer.split(';').map((token) => token.trim());
 
-	return options.map(({ letter }) => {
+	return options.flatMap(({ letter }): [string, string][] => {
+		const key = choiceKey(question, letter);
+
 		if (answer === 'n/a' || tokens.includes(`${letter}(n/a)`)) {
-			return [choiceKey(question, letter), 'n/a'];
+			return [[key, 'n/a']];
 		}
 
-		return [choiceKey(question, letter), tokens.includes(letter) ? 'yes' : 'no'];
+		const choice = ['yes', 'no'].find((choice) => tokens.includes(`${letter}(${choice})`));
+
+		return choice ? [[key, choice]] : [];
 	});
 };
 
@@ -242,7 +247,7 @@ export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft)
 const splitLines = (value?: string) => (value ? value.split('\n') : []);
 
 /**
- * An empty multiple answer stays unanswered since it cannot tell all no apart from not answered
+ * Unlisted options stay unanswered, so a work in progress survey restores as it was
  */
 export const parseSurveyCsv = (
 	csv: string,

@@ -44,10 +44,12 @@ describe('survey question schema', () => {
 });
 
 describe('encodeAnswer', () => {
-	it('lists yes and n/a options of a multiple answer, leaving no options out', () => {
-		expect(encodeAnswer(multiple, { '2A.a': 'no', '2A.b': 'n/a' })).toBe('b(n/a)');
-		expect(encodeAnswer(multiple, { '2A.a': 'yes', '2A.b': 'n/a' })).toBe('a;b(n/a)');
-		expect(encodeAnswer(multiple, { '2A.a': 'no', '2A.b': 'no' })).toBe('');
+	it('lists every answered option of a multiple answer, leaving unanswered options out', () => {
+		expect(encodeAnswer(multiple, { '2A.a': 'no', '2A.b': 'n/a' })).toBe('a(no);b(n/a)');
+		expect(encodeAnswer(multiple, { '2A.a': 'yes', '2A.b': 'n/a' })).toBe('a(yes);b(n/a)');
+		expect(encodeAnswer(multiple, { '2A.a': 'no', '2A.b': 'no' })).toBe('a(no);b(no)');
+		expect(encodeAnswer(multiple, { '2A.b': 'yes' })).toBe('b(yes)');
+		expect(encodeAnswer(multiple, {})).toBe('');
 	});
 });
 
@@ -137,9 +139,9 @@ describe('formatSurveyCsv', () => {
 			question: 'Which are published?',
 			answerOptions: 'a) Register (0.125)\nb) Votes (0.125)',
 			answerType: 'multiple',
-			response: 'a;b(n/a)'
+			response: 'a(yes);b(n/a)'
 		});
-		expect(second).toMatchObject({ indicator: '2B', indicatorNo: '2', response: 'b' });
+		expect(second).toMatchObject({ indicator: '2B', indicatorNo: '2', response: 'a(no);b(yes)' });
 	});
 
 	it('writes context and references line by line on the first row of an indicator only', () => {
@@ -185,13 +187,21 @@ describe('parseSurveyCsv', () => {
 		).toEqual(draft);
 	});
 
+	it('restores an all no and a partial multiple answer', () => {
+		const choices = { '2A.a': 'no', '2A.b': 'no', '2B.b': 'yes' };
+		const csv = formatSurveyCsv(questions, { ...createSurveyDraft(), choices });
+
+		expect(parseSurveyCsv(csv, questions).choices).toEqual(choices);
+	});
+
 	it('leaves empty answers, unknown letters and removed questions unanswered', () => {
 		const csv = formatSurveyCsv(questions, {
 			...createSurveyDraft(),
-			choices: { 1: 'b', '2A.a': 'no', '2A.b': 'no' }
+			choices: { 1: 'b', '2A.a': 'yes' }
 		}).replace(',b,', ',z,');
 
 		expect(parseSurveyCsv(csv, [secondOfIndicator]).choices).toEqual({});
-		expect(parseSurveyCsv(csv, questions).choices).toEqual({});
+		expect(parseSurveyCsv(csv, questions).choices).toEqual({ '2A.a': 'yes' });
+		expect(parseSurveyCsv(csv.replace('a(yes)', 'a'), questions).choices).toEqual({});
 	});
 });
