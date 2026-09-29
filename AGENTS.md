@@ -26,7 +26,7 @@
 - Case is decided by the font-size utility the text carries, not by the HTML tag. A `<h2>` styled `b1` is body text, and a `<p>` styled `h5` is a heading
 - Text carrying an `h1`–`h5` utility (see `web/src/routes/layout.css`) uses Title Case
 - All other text uses sentence case: body copy, `b1`–`b5` headings, table headers, dropdown and tab options, buttons, tooltips, and form labels
-- Proper names keep their own case, e.g. `Asian Parliamentary Openness Index`, `AAPO`, dimension names like `Citizen Participation`, and achievement levels like `Partly achieved`
+- Proper names keep their own case, e.g. `Asian Parliamentary Openness Index`, `AAPO`, dimension names like `Openness on Citizen Participation`, and achievement levels like `Partly achieved`
 - Page and section names are proper names. Navbar, footer, breadcrumb, TOC sidebar, and `<title>` labels keep the same case as the heading they point at, e.g. `Explore by Country` everywhere because the page `<h1>` is `h2`-sized
 - Applies to values in `web/src/lib/constants/*.ts` too, since those strings are rendered as UI copy
 

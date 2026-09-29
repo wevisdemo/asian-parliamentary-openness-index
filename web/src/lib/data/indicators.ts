@@ -1,21 +1,40 @@
 import indicatorsCsv from '$data/indicators.csv?raw';
 import {
 	asNumber,
-	asOneOf,
 	asString,
 	Column,
+	createTransformer,
 	Object,
 	parseCsv,
 	type StaticDecode
 } from 'sheethuahua';
 import { achievementLevels, type AchievementLevel } from '$lib/constants/achievements';
 import { byChamber, type Chamber } from '$lib/constants/chambers';
-import { dimensions } from '$lib/constants/dimensions';
+import { dimensions, type Dimension } from '$lib/constants/dimensions';
 import { answers, getAchievementLevel, type Answer } from '$lib/data/answers';
 import { questions } from '$lib/data/questions';
 
+const dimensionBySheetName: Record<string, Dimension> = {
+	Transparency: 'Openness on Information',
+	Accountability: 'Openness on Accountability',
+	'Citizen Participation': 'Openness on Citizen Participation'
+};
+
+/** Accepts both the sheet's legacy dimension names and the current ones */
+const asDimension = createTransformer({
+	decode: (value: string): Dimension => {
+		const dimension = dimensionBySheetName[value] ?? dimensions.find((name) => name === value);
+
+		if (!dimension) {
+			throw new Error(`Unknown dimension "${value}"`);
+		}
+
+		return dimension;
+	}
+});
+
 export const indicatorSchema = Object({
-	dimension: Column('Dimension', asOneOf(dimensions)),
+	dimension: Column('Dimension', asDimension),
 	dimensionRelevance: Column('Dimension Relevance', asString()),
 	number: Column('Indicator Number', asNumber()),
 	name: Column('Indicator', asString())

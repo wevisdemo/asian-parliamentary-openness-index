@@ -123,13 +123,13 @@
 			<div class="flex flex-col gap-2 border-l-2 border-gray-4 pl-4 md:pl-8">
 				<span class="font-bold text-gray-8">Key finding:</span>
 				<p>
-					<strong>Transparency</strong> is the strongest-performing dimension, with many parliaments
-					publishing meeting agendas, parliamentary proceedings, and session broadcasts.
-					<strong>Accountability</strong>
+					<strong>Openness on Information</strong> is the strongest-performing dimension, with many
+					parliaments publishing meeting agendas, parliamentary proceedings, and session broadcasts.
+					<strong>Openness on Accountability</strong>
 					is the weakest dimension across the region, particularly regarding asset declarations, conflict-of-interest
 					disclosure, and oversight of publicly funded staff.
-					<strong>Citizen Participation</strong> remains an area for improvement, with no parliament meeting
-					all participation indicators.
+					<strong>Openness on Citizen Participation</strong> remains an area for improvement, with no
+					parliament meeting all participation indicators.
 				</p>
 			</div>
 		</div>

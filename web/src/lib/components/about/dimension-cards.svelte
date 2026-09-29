@@ -17,9 +17,9 @@
 	const { detailed = false, class: className }: Props = $props();
 
 	const dimensionImages: Record<Dimension, string> = {
-		Transparency: transparencyImage,
-		Accountability: accountabilityImage,
-		'Citizen Participation': civicParticipationImage
+		'Openness on Information': transparencyImage,
+		'Openness on Accountability': accountabilityImage,
+		'Openness on Citizen Participation': civicParticipationImage
 	};
 </script>
 

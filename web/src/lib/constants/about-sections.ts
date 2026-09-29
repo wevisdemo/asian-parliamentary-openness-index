@@ -6,7 +6,7 @@ export const aboutSections = [
 ];
 
 export const aboutTheIndexSummary =
-	'APOI assesses how openly national parliaments across Asia-Pacific operate, so citizens, media, and reformers can see exactly where each parliament stands. Every parliament is scored against the same set of questions, organized into three equally weighted dimensions of openness: Transparency, Accountability, and Citizen Participation.';
+	'APOI assesses how openly national parliaments across Asia-Pacific operate, so citizens, media, and reformers can see exactly where each parliament stands. Every parliament is scored against the same set of questions, organized into three equally weighted dimensions of openness: Openness on Information, Openness on Accountability, and Openness on Citizen Participation.';
 
 export const getMethodologySummary = (indicatorCount: number, firstCycleYear: number) =>
 	`The assessment covers ${indicatorCount} indicators across three dimensions. As each dimension has a different number of indicators and questions, its raw score is converted into a percentage before the three scores are averaged to calculate the overall score, ensuring that each dimension is weighted equally.

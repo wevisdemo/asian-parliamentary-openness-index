@@ -23,18 +23,20 @@ describe('getWeightedScorePercentage', () => {
 	});
 
 	it('returns zero when no answer is applicable', () => {
-		expect(getWeightedScorePercentage(asAnswers(['Transparency-1', 0, 0]), dimensionOf)).toBe(0);
+		expect(
+			getWeightedScorePercentage(asAnswers(['Openness on Information-1', 0, 0]), dimensionOf)
+		).toBe(0);
 	});
 
 	it('gives every dimension an equal share regardless of its question count', () => {
 		expect(
 			getWeightedScorePercentage(
 				asAnswers(
-					['Transparency-1', 1, 1],
-					['Transparency-2', 1, 1],
-					['Transparency-3', 1, 1],
-					['Accountability-1', 0, 1],
-					['Citizen Participation-1', 0, 1]
+					['Openness on Information-1', 1, 1],
+					['Openness on Information-2', 1, 1],
+					['Openness on Information-3', 1, 1],
+					['Openness on Accountability-1', 0, 1],
+					['Openness on Citizen Participation-1', 0, 1]
 				),
 				dimensionOf
 			)
@@ -45,9 +47,9 @@ describe('getWeightedScorePercentage', () => {
 		expect(
 			getWeightedScorePercentage(
 				asAnswers(
-					['Transparency-1', 1, 2],
-					['Accountability-1', 1, 1],
-					['Citizen Participation-1', 0, 1]
+					['Openness on Information-1', 1, 2],
+					['Openness on Accountability-1', 1, 1],
+					['Openness on Citizen Participation-1', 0, 1]
 				),
 				dimensionOf
 			)
@@ -57,7 +59,7 @@ describe('getWeightedScorePercentage', () => {
 	it('leaves out dimensions without an applicable score', () => {
 		expect(
 			getWeightedScorePercentage(
-				asAnswers(['Transparency-1', 1, 2], ['Accountability-1', 0, 0]),
+				asAnswers(['Openness on Information-1', 1, 2], ['Openness on Accountability-1', 0, 0]),
 				dimensionOf
 			)
 		).toBe(50);
@@ -69,29 +71,29 @@ describe('getDimensionScores', () => {
 		expect(
 			getDimensionScores(
 				asAnswers(
-					['Transparency-1', 1, 2],
-					['Accountability-1', 1, 1],
-					['Citizen Participation-1', 0, 1]
+					['Openness on Information-1', 1, 2],
+					['Openness on Accountability-1', 1, 1],
+					['Openness on Citizen Participation-1', 0, 1]
 				),
 				dimensionOf
 			)
 		).toEqual([
-			{ dimension: 'Transparency', score: 50 },
-			{ dimension: 'Accountability', score: 100 },
-			{ dimension: 'Citizen Participation', score: 0 }
+			{ dimension: 'Openness on Information', score: 50 },
+			{ dimension: 'Openness on Accountability', score: 100 },
+			{ dimension: 'Openness on Citizen Participation', score: 0 }
 		]);
 	});
 
 	it('leaves the score undefined for dimensions without an applicable score', () => {
 		expect(
 			getDimensionScores(
-				asAnswers(['Transparency-1', 1, 1], ['Accountability-1', 0, 0]),
+				asAnswers(['Openness on Information-1', 1, 1], ['Openness on Accountability-1', 0, 0]),
 				dimensionOf
 			)
 		).toEqual([
-			{ dimension: 'Transparency', score: 100 },
-			{ dimension: 'Accountability', score: undefined },
-			{ dimension: 'Citizen Participation', score: undefined }
+			{ dimension: 'Openness on Information', score: 100 },
+			{ dimension: 'Openness on Accountability', score: undefined },
+			{ dimension: 'Openness on Citizen Participation', score: undefined }
 		]);
 	});
 });
@@ -99,10 +101,10 @@ describe('getDimensionScores', () => {
 describe('hasApplicableScore', () => {
 	it('is false without any applicable answer', () => {
 		expect(hasApplicableScore([])).toBe(false);
-		expect(hasApplicableScore(asAnswers(['Transparency-1', 0, 0]))).toBe(false);
+		expect(hasApplicableScore(asAnswers(['Openness on Information-1', 0, 0]))).toBe(false);
 	});
 
 	it('is true when an answer carries an applicable score', () => {
-		expect(hasApplicableScore(asAnswers(['Transparency-1', 0, 1]))).toBe(true);
+		expect(hasApplicableScore(asAnswers(['Openness on Information-1', 0, 1]))).toBe(true);
 	});
 });

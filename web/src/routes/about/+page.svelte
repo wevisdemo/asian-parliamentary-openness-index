@@ -140,16 +140,16 @@
 
 			<TruncatableParagraph>
 				The APOI framework comprises three dimensions and {data.indicatorCount} assessment items. Dimension
-				One — Transparency ({data.indicatorCountByDimension.Transparency} items) — examines the proactive
-				disclosure of meeting agendas, session recordings, verbatim transcripts, members' voting records,
-				MP salaries and allowances, draft bills, budget documents, parliamentary expenditure, and the
-				existence of a freedom of information framework. Dimension Two — Accountability ({data
-					.indicatorCountByDimension.Accountability} items) — assesses public disclosure of members' assets,
-				conflicts of interest, pre- and post-legislative scrutiny of laws, and formal channels for tracking
-				public queries. Dimension Three — Citizen Participation ({data.indicatorCountByDimension[
-					'Citizen Participation'
-				]} items) — evaluates formal mechanisms for citizen engagement across the legislative process
-				and the physical and digital accessibility of parliamentary resources.
+				One — Openness on Information ({data.indicatorCountByDimension['Openness on Information']} items)
+				— examines the proactive disclosure of meeting agendas, session recordings, verbatim transcripts,
+				members' voting records, MP salaries and allowances, draft bills, budget documents, parliamentary
+				expenditure, and the existence of a freedom of information framework. Dimension Two — Openness
+				on Accountability ({data.indicatorCountByDimension['Openness on Accountability']} items) — assesses
+				public disclosure of members' assets, conflicts of interest, pre- and post-legislative scrutiny
+				of laws, and formal channels for tracking public queries. Dimension Three — Openness on Citizen
+				Participation ({data.indicatorCountByDimension['Openness on Citizen Participation']} items) —
+				evaluates formal mechanisms for citizen engagement across the legislative process and the physical
+				and digital accessibility of parliamentary resources.
 				<br /><br />
 				Each item is scored on a scale from 0 to 1. A score of 1 is awarded where an item's requirements
 				are fully met; a score of 0 where they are not met at all; and an intermediate score between 0
