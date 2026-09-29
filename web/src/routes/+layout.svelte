@@ -1,5 +1,6 @@
 <script lang="ts">
 	import './layout.css';
+	import { page } from '$app/state';
 	import favicon from '$lib/assets/favicon.png';
 	import Navbar from '$lib/components/navbar.svelte';
 	import Footer from '$lib/components/footer.svelte';
@@ -9,6 +10,10 @@
 	let { data, children } = $props();
 
 	createGlossaryState();
+
+	const isStandalone = $derived(
+		page.route.id === '/survey-generator' || page.route.id === '/design-system'
+	);
 </script>
 
 <svelte:head
@@ -21,13 +26,17 @@
 >
 
 <div class="flex min-h-screen w-full flex-col">
-	<Navbar glossary={data.glossary} />
+	{#if !isStandalone}
+		<Navbar glossary={data.glossary} />
+	{/if}
 
 	<main class="flex flex-1 flex-col bg-white">
 		{@render children()}
 	</main>
 
-	<Footer />
+	{#if !isStandalone}
+		<Footer />
 
-	<DraftBanner />
+		<DraftBanner />
+	{/if}
 </div>

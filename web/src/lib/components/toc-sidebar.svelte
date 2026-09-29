@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type { Attachment } from 'svelte/attachments';
 
 	interface TocItem {
@@ -8,10 +9,11 @@
 
 	interface Props {
 		items: TocItem[];
+		icon?: Snippet<[string]>;
 		class?: string;
 	}
 
-	const { items, class: className }: Props = $props();
+	const { items, icon, class: className }: Props = $props();
 
 	let scrolledId = $state<string>();
 	let clickedId = $state<string>();
@@ -35,6 +37,24 @@
 
 	const trackActiveId: Attachment = () => updateActiveId();
 
+	/** Scrolls only the sidebar, not the page, so the active link stays visible when the list overflows */
+	const keepActiveInView: Attachment<HTMLElement> = (nav) => {
+		const link = nav.querySelector(`a[href="#${activeId}"]`);
+
+		if (!link) {
+			return;
+		}
+
+		const navRect = nav.getBoundingClientRect();
+		const linkRect = link.getBoundingClientRect();
+
+		if (linkRect.top < navRect.top) {
+			nav.scrollTop -= navRect.top - linkRect.top;
+		} else if (linkRect.bottom > navRect.bottom) {
+			nav.scrollTop += linkRect.bottom - navRect.bottom;
+		}
+	};
+
 	const scrollToSection = (event: MouseEvent, id: string) => {
 		event.preventDefault();
 		document.getElementById(id)?.scrollIntoView();
@@ -48,16 +68,18 @@
 	onresize={updateActiveId}
 />
 
-<nav class={['flex flex-col', className]} {@attach trackActiveId}>
+<nav class={['flex flex-col', className]} {@attach trackActiveId} {@attach keepActiveInView}>
 	{#each items as { id, label } (id)}
 		<a
 			href="#{id}"
 			onclick={(event) => scrollToSection(event, id)}
 			class={[
 				'border-l-4 px-4 py-2 b4 text-purple-5 hover:bg-purple-1',
-				activeId === id ? 'border-purple-5 bg-purple-1 font-bold' : 'border-transparent'
+				activeId === id ? 'border-purple-5 bg-purple-1 font-bold' : 'border-transparent',
+				icon && 'flex items-center gap-2'
 			]}
 		>
+			{@render icon?.(id)}
 			{label}
 		</a>
 	{/each}
