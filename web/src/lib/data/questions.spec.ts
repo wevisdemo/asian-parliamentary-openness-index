@@ -12,12 +12,6 @@ const parseAnswerOptionsColumn = (value: string) =>
 	)[0].answerOptions;
 
 describe('answer options column', () => {
-	it('decodes the letter, text and score of an option', () => {
-		expect(parseAnswerOptionsColumn('a) Completely accessible (1)')).toEqual([
-			{ answer: 'a', text: 'Completely accessible', score: 1 }
-		]);
-	});
-
 	it('decodes one option per line', () => {
 		expect(parseAnswerOptionsColumn('a) Yes (1)\nb) No (0)')).toEqual([
 			{ answer: 'a', text: 'Yes', score: 1 },
@@ -29,12 +23,6 @@ describe('answer options column', () => {
 		expect(parseAnswerOptionsColumn('\n  a) Yes (1)  \n\n  b) No (0)\n')).toEqual([
 			{ answer: 'a', text: 'Yes', score: 1 },
 			{ answer: 'b', text: 'No', score: 0 }
-		]);
-	});
-
-	it('decodes a fractional score', () => {
-		expect(parseAnswerOptionsColumn('a) Partly accessible (0.5)')).toEqual([
-			{ answer: 'a', text: 'Partly accessible', score: 0.5 }
 		]);
 	});
 

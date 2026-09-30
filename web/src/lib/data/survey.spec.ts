@@ -11,6 +11,7 @@ import {
 	isReferenceComplete,
 	isUnscored,
 	parseSurveyCsv,
+	surveyFileName,
 	surveyQuestionSchema,
 	type SurveyQuestion
 } from './survey';
@@ -32,8 +33,8 @@ describe('survey question schema', () => {
 	it('decodes options and keeps non-option lines as hints', () => {
 		expect(multiple.answerOptions).toEqual({
 			options: [
-				{ letter: 'a', text: 'Register', score: 0.125 },
-				{ letter: 'b', text: 'Votes', score: 0.125 }
+				{ answer: 'a', text: 'Register', score: 0.125 },
+				{ answer: 'b', text: 'Votes', score: 0.125 }
 			],
 			hints: ['Select all that apply']
 		});
@@ -193,6 +194,14 @@ describe('formatSurveyCsv', () => {
 			undefined,
 			undefined
 		]);
+	});
+});
+
+describe('surveyFileName', () => {
+	it('slugs the country and pads the local date and time', () => {
+		expect(
+			surveyFileName({ country: '  Sri  Lanka ', chamber: 'Lower' }, new Date(2026, 0, 5, 9, 3))
+		).toBe('sri-lanka-lower-chamber-2026-01-05-0903.csv');
 	});
 });
 

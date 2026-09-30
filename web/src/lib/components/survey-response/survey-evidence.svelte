@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
+	import { inputClass } from '$lib/constants/control-styles';
 	import { isReferenceComplete, type SurveyDraft } from '$lib/data/survey';
 
 	interface Props {
@@ -18,8 +19,6 @@
 			`${references.length} ${references.length === 1 ? 'reference' : 'references'}`
 		].join(', ')
 	);
-
-	const inputClass = 'w-full border border-gray-4 bg-white px-3 py-2';
 
 	const addReference = () => {
 		draft.references[indicatorNumber] = [

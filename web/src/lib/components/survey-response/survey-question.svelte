@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { radioClass } from '$lib/constants/control-styles';
+	import { optionStates, type OptionState } from '$lib/constants/option-states';
 	import {
 		choiceKey,
 		isAnswered,
@@ -16,11 +18,9 @@
 
 	let { question, choices = $bindable(), dependency }: Props = $props();
 
-	const multipleChoices = [
-		{ label: 'Yes', value: 'yes' },
-		{ label: 'No', value: 'no' },
-		{ label: 'N/A', value: 'n/a' }
-	];
+	const optionStateLabels: Record<OptionState, string> = { yes: 'Yes', no: 'No', 'n/a': 'N/A' };
+
+	const multipleChoices = optionStates.map((value) => ({ label: optionStateLabels[value], value }));
 </script>
 
 <div
@@ -44,17 +44,17 @@
 		</p>
 	{:else if question.answerType === 'single'}
 		<div class="flex flex-col gap-2">
-			{#each [...question.answerOptions.options, { letter: 'n/a', text: 'N/A', score: undefined }] as { letter, text, score } (letter)}
+			{#each [...question.answerOptions.options, { answer: 'n/a', text: 'N/A', score: undefined }] as { answer, text, score } (answer)}
 				<label class="flex cursor-pointer items-start gap-2">
 					<input
 						type="radio"
 						name={question.number}
-						value={letter}
+						value={answer}
 						bind:group={choices[choiceKey(question)]}
-						class="mt-1 accent-purple-5"
+						class={['mt-1', radioClass]}
 					/>
 					<span>
-						{letter === 'n/a' ? text : `${letter}) ${text}`}
+						{answer === 'n/a' ? text : `${answer}) ${text}`}
 						{#if score !== undefined}<span class="text-gray-5">({score})</span>{/if}
 					</span>
 				</label>
@@ -71,18 +71,18 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each question.answerOptions.options as { letter, text, score } (letter)}
+				{#each question.answerOptions.options as { answer, text, score } (answer)}
 					<tr class="border-t border-gray-2">
-						<td class="py-2">{letter}) {text} <span class="text-gray-5">({score})</span></td>
+						<td class="py-2">{answer}) {text} <span class="text-gray-5">({score})</span></td>
 						{#each multipleChoices as { label, value } (value)}
 							<td class="text-center">
 								<input
 									type="radio"
-									name={choiceKey(question, letter)}
+									name={choiceKey(question, answer)}
 									{value}
-									aria-label={`${letter}) ${label}`}
-									bind:group={choices[choiceKey(question, letter)]}
-									class="accent-purple-5"
+									aria-label={`${answer}) ${label}`}
+									bind:group={choices[choiceKey(question, answer)]}
+									class={radioClass}
 								/>
 							</td>
 						{/each}

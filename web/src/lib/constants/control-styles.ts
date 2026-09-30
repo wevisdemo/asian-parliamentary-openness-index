@@ -7,6 +7,10 @@ export interface SelectOption<T extends string = string> {
 	value: T;
 }
 
+export const inputClass = 'w-full border border-gray-4 bg-white px-3 py-2';
+
+export const radioClass = 'accent-purple-5';
+
 export const selectTriggerClass =
 	'inline-flex items-center gap-2 border leading-none transition-colors';
 

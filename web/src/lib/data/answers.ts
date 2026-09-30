@@ -11,13 +11,7 @@ import {
 } from 'sheethuahua';
 import type { AchievementLevel } from '$lib/constants/achievements';
 import { chambers } from '$lib/constants/chambers';
-
-export const optionStates = ['yes', 'no', 'n/a'] as const;
-
-export type OptionState = (typeof optionStates)[number];
-
-const isOptionState = (value: string): value is OptionState =>
-	(optionStates as readonly string[]).includes(value);
+import { isOptionState, type OptionState } from '$lib/constants/option-states';
 
 /** Decodes `a=yes;b=n/a` into `{ a: 'yes', b: 'n/a' }`, `a` into `{ a: 'yes' }` */
 const asAnswer = createTransformer({

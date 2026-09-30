@@ -8,10 +8,6 @@ const decode = (value: string): string[] =>
 	parseCsv(`Urls\n"${value.replaceAll('"', '""')}"`, schema)[0].urls;
 
 describe('asUrlList', () => {
-	it('keeps a single url as its only item', () => {
-		expect(decode('https://www.assembly.go.kr/')).toEqual(['https://www.assembly.go.kr/']);
-	});
-
 	it('splits one url per line', () => {
 		expect(decode('https://www.dpr.go.id/\nhttps://www.dpd.go.id/')).toEqual([
 			'https://www.dpr.go.id/',

@@ -1,15 +1,10 @@
-<script lang="ts">
+<script lang="ts" generics="T extends { id: string; label: string }">
 	import type { Snippet } from 'svelte';
 	import type { Attachment } from 'svelte/attachments';
 
-	interface TocItem {
-		id: string;
-		label: string;
-	}
-
 	interface Props {
-		items: TocItem[];
-		icon?: Snippet<[string]>;
+		items: T[];
+		icon?: Snippet<[T]>;
 		class?: string;
 	}
 
@@ -69,18 +64,18 @@
 />
 
 <nav class={['flex flex-col', className]} {@attach trackActiveId} {@attach keepActiveInView}>
-	{#each items as { id, label } (id)}
+	{#each items as item (item.id)}
 		<a
-			href="#{id}"
-			onclick={(event) => scrollToSection(event, id)}
+			href="#{item.id}"
+			onclick={(event) => scrollToSection(event, item.id)}
 			class={[
 				'border-l-4 px-4 py-2 b4 text-purple-5 hover:bg-purple-1',
-				activeId === id ? 'border-purple-5 bg-purple-1 font-bold' : 'border-transparent',
+				activeId === item.id ? 'border-purple-5 bg-purple-1 font-bold' : 'border-transparent',
 				icon && 'flex items-center gap-2'
 			]}
 		>
-			{@render icon?.(id)}
-			{label}
+			{@render icon?.(item)}
+			{item.label}
 		</a>
 	{/each}
 </nav>

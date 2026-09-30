@@ -11,36 +11,24 @@ import {
 } from 'sheethuahua';
 import type { AnswerType } from '$lib/constants/answer-types';
 import type { Chamber } from '$lib/constants/chambers';
+import { isOptionState, optionStates } from '$lib/constants/option-states';
+import { parseAnswerOption, splitNonEmptyLines } from '$lib/data/transformers';
 
 const spreadsheet = Spreadsheet('1DJ_56YByUW0PeXaPFM5_cGosSZbMhSDo');
 
-const optionPattern = /^([a-z])\)\s*(.*?)\s*\(([\d.]+)\)$/;
+const isOptionLine = (line: string) => /^[a-z]\)/.test(line);
 
 /**
  * Keeps non-option lines such as `Select all that apply` as hints
  */
 export const asSurveyOptions = createTransformer({
 	decode: (value: string) => {
-		const lines = value
-			.split('\n')
-			.map((line) => line.trim())
-			.filter((line) => line.length > 0);
+		const lines = splitNonEmptyLines(value);
 
-		const options = lines
-			.filter((line) => /^[a-z]\)/.test(line))
-			.map((line) => {
-				const match = optionPattern.exec(line);
-
-				if (!match) {
-					throw new Error(`Option "${line}" does not end with a score, e.g. "a) Text (1)"`);
-				}
-
-				const [, letter, text, score] = match;
-
-				return { letter, text, score: Number(score) };
-			});
-
-		return { options, hints: lines.filter((line) => !/^[a-z]\)/.test(line)) };
+		return {
+			options: lines.filter(isOptionLine).map(parseAnswerOption),
+			hints: lines.filter((line) => !isOptionLine(line))
+		};
 	}
 });
 
@@ -98,13 +86,13 @@ export const createSurveyDraft = (): SurveyDraft => ({
 	chamber: 'Lower'
 });
 
-export const choiceKey = (question: SurveyQuestion, letter?: string) =>
-	letter ? `${question.number}.${letter}` : question.number;
+export const choiceKey = (question: SurveyQuestion, option?: string) =>
+	option ? `${question.number}.${option}` : question.number;
 
 export const questionElementId = (question: SurveyQuestion) => `question-${question.number}`;
 
 const isSingleChoice = (question: SurveyQuestion, choice?: string) =>
-	choice === 'n/a' || question.answerOptions.options.some(({ letter }) => letter === choice);
+	choice === 'n/a' || question.answerOptions.options.some(({ answer }) => answer === choice);
 
 /**
  * A single answer only counts when it is still an option, since the sheet options may change after it was saved
@@ -112,7 +100,7 @@ const isSingleChoice = (question: SurveyQuestion, choice?: string) =>
 export const isAnswered = (question: SurveyQuestion, choices: SurveyDraft['choices']) =>
 	question.answerType === 'single'
 		? isSingleChoice(question, choices[choiceKey(question)])
-		: question.answerOptions.options.every(({ letter }) => choices[choiceKey(question, letter)]);
+		: question.answerOptions.options.every(({ answer }) => choices[choiceKey(question, answer)]);
 
 const dependencyPattern = /Score this indicator only where (\d+[a-z]) scored above 0/i;
 
@@ -130,7 +118,7 @@ export const isUnscored = (question: SurveyQuestion, choices: SurveyDraft['choic
 
 	return (
 		choice === 'n/a' ||
-		question.answerOptions.options.find(({ letter }) => letter === choice)?.score === 0
+		question.answerOptions.options.find(({ answer }) => answer === choice)?.score === 0
 	);
 };
 
@@ -171,28 +159,28 @@ export const encodeAnswer = (question: SurveyQuestion, choices: SurveyDraft['cho
 			? choices[choiceKey(question)]
 			: ''
 		: question.answerOptions.options
-				.map(({ letter }) => ({ letter, choice: choices[choiceKey(question, letter)] }))
-				.filter(({ choice }) => choice === 'yes' || choice === 'no' || choice === 'n/a')
-				.map(({ letter, choice }) => `${letter}(${choice})`)
+				.map(({ answer }) => ({ answer, choice: choices[choiceKey(question, answer)] }))
+				.filter(({ choice }) => isOptionState(choice))
+				.map(({ answer, choice }) => `${answer}(${choice})`)
 				.join(';');
 
-export const decodeAnswer = (question: SurveyQuestion, answer: string): [string, string][] => {
+export const decodeAnswer = (question: SurveyQuestion, response: string): [string, string][] => {
 	const { options } = question.answerOptions;
 
 	if (question.answerType === 'single') {
-		return isSingleChoice(question, answer) ? [[choiceKey(question), answer]] : [];
+		return isSingleChoice(question, response) ? [[choiceKey(question), response]] : [];
 	}
 
-	const tokens = answer.split(';').map((token) => token.trim());
+	const tokens = response.split(';').map((token) => token.trim());
 
-	return options.flatMap(({ letter }): [string, string][] => {
-		const key = choiceKey(question, letter);
+	return options.flatMap(({ answer }): [string, string][] => {
+		const key = choiceKey(question, answer);
 
-		if (answer === 'n/a' || tokens.includes(`${letter}(n/a)`)) {
+		if (response === 'n/a' || tokens.includes(`${answer}(n/a)`)) {
 			return [[key, 'n/a']];
 		}
 
-		const choice = ['yes', 'no'].find((choice) => tokens.includes(`${letter}(${choice})`));
+		const choice = optionStates.find((state) => tokens.includes(`${answer}(${state})`));
 
 		return choice ? [[key, choice]] : [];
 	});
@@ -262,7 +250,7 @@ export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft)
 				indicatorNo: index + 1,
 				question: question.question,
 				answerOptions: question.answerOptions.options
-					.map(({ letter, text, score }) => `${letter}) ${text} (${score})`)
+					.map(({ answer, text, score }) => `${answer}) ${text} (${score})`)
 					.join('\n'),
 				answerType: question.answerType,
 				response: encodeAnswer(question, choices),
@@ -275,6 +263,20 @@ export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft)
 		surveyCsvSchema
 	);
 };
+
+export const surveyFileBaseName = ({
+	country,
+	chamber
+}: Pick<SurveyDraft, 'country' | 'chamber'>) =>
+	`${country.trim().toLowerCase().replaceAll(/\s+/g, '-')}-${chamber.toLowerCase()}-chamber`;
+
+const pad = (value: number) => String(value).padStart(2, '0');
+
+/**
+ * Dated in local time down to the minute, so successive backups don't overwrite each other
+ */
+export const surveyFileName = (draft: Pick<SurveyDraft, 'country' | 'chamber'>, date: Date) =>
+	`${surveyFileBaseName(draft)}-${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}-${pad(date.getHours())}${pad(date.getMinutes())}.csv`;
 
 const splitLines = (value?: string) => (value ? value.split('\n') : []);
 

@@ -1,102 +1,50 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAltFilled.svelte';
 	import Button from '$lib/components/button.svelte';
+	import Hyperlink from '$lib/components/hyperlink.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
+	import { SurveyDraftState } from '$lib/components/survey-response/survey-draft-state.svelte';
 	import SurveyEvidence from '$lib/components/survey-response/survey-evidence.svelte';
+	import SurveyGenerate from '$lib/components/survey-response/survey-generate.svelte';
 	import SurveyQuestion from '$lib/components/survey-response/survey-question.svelte';
 	import SurveyStatusIcon from '$lib/components/survey-response/survey-status-icon.svelte';
-	import { chambers } from '$lib/constants/chambers';
 	import {
-		createSurveyDraft,
 		applyUnscoredDependencies,
 		findDependency,
-		formatSurveyCsv,
 		groupSurveyQuestions,
 		isAnswered,
 		isReferenceComplete,
 		parseSurveyCsv,
-		questionElementId,
-		type SurveyDraft
+		questionElementId
 	} from '$lib/data/survey';
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
 
-	const storageKey = 'apoi-survey-response-draft';
-	const saveDelay = 1000;
+	const survey = new SurveyDraftState();
 
 	const dimensions = $derived(groupSurveyQuestions(data.questions));
 
-	let draft = $state<SurveyDraft>(createSurveyDraft());
+	const dependencies = $derived(
+		new Map(
+			data.questions.map((question) => [question.number, findDependency(question, data.questions)])
+		)
+	);
+
 	let step = $state(0);
-	let savedDraft = $state<string>();
-	let saveFailed = $state(false);
 
-	const serializedDraft = $derived(JSON.stringify(draft));
-
-	const saveStatus = $derived.by(() => {
-		if (savedDraft === undefined) {
-			return 'Loading saved answers…';
-		}
-
-		if (saveFailed) {
-			return 'Could not save, the browser storage may be full';
-		}
-
-		return serializedDraft === savedDraft ? 'All changes saved' : 'Saving…';
-	});
-
-	const save = () => {
-		if (savedDraft === undefined || serializedDraft === savedDraft) {
-			return;
-		}
-
-		try {
-			localStorage.setItem(storageKey, serializedDraft);
-			savedDraft = serializedDraft;
-			saveFailed = false;
-		} catch {
-			saveFailed = true;
-		}
+	const goTo = (index: number) => {
+		step = index;
+		window.scrollTo({ top: 0, behavior: 'instant' });
 	};
-
-	onMount(() => {
-		const stored = localStorage.getItem(storageKey);
-
-		try {
-			if (stored) {
-				draft = { ...createSurveyDraft(), ...JSON.parse(stored) };
-			}
-		} catch {
-			alert('Could not read the saved answers, starting with an empty survey.');
-		}
-
-		savedDraft = serializedDraft;
-
-		return save;
-	});
-
-	$effect(() => {
-		if (serializedDraft === savedDraft) {
-			return;
-		}
-
-		const timeout = setTimeout(save, saveDelay);
-
-		return () => clearTimeout(timeout);
-	});
 
 	const clearDraft = () => {
 		if (!confirm('Clear all answers? This cannot be undone.')) {
 			return;
 		}
 
-		localStorage.removeItem(storageKey);
-		draft = createSurveyDraft();
-		savedDraft = serializedDraft;
-		saveFailed = false;
+		survey.clear();
 		step = 0;
 	};
 
@@ -113,14 +61,14 @@
 		}
 
 		try {
-			draft = { ...draft, ...parseSurveyCsv(await file.text(), data.questions) };
+			survey.draft = { ...survey.draft, ...parseSurveyCsv(await file.text(), data.questions) };
 			step = 0;
 		} catch (error) {
 			alert(`Could not import ${file.name}: ${error instanceof Error ? error.message : error}`);
 		}
 	};
 
-	const choices = $derived(applyUnscoredDependencies(data.questions, draft.choices));
+	const choices = $derived(applyUnscoredDependencies(data.questions, survey.draft.choices));
 
 	const steps = $derived(
 		dimensions.map(({ name, indicators }, index) => {
@@ -131,7 +79,7 @@
 				name,
 				unanswered: questions.filter((question) => !isAnswered(question, choices)),
 				incompleteReferences: indicators.filter((indicator) =>
-					(draft.references[indicator.number] ?? []).some(
+					(survey.draft.references[indicator.number] ?? []).some(
 						(reference) => !isReferenceComplete(reference)
 					)
 				),
@@ -159,32 +107,6 @@
 			}))
 		)
 	);
-
-	const fileBaseName = $derived(
-		`${draft.country.trim().toLowerCase().replaceAll(/\s+/g, '-')}-${draft.chamber.toLowerCase()}-chamber`
-	);
-
-	const pad = (value: number) => String(value).padStart(2, '0');
-
-	const formatTimestamp = (date: Date) =>
-		`${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}-${pad(date.getHours())}${pad(date.getMinutes())}`;
-
-	const goTo = (index: number) => {
-		step = index;
-		window.scrollTo({ top: 0, behavior: 'instant' });
-	};
-
-	const download = () => {
-		const url = URL.createObjectURL(
-			new Blob([formatSurveyCsv(data.questions, draft)], { type: 'text/csv' })
-		);
-		const link = document.createElement('a');
-
-		link.href = url;
-		link.download = `${fileBaseName}-${formatTimestamp(new Date())}.csv`;
-		link.click();
-		setTimeout(() => URL.revokeObjectURL(url));
-	};
 </script>
 
 <Metadata page="Survey Response" />
@@ -193,14 +115,34 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<svelte:window onpagehide={save} />
+<svelte:window onpagehide={survey.save} />
+
+{#snippet stepTab(index: number, name: string, unanswered?: number, total = 0)}
+	<button
+		type="button"
+		aria-current={index === step ? 'step' : undefined}
+		class={[
+			'flex cursor-pointer flex-col items-start gap-0.5 border-t-4 px-2 py-1 text-left b5',
+			index === step ? 'border-purple-5 font-bold' : 'border-gray-2 text-gray-8'
+		]}
+		onclick={() => goTo(index)}
+	>
+		<span>{name}</span>
+		{#if unanswered !== undefined}
+			<span class="flex items-center gap-1 font-normal">
+				<SurveyStatusIcon done={unanswered === 0} />
+				{total - unanswered}/{total} answered
+			</span>
+		{/if}
+	</button>
+{/snippet}
 
 <div class="sticky top-0 z-10 border-b border-gray-2 bg-white">
 	<div class="content-container flex flex-col gap-3 py-3!">
 		<div class="flex flex-wrap items-center justify-between gap-2">
 			<h1 class="h5 font-bold">APOI Survey Response</h1>
 			<div class="flex items-center gap-4">
-				<span class="b5 text-gray-8" aria-live="polite">{saveStatus}</span>
+				<span class="b5 text-gray-8" aria-live="polite">{survey.status}</span>
 				<input
 					type="file"
 					accept=".csv,text/csv"
@@ -216,25 +158,10 @@
 		</div>
 
 		<nav class="grid grid-cols-2 gap-1 md:grid-cols-4" aria-label="Survey steps">
-			{#each [...steps, { name: 'Generate CSV', unanswered: [], total: 0 }] as { name, unanswered, total }, index (name)}
-				<button
-					type="button"
-					aria-current={index === step ? 'step' : undefined}
-					class={[
-						'flex cursor-pointer flex-col items-start gap-0.5 border-t-4 px-2 py-1 text-left b5',
-						index === step ? 'border-purple-5 font-bold' : 'border-gray-2 text-gray-8'
-					]}
-					onclick={() => goTo(index)}
-				>
-					<span>{name}</span>
-					{#if index !== generateStep}
-						<span class="flex items-center gap-1 font-normal">
-							<SurveyStatusIcon done={unanswered.length === 0} />
-							{total - unanswered.length}/{total} answered
-						</span>
-					{/if}
-				</button>
+			{#each steps as { index, name, unanswered, total } (name)}
+				{@render stepTab(index, name, unanswered.length, total)}
 			{/each}
+			{@render stepTab(generateStep, 'Generate CSV')}
 		</nav>
 	</div>
 </div>
@@ -246,8 +173,8 @@
 				items={questionLinks}
 				class="hidden max-h-[calc(100vh-10rem)] w-56 shrink-0 self-start overflow-y-auto lg:sticky lg:top-36 lg:flex"
 			>
-				{#snippet icon(id)}
-					<SurveyStatusIcon done={questionLinks.some((link) => link.id === id && link.done)} />
+				{#snippet icon({ done })}
+					<SurveyStatusIcon {done} />
 				{/snippet}
 			</TocSidebar>
 		{/key}
@@ -260,11 +187,8 @@
 				<p>
 					Answers are saved automatically in this browser, but the browser may clear them without
 					warning if you don't return for a few days. We recommend downloading the CSV from the
-					<button
-						type="button"
-						class="cursor-pointer text-purple-5 underline"
-						onclick={() => goTo(generateStep)}>Generate CSV</button
-					> step as a backup. You can import it later to continue in any browser.
+					<Hyperlink onclick={() => goTo(generateStep)}>Generate CSV</Hyperlink> step as a backup. You
+					can import it later to continue in any browser.
 				</p>
 			</div>
 
@@ -277,83 +201,21 @@
 					{#each indicator.questions as question (question.number)}
 						<SurveyQuestion
 							{question}
-							dependency={findDependency(question, data.questions)}
-							bind:choices={draft.choices}
+							dependency={dependencies.get(question.number)}
+							bind:choices={survey.draft.choices}
 						/>
 					{/each}
 
-					<SurveyEvidence indicatorNumber={indicator.number} bind:draft />
+					<SurveyEvidence indicatorNumber={indicator.number} bind:draft={survey.draft} />
 				</section>
 			{/each}
 		{:else}
-			<h2 class="h3 font-bold">Generate CSV</h2>
-
-			<div class="flex flex-col gap-4">
-				<h3 class="b2 font-bold">Missing items</h3>
-
-				{#each incompleteSteps as { index, name, unanswered, incompleteReferences } (name)}
-					<div class="flex flex-col gap-1">
-						<button
-							type="button"
-							class="cursor-pointer self-start b3 font-bold text-purple-5 underline"
-							onclick={() => goTo(index)}
-						>
-							{name}
-						</button>
-						{#if unanswered.length > 0}
-							<p>
-								Unanswered questions: {unanswered.map((question) => question.number).join(', ')}
-							</p>
-						{/if}
-						{#if incompleteReferences.length > 0}
-							<p>
-								Incomplete references in indicators: {incompleteReferences
-									.map((indicator) => indicator.number)
-									.join(', ')}
-							</p>
-						{/if}
-					</div>
-				{:else}
-					<p>All questions are answered and all references are complete.</p>
-				{/each}
-			</div>
-
-			<div class="flex flex-col gap-4 bg-gray-1 p-6">
-				<label class="flex flex-col gap-1">
-					<span class="b4 font-bold">Country</span>
-					<input
-						type="text"
-						bind:value={draft.country}
-						class="w-full border border-gray-4 bg-white px-3 py-2 md:w-96"
-					/>
-				</label>
-
-				<fieldset class="flex flex-col gap-1">
-					<legend class="b4 font-bold">Chamber</legend>
-					<div class="flex gap-6">
-						{#each chambers as chamber (chamber)}
-							<label class="flex cursor-pointer items-center gap-2">
-								<input
-									type="radio"
-									name="chamber"
-									value={chamber}
-									bind:group={draft.chamber}
-									class="accent-purple-5"
-								/>
-								{chamber} chamber
-							</label>
-						{/each}
-					</div>
-				</fieldset>
-
-				<p class="b4 text-gray-8">
-					File name: {draft.country.trim() ? `${fileBaseName}-<download date and time>.csv` : '-'}
-				</p>
-
-				<Button class="self-start" disabled={!draft.country.trim()} onclick={download}>
-					Download CSV
-				</Button>
-			</div>
+			<SurveyGenerate
+				questions={data.questions}
+				bind:draft={survey.draft}
+				{incompleteSteps}
+				onstep={goTo}
+			/>
 		{/if}
 
 		<div class="flex justify-between gap-4">

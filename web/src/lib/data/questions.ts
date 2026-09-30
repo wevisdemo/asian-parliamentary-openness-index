@@ -10,27 +10,10 @@ import {
 	type StaticDecode
 } from 'sheethuahua';
 import { answerTypes } from '$lib/constants/answer-types';
+import { parseAnswerOption, splitNonEmptyLines } from '$lib/data/transformers';
 
-const answerOptionPattern = /^([a-z])\)\s*(.*?)\s*\(([\d.]+)\)$/;
-
-/** Decodes each line of `a) Completely accessible (1)` into `{ answer, text, score }` */
 const asAnswerOptions = createTransformer({
-	decode: (value: string) =>
-		value
-			.split('\n')
-			.map((line) => line.trim())
-			.filter((line) => line.length > 0)
-			.map((line) => {
-				const match = answerOptionPattern.exec(line);
-
-				if (!match) {
-					throw new Error(`Option "${line}" is not in the "a) Text (1)" format`);
-				}
-
-				const [, answer, text, score] = match;
-
-				return { answer, text, score: Number(score) };
-			})
+	decode: (value: string) => splitNonEmptyLines(value).map(parseAnswerOption)
 });
 
 export const questionSchema = Object({

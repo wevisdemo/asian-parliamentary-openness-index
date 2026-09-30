@@ -6,12 +6,32 @@ import { asArray, asString, createTransformer } from 'sheethuahua';
  */
 export const asUrlList = asArray(asString(), '\n');
 
-/**
- * Transform a column into an url-friendly slug
- */
 export const asSlug = createTransformer({
 	decode: (value: string) => value.toLowerCase().replaceAll(' ', '-')
 });
+
+export const splitNonEmptyLines = (value: string) =>
+	value
+		.split('\n')
+		.map((line) => line.trim())
+		.filter((line) => line.length > 0);
+
+const answerOptionPattern = /^([a-z])\)\s*(.*?)\s*\(([\d.]+)\)$/;
+
+/**
+ * Decodes a line of `a) Completely accessible (1)` into `{ answer, text, score }`
+ */
+export const parseAnswerOption = (line: string) => {
+	const match = answerOptionPattern.exec(line);
+
+	if (!match) {
+		throw new Error(`Option "${line}" is not in the "a) Text (1)" format`);
+	}
+
+	const [, answer, text, score] = match;
+
+	return { answer, text, score: Number(score) };
+};
 
 const renderer = new Renderer();
 
@@ -28,9 +48,6 @@ renderer.link = function ({ href, title, tokens }) {
 export const parseInlineMarkdown = (value: string) =>
 	marked.parseInline(value, { async: false, renderer });
 
-/**
- * Transform a column of inline markdown into html, with links opening in a new tab
- */
 export const asMarkdownHtml = createTransformer({
 	decode: parseInlineMarkdown
 });
