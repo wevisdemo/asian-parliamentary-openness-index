@@ -4,9 +4,9 @@
 	import Button from '$lib/components/button.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
-	import SurveyEvidence from '$lib/components/survey-generator/survey-evidence.svelte';
-	import SurveyQuestion from '$lib/components/survey-generator/survey-question.svelte';
-	import SurveyStatusIcon from '$lib/components/survey-generator/survey-status-icon.svelte';
+	import SurveyEvidence from '$lib/components/survey-response/survey-evidence.svelte';
+	import SurveyQuestion from '$lib/components/survey-response/survey-question.svelte';
+	import SurveyStatusIcon from '$lib/components/survey-response/survey-status-icon.svelte';
 	import { chambers } from '$lib/constants/chambers';
 	import {
 		createSurveyDraft,
@@ -24,7 +24,7 @@
 
 	const { data }: PageProps = $props();
 
-	const storageKey = 'apoi-survey-generator-draft';
+	const storageKey = 'apoi-survey-response-draft';
 	const saveDelay = 1000;
 
 	const dimensions = $derived(groupSurveyQuestions(data.questions));
@@ -187,7 +187,7 @@
 	};
 </script>
 
-<Metadata page="Survey Generator" />
+<Metadata page="Survey Response" />
 
 <svelte:head>
 	<meta name="robots" content="noindex" />
@@ -198,7 +198,7 @@
 <div class="sticky top-0 z-10 border-b border-gray-2 bg-white">
 	<div class="content-container flex flex-col gap-3 py-3!">
 		<div class="flex flex-wrap items-center justify-between gap-2">
-			<h1 class="h5 font-bold">APOI Survey Generator</h1>
+			<h1 class="h5 font-bold">APOI Survey Response</h1>
 			<div class="flex items-center gap-4">
 				<span class="b5 text-gray-8" aria-live="polite">{saveStatus}</span>
 				<input

@@ -174,7 +174,7 @@ def normalize_answer(row: pd.Series, answer_options: str | None = None) -> str:
     # Normalize Answer
     normalized_answer = ""
     for option in possible_options:
-        # Check if option is not selected, or explicitly answered with `(no)` by the survey generator
+        # Check if option is not selected, or explicitly answered with `(no)` by the survey response page
         if not any(re.search(r"^" + option, ans) for ans in selected_options) or any(
             re.search(r"^" + option + r"\(no\)", ans) for ans in selected_options
         ):

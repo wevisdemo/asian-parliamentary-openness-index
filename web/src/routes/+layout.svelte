@@ -12,7 +12,7 @@
 	createGlossaryState();
 
 	const isStandalone = $derived(
-		page.route.id === '/survey-generator' || page.route.id === '/design-system'
+		page.route.id === '/survey-response' || page.route.id === '/design-system'
 	);
 </script>
 
