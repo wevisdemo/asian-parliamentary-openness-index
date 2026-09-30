@@ -194,15 +194,13 @@ def normalize_answer(row: pd.Series, answer_options: str | None = None) -> str:
 
 
 def get_option_score_index(answer_options_str: str) -> Dict[str, float]:
-    options_str_list = [
-        _[0] for _ in re.findall(r"((^|\n)[a-z]\)(.|\n)+?\d\))", answer_options_str)
-    ]
-    score_index = {}
-    for option in options_str_list:
-        option_prefix = re.search(r"([a-z])\)", option).group(1)  # type: ignore
-        option_score = float(re.search(r"\((\d+(\.\d+)?)\)", option).group(1))  # type: ignore
-        score_index[option_prefix] = option_score
-    return score_index
+    # Score is the last parenthesis of the line, since option text may have its own, e.g. `a) Register (indicator 2) (0.125)`
+    return {
+        option_prefix: float(option_score)
+        for option_prefix, option_score in re.findall(
+            r"^([a-z])\).*\((\d+(?:\.\d+)?)\)\s*$", answer_options_str, re.M
+        )
+    }
 
 
 def calculate_score(row: pd.Series) -> Tuple[float, float]:
