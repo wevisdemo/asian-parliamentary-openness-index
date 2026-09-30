@@ -44,8 +44,11 @@
 			<label class="flex flex-col gap-1">
 				<span class="b4 font-bold">Country context for this indicator</span>
 				<span class="b5 text-gray-8">
-					Briefly explain why the responses were selected. This explanation will be publicly
-					available.
+					Briefly explain why this response was selected, including any relevant country or
+					parliamentary context used to support the assessment, where appropriate. This explanation
+					will be publicly available, so please provide sufficient context for a third party who is
+					not familiar with the Parliament or its processes to understand why the response is
+					appropriate.
 				</span>
 				<textarea rows="4" bind:value={draft.contexts[indicatorNumber]} class={inputClass}
 				></textarea>
@@ -54,8 +57,8 @@
 			<div class="flex flex-col gap-2">
 				<p class="b4 font-bold">References</p>
 				<p class="b5 text-gray-8">
-					Each reference needs a website name, a URL starting with http:// or https://, and a last
-					accessed date.
+					List every source you used to support your answer. Each reference needs a website name, a
+					URL starting with http:// or https://, and a last accessed date.
 				</p>
 
 				{#each references as reference, index (index)}
