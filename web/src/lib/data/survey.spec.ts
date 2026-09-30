@@ -119,23 +119,20 @@ describe('isReferenceComplete', () => {
 });
 
 describe('groupSurveyQuestions', () => {
-	it('groups by dimension, theme and indicator in sheet order', () => {
+	it('groups by dimension and indicator in sheet order', () => {
 		const numbers = (questions: SurveyQuestion[]) => questions.map(({ number }) => number);
 
 		expect(
 			groupSurveyQuestions([otherDimension, single, multiple, secondOfIndicator]).map(
-				({ name, themes }) => [
+				({ name, indicators }) => [
 					name,
-					themes.map(({ name, indicators }) => [
-						name,
-						indicators.map(({ number, name, questions }) => [number, name, numbers(questions)])
-					])
+					indicators.map(({ number, name, questions }) => [number, name, numbers(questions)])
 				]
 			)
 		).toEqual([
-			['Participation', [['Queries', [[3, 'Petitions', ['3']]]]]],
-			['Accountability', [['Integrity', [[1, 'Code', ['1']]]]]],
-			['Information', [['Useability', [[2, 'Formats', ['2A', '2B']]]]]]
+			['Participation', [[3, 'Petitions', ['3']]]],
+			['Accountability', [[1, 'Code', ['1']]]],
+			['Information', [[2, 'Formats', ['2A', '2B']]]]
 		]);
 	});
 });

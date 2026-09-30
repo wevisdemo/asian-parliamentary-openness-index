@@ -123,8 +123,7 @@
 	const choices = $derived(applyUnscoredDependencies(data.questions, draft.choices));
 
 	const steps = $derived(
-		dimensions.map(({ name, themes }, index) => {
-			const indicators = themes.flatMap((theme) => theme.indicators);
+		dimensions.map(({ name, indicators }, index) => {
 			const questions = indicators.flatMap((indicator) => indicator.questions);
 
 			return {
@@ -152,14 +151,12 @@
 	const dimension = $derived(dimensions[step]);
 
 	const questionLinks = $derived(
-		(dimension?.themes ?? []).flatMap(({ indicators }) =>
-			indicators.flatMap(({ name, questions }) =>
-				questions.map((question) => ({
-					id: questionElementId(question),
-					label: `${question.number}. ${name}`,
-					done: isAnswered(question, choices)
-				}))
-			)
+		(dimension?.indicators ?? []).flatMap(({ name, questions }) =>
+			questions.map((question) => ({
+				id: questionElementId(question),
+				label: `${question.number}. ${name}`,
+				done: isAnswered(question, choices)
+			}))
 		)
 	);
 
@@ -273,25 +270,19 @@
 
 			<h2 class="h3 font-bold">{dimension.name}</h2>
 
-			{#each dimension.themes as theme (theme.name)}
-				<section class="flex flex-col gap-8">
-					<h3 class="h4 font-bold text-purple-5">{theme.name}</h3>
+			{#each dimension.indicators as indicator (indicator.number)}
+				<section class="flex flex-col gap-6">
+					<h3 class="h5 font-bold">{indicator.number}. {indicator.name}</h3>
 
-					{#each theme.indicators as indicator (indicator.number)}
-						<div class="flex flex-col gap-6">
-							<h4 class="h5 font-bold">{indicator.number}. {indicator.name}</h4>
-
-							{#each indicator.questions as question (question.number)}
-								<SurveyQuestion
-									{question}
-									dependency={findDependency(question, data.questions)}
-									bind:choices={draft.choices}
-								/>
-							{/each}
-
-							<SurveyEvidence indicatorNumber={indicator.number} bind:draft />
-						</div>
+					{#each indicator.questions as question (question.number)}
+						<SurveyQuestion
+							{question}
+							dependency={findDependency(question, data.questions)}
+							bind:choices={draft.choices}
+						/>
 					{/each}
+
+					<SurveyEvidence indicatorNumber={indicator.number} bind:draft />
 				</section>
 			{/each}
 		{:else}

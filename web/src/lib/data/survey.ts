@@ -204,27 +204,17 @@ export interface SurveyIndicator {
 	questions: SurveyQuestion[];
 }
 
-export interface SurveyTheme {
-	name: string;
-	indicators: SurveyIndicator[];
-}
-
 export interface SurveyDimension {
 	name: string;
-	themes: SurveyTheme[];
+	indicators: SurveyIndicator[];
 }
 
 export const groupSurveyQuestions = (questions: SurveyQuestion[]): SurveyDimension[] =>
 	[...Map.groupBy(questions, (question) => question.dimension)].map(
 		([name, dimensionQuestions]) => ({
 			name,
-			themes: [...Map.groupBy(dimensionQuestions, (question) => question.theme)].map(
-				([name, themeQuestions]) => ({
-					name,
-					indicators: [...Map.groupBy(themeQuestions, (question) => question.indicatorNumber)].map(
-						([number, questions]) => ({ number, name: questions[0].indicator, questions })
-					)
-				})
+			indicators: [...Map.groupBy(dimensionQuestions, (question) => question.indicatorNumber)].map(
+				([number, questions]) => ({ number, name: questions[0].indicator, questions })
 			)
 		})
 	);
