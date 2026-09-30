@@ -72,8 +72,9 @@ export interface SurveyReference {
 export interface SurveyDraft {
 	/** Keyed by question number for single answer, or `<question number>.<letter>` for each option of multiple answer */
 	choices: Record<string, string>;
-	contexts: Record<number, string>;
-	references: Record<number, SurveyReference[]>;
+	/** Keyed by question number, as is `references` */
+	contexts: Record<string, string>;
+	references: Record<string, SurveyReference[]>;
 	country: string;
 	chamber: Chamber;
 }
@@ -224,20 +225,12 @@ const surveyCsvSchema = ObjectSchema({
 	accessedDates: Column('Evidence Sources (last accessed date)', asString().optional())
 });
 
-/**
- * Context and references go on the first row of each indicator only, where the data pipeline reads them
- */
 export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft) => {
 	const choices = applyUnscoredDependencies(questions, draft.choices);
 
 	return formatToCsv(
 		questions.map((question, index) => {
-			const isFirstOfIndicator =
-				questions.find(({ indicatorNumber }) => indicatorNumber === question.indicatorNumber) ===
-				question;
-			const references = isFirstOfIndicator
-				? (draft.references[question.indicatorNumber] ?? [])
-				: [];
+			const references = draft.references[question.number] ?? [];
 			const joinReferences = (field: keyof SurveyReference) =>
 				references.map((reference) => reference[field].trim()).join('\n');
 
@@ -254,7 +247,7 @@ export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft)
 					.join('\n'),
 				answerType: question.answerType,
 				response: encodeAnswer(question, choices),
-				context: isFirstOfIndicator ? (draft.contexts[question.indicatorNumber] ?? '').trim() : '',
+				context: (draft.contexts[question.number] ?? '').trim(),
 				urls: joinReferences('url'),
 				websiteNames: joinReferences('websiteName'),
 				accessedDates: joinReferences('accessedDate')
@@ -298,19 +291,19 @@ export const parseSurveyCsv = (
 			})
 		),
 		contexts: Object.fromEntries(
-			rows.flatMap(({ section, context }) => (context ? [[section, context]] : []))
+			rows.flatMap(({ indicator, context }) => (context ? [[indicator, context]] : []))
 		),
 		references: Object.fromEntries(
 			rows
 				.filter(({ urls, websiteNames, accessedDates }) => urls || websiteNames || accessedDates)
-				.map(({ section, urls, websiteNames, accessedDates }) => {
+				.map(({ indicator, urls, websiteNames, accessedDates }) => {
 					const [urlLines, nameLines, dateLines] = [urls, websiteNames, accessedDates].map(
 						splitLines
 					);
 					const length = Math.max(urlLines.length, nameLines.length, dateLines.length);
 
 					return [
-						section,
+						indicator,
 						Array.from({ length }, (_, index) => ({
 							websiteName: nameLines[index] ?? '',
 							url: urlLines[index] ?? '',

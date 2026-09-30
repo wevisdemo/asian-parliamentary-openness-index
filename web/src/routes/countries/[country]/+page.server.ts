@@ -2,7 +2,6 @@ import { error } from '@sveltejs/kit';
 import { byChamber, chambers } from '$lib/constants/chambers';
 import { answers } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
-import { indicatorContexts } from '$lib/data/indicator-contexts';
 import { indicators, indicatorSummariesByChamber } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import { respondents } from '$lib/data/respondents';
@@ -58,7 +57,6 @@ export const load: PageServerLoad = ({ params }) => {
 		respondents: respondents.filter(({ country: name }) => name === country.name),
 		indicatorQuestions,
 		achievedCountryCounts,
-		answers: countryAnswers,
-		indicatorContexts: indicatorContexts.filter(({ country: name }) => name === country.name)
+		answers: countryAnswers
 	};
 };

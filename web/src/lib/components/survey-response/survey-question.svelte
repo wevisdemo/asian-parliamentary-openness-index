@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { radioClass } from '$lib/constants/control-styles';
 	import { optionStates, type OptionState } from '$lib/constants/option-states';
 	import {
@@ -14,9 +15,10 @@
 		question: SurveyQuestion;
 		choices: SurveyDraft['choices'];
 		dependency?: SurveyQuestion;
+		children?: Snippet;
 	}
 
-	let { question, choices = $bindable(), dependency }: Props = $props();
+	let { question, choices = $bindable(), dependency, children }: Props = $props();
 
 	const optionStateLabels: Record<OptionState, string> = { yes: 'Yes', no: 'No', 'n/a': 'N/A' };
 
@@ -98,4 +100,6 @@
 			<p class="mt-2 whitespace-pre-line text-gray-8">{question.guidance}</p>
 		</details>
 	{/if}
+
+	{@render children?.()}
 </div>

@@ -5,7 +5,6 @@
 	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
 	import { getScoreTotals, type Answer } from '$lib/data/answers';
 	import type { Country } from '$lib/data/countries';
-	import type { IndicatorContext } from '$lib/data/indicator-contexts';
 	import type { Question } from '$lib/data/questions';
 	import { quickFade } from '$lib/utils/transitions';
 
@@ -13,11 +12,10 @@
 		country: Country;
 		questions: Question[];
 		answers: Answer[];
-		context?: IndicatorContext;
 		class?: string;
 	}
 
-	const { country, questions, answers, context, class: className }: Props = $props();
+	const { country, questions, answers, class: className }: Props = $props();
 
 	const { score, totalApplicableScore } = $derived(getScoreTotals(answers));
 </script>
@@ -43,7 +41,7 @@
 
 	{#snippet content()}
 		<div in:quickFade class="flex flex-1 flex-col gap-4">
-			<IndicatorDetail {questions} {answers} {context} />
+			<IndicatorDetail {questions} {answers} />
 
 			<Button
 				href={resolve('/countries/[country]', { country: country.slug })}

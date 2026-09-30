@@ -46,10 +46,6 @@
 		data.answers.filter(({ chamber }) => chamber === selectedChamber)
 	);
 
-	const chamberContexts = $derived(
-		data.indicatorContexts.filter(({ chamber }) => chamber === selectedChamber)
-	);
-
 	const dimensionIndicators = $derived(
 		data.indicatorQuestions
 			.filter(({ indicator }) => indicator.dimension === selectedDimension)
@@ -197,9 +193,6 @@
 									achievedCountryCount={data.achievedCountryCounts[selectedChamber][
 										indicator.number
 									]}
-									context={chamberContexts.find(
-										({ indicatorNumber }) => indicatorNumber === indicator.number
-									)}
 								/>
 							</div>
 						{/each}

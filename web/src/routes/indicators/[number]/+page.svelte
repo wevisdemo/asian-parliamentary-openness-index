@@ -140,8 +140,8 @@
 				<p in:quickFade class="b3">{achievementLevelDescriptions[selectedStatus]}</p>
 
 				<div in:quickFade class="flex flex-col gap-4">
-					{#each filteredResults as { country, answers, context } (country.slug)}
-						<CountryAccordion {country} questions={data.questions} {answers} {context} />
+					{#each filteredResults as { country, answers } (country.slug)}
+						<CountryAccordion {country} questions={data.questions} {answers} />
 					{:else}
 						<p class="px-4 py-10 text-center text-gray-8">No countries in this category.</p>
 					{/each}

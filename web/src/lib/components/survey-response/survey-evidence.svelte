@@ -5,30 +5,30 @@
 	import { isReferenceComplete, type SurveyDraft } from '$lib/data/survey';
 
 	interface Props {
-		indicatorNumber: number;
+		questionNumber: string;
 		draft: SurveyDraft;
 	}
 
-	let { indicatorNumber, draft = $bindable() }: Props = $props();
+	let { questionNumber, draft = $bindable() }: Props = $props();
 
-	const references = $derived(draft.references[indicatorNumber] ?? []);
+	const references = $derived(draft.references[questionNumber] ?? []);
 
 	const summary = $derived(
 		[
-			draft.contexts[indicatorNumber]?.trim() ? 'Context added' : 'No context',
+			draft.contexts[questionNumber]?.trim() ? 'Context added' : 'No context',
 			`${references.length} ${references.length === 1 ? 'reference' : 'references'}`
 		].join(', ')
 	);
 
 	const addReference = () => {
-		draft.references[indicatorNumber] = [
+		draft.references[questionNumber] = [
 			...references,
 			{ websiteName: '', url: '', accessedDate: '' }
 		];
 	};
 
 	const removeReference = (index: number) => {
-		draft.references[indicatorNumber] = references.filter((_, i) => i !== index);
+		draft.references[questionNumber] = references.filter((_, i) => i !== index);
 	};
 </script>
 
@@ -41,7 +41,7 @@
 	{#snippet content()}
 		<div class="flex flex-1 flex-col gap-4">
 			<label class="flex flex-col gap-1">
-				<span class="b4 font-bold">Country context for this indicator</span>
+				<span class="b4 font-bold">Country context for this question</span>
 				<span class="b5 text-gray-8">
 					Briefly explain why this response was selected, including any relevant country or
 					parliamentary context used to support the assessment, where appropriate. This explanation
@@ -49,7 +49,7 @@
 					not familiar with the Parliament or its processes to understand why the response is
 					appropriate.
 				</span>
-				<textarea rows="4" bind:value={draft.contexts[indicatorNumber]} class={inputClass}
+				<textarea rows="4" bind:value={draft.contexts[questionNumber]} class={inputClass}
 				></textarea>
 			</label>
 

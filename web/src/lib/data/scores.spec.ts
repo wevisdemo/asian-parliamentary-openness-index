@@ -20,7 +20,9 @@ const asAnswers = (
 		questionNumber,
 		answer: undefined,
 		score,
-		totalApplicableScore
+		totalApplicableScore,
+		context: undefined,
+		evidences: []
 	}));
 
 describe('getWeightedScorePercentage', () => {

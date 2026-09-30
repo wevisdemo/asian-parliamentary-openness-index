@@ -9,14 +9,16 @@ const asAnswers = (...scores: [score: number, totalApplicableScore: number][]): 
 		questionNumber: `${index + 1}`,
 		answer: undefined,
 		score,
-		totalApplicableScore
+		totalApplicableScore,
+		context: undefined,
+		evidences: []
 	}));
 
 const parseAnswerColumn = (value: string) =>
 	parseCsv(
 		[
-			'Country,Chamber,Question Number,Answer,Score,Total Applicable Score',
-			`Testland,Lower,1,"${value}",1,1`
+			'Country,Chamber,Question Number,Answer,Score,Total Applicable Score,Context,Evidences',
+			`Testland,Lower,1,"${value}",1,1,,`
 		].join('\n'),
 		answerSchema
 	)[0].answer;

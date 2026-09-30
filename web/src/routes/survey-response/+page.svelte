@@ -78,8 +78,8 @@
 				index,
 				name,
 				unanswered: questions.filter((question) => !isAnswered(question, choices)),
-				incompleteReferences: indicators.filter((indicator) =>
-					(survey.draft.references[indicator.number] ?? []).some(
+				incompleteReferences: questions.filter((question) =>
+					(survey.draft.references[question.number] ?? []).some(
 						(reference) => !isReferenceComplete(reference)
 					)
 				),
@@ -203,10 +203,10 @@
 							{question}
 							dependency={dependencies.get(question.number)}
 							bind:choices={survey.draft.choices}
-						/>
+						>
+							<SurveyEvidence questionNumber={question.number} bind:draft={survey.draft} />
+						</SurveyQuestion>
 					{/each}
-
-					<SurveyEvidence indicatorNumber={indicator.number} bind:draft={survey.draft} />
 				</section>
 			{/each}
 		{:else}

@@ -7,7 +7,6 @@
 	import IndicatorDetail from '$lib/components/assessment/indicator-detail.svelte';
 	import type { AchievementLevel } from '$lib/constants/achievements';
 	import { getAchievementLevel, getScoreTotals, type Answer } from '$lib/data/answers';
-	import type { IndicatorContext } from '$lib/data/indicator-contexts';
 	import type { Indicator } from '$lib/data/indicators';
 	import type { Question } from '$lib/data/questions';
 
@@ -16,18 +15,10 @@
 		questions: Question[];
 		answers: Answer[];
 		achievedCountryCount: number;
-		context?: IndicatorContext;
 		class?: string;
 	}
 
-	const {
-		indicator,
-		questions,
-		answers,
-		achievedCountryCount,
-		context,
-		class: className
-	}: Props = $props();
+	const { indicator, questions, answers, achievedCountryCount, class: className }: Props = $props();
 
 	const indicatorHref = $derived(
 		resolve('/indicators/[number]', { number: `${indicator.number}` })
@@ -98,7 +89,7 @@
 
 	{#snippet content()}
 		<div class="flex flex-1 flex-col gap-4">
-			<IndicatorDetail {questions} {answers} {context} />
+			<IndicatorDetail {questions} {answers} />
 
 			<Button href={indicatorHref} variant="secondary" class="self-end">
 				Explore this indicator

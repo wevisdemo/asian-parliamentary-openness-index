@@ -47,12 +47,6 @@ ANSWERS_TRANSFORM_COLUMNS = [
     "Answer",
     "Score",
     "Total Applicable Score",
-]
-
-INDICATOR_CONTEXTS_DEFAULT_COLUMNS = [
-    "Country",
-    "Chamber",
-    "Indicator Number",
     "Context",
     "Evidences",
 ]

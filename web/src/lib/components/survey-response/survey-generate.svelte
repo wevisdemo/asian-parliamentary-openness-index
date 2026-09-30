@@ -8,7 +8,6 @@
 		surveyFileBaseName,
 		surveyFileName,
 		type SurveyDraft,
-		type SurveyIndicator,
 		type SurveyQuestion
 	} from '$lib/data/survey';
 
@@ -16,7 +15,7 @@
 		index: number;
 		name: string;
 		unanswered: SurveyQuestion[];
-		incompleteReferences: SurveyIndicator[];
+		incompleteReferences: SurveyQuestion[];
 	}
 
 	interface Props {
@@ -58,8 +57,8 @@
 			{/if}
 			{#if incompleteReferences.length > 0}
 				<p>
-					Incomplete references in indicators: {incompleteReferences
-						.map((indicator) => indicator.number)
+					Incomplete references in questions: {incompleteReferences
+						.map((question) => question.number)
 						.join(', ')}
 				</p>
 			{/if}

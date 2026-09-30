@@ -12,6 +12,7 @@ import {
 import type { AchievementLevel } from '$lib/constants/achievements';
 import { chambers } from '$lib/constants/chambers';
 import { isOptionState, type OptionState } from '$lib/constants/option-states';
+import { asUrlList } from '$lib/data/transformers';
 
 /** Decodes `a=yes;b=n/a` into `{ a: 'yes', b: 'n/a' }`, `a` into `{ a: 'yes' }` */
 const asAnswer = createTransformer({
@@ -50,7 +51,9 @@ export const answerSchema = Object({
 	questionNumber: Column('Question Number', asString()),
 	answer: Column('Answer', asAnswer.optional()),
 	score: Column('Score', asNumber()),
-	totalApplicableScore: Column('Total Applicable Score', asNumber())
+	totalApplicableScore: Column('Total Applicable Score', asNumber()),
+	context: Column('Context', asString().optional()),
+	evidences: Column('Evidences', asUrlList.optional([]))
 });
 
 export type Answer = StaticDecode<typeof answerSchema>;

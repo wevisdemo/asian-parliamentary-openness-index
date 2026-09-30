@@ -157,9 +157,9 @@ describe('formatSurveyCsv', () => {
 		formatSurveyCsv([multiple, secondOfIndicator], {
 			...createSurveyDraft(),
 			choices: { '2A.a': 'yes', '2A.b': 'n/a', '2B.a': 'no', '2B.b': 'yes' },
-			contexts: { 2: ' Published as PDF ' },
+			contexts: { '2A': ' Published as PDF ' },
 			references: {
-				2: [
+				'2A': [
 					{ websiteName: 'Parliament', url: 'https://a.example', accessedDate: '2026-01-01' },
 					{ websiteName: 'Gazette', url: 'https://b.example', accessedDate: '2026-02-01' }
 				]
@@ -181,7 +181,7 @@ describe('formatSurveyCsv', () => {
 		expect(second).toMatchObject({ indicator: '2B', indicatorNo: '2', response: 'a(no);b(yes)' });
 	});
 
-	it('writes context and references line by line on the first row of an indicator only', () => {
+	it('writes context and references line by line on the row of their question only', () => {
 		expect(first).toMatchObject({
 			context: 'Published as PDF',
 			urls: 'https://a.example\nhttps://b.example',
@@ -217,10 +217,10 @@ describe('parseSurveyCsv', () => {
 				'2B.a': 'no',
 				'2B.b': 'yes'
 			},
-			contexts: { 2: 'Published as PDF' },
+			contexts: { '2A': 'Published as PDF', '2B': 'Only as CSV' },
 			references: {
 				1: [{ websiteName: 'Parliament', url: '', accessedDate: '2026-01-01' }],
-				2: [
+				'2B': [
 					{ websiteName: 'Parliament', url: 'https://a.example', accessedDate: '2026-01-01' },
 					{ websiteName: 'Gazette', url: 'https://b.example', accessedDate: '2026-02-01' }
 				]

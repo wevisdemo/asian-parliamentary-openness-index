@@ -2,7 +2,6 @@ import { error } from '@sveltejs/kit';
 import { chambers, type Chamber } from '$lib/constants/chambers';
 import { answers, getAchievementLevel, getScorePercentage } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
-import { indicatorContexts } from '$lib/data/indicator-contexts';
 import { indicators, indicatorSummariesByChamber } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import type { EntryGenerator, PageServerLoad } from './$types';
@@ -33,12 +32,6 @@ export const load: PageServerLoad = ({ params }) => {
 						answer.country === country.name &&
 						answer.chamber === chamber &&
 						questionNumbers.has(answer.questionNumber)
-				),
-				context: indicatorContexts.find(
-					(context) =>
-						context.country === country.name &&
-						context.chamber === chamber &&
-						context.indicatorNumber === indicator.number
 				)
 			}))
 			.filter((result) => result.answers.length)

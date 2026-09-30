@@ -99,14 +99,6 @@ def main() -> None:
     )
     answers.to_csv(os.path.join(OUTPUT_DIR, "answers.csv"), index=False)
 
-    # Construct `indicator-contexts` csv
-    indicator_contexts = pd.concat(
-        [cos.get_indicator_contexts_data() for cos in countries_data], ignore_index=True
-    )
-    indicator_contexts.to_csv(
-        os.path.join(OUTPUT_DIR, "indicator-contexts.csv"), index=False
-    )
-
     # TODO: make zip name dynamic
     zip_file_name = "APOI-2026.zip"
     zip_csv_files(OUTPUT_DIR, zip_file_name)
