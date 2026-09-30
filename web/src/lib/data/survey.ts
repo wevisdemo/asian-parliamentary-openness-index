@@ -114,6 +114,45 @@ export const isAnswered = (question: SurveyQuestion, choices: SurveyDraft['choic
 		? isSingleChoice(question, choices[choiceKey(question)])
 		: question.answerOptions.options.every(({ letter }) => choices[choiceKey(question, letter)]);
 
+const dependencyPattern = /Score this indicator only where (\d+[a-z]) scored above 0/i;
+
+/** e.g. 12b is only scored where 12a scored above 0 */
+export const findDependency = (question: SurveyQuestion, questions: SurveyQuestion[]) => {
+	const dependencyNumber = dependencyPattern.exec(question.guidance ?? '')?.[1].toUpperCase();
+
+	return questions.find(
+		({ number, answerType }) => answerType === 'single' && number.toUpperCase() === dependencyNumber
+	);
+};
+
+export const isUnscored = (question: SurveyQuestion, choices: SurveyDraft['choices']) => {
+	const choice = choices[choiceKey(question)];
+
+	return (
+		choice === 'n/a' ||
+		question.answerOptions.options.find(({ letter }) => letter === choice)?.score === 0
+	);
+};
+
+/**
+ * Answers N/A to every question whose dependency scored 0 or N/A, keeping the stored answers intact
+ */
+export const applyUnscoredDependencies = (
+	questions: SurveyQuestion[],
+	choices: SurveyDraft['choices']
+): SurveyDraft['choices'] => ({
+	...choices,
+	...Object.fromEntries(
+		questions
+			.filter((question) => {
+				const dependency = findDependency(question, questions);
+
+				return dependency && isUnscored(dependency, choices);
+			})
+			.map((question) => [choiceKey(question), 'n/a'])
+	)
+});
+
 const urlPattern = /^https?:\/\/\S+$/;
 
 /**
@@ -210,8 +249,10 @@ const surveyCsvSchema = ObjectSchema({
 /**
  * Context and references go on the first row of each indicator only, where the data pipeline reads them
  */
-export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft) =>
-	formatToCsv(
+export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft) => {
+	const choices = applyUnscoredDependencies(questions, draft.choices);
+
+	return formatToCsv(
 		questions.map((question, index) => {
 			const isFirstOfIndicator =
 				questions.find(({ indicatorNumber }) => indicatorNumber === question.indicatorNumber) ===
@@ -234,7 +275,7 @@ export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft)
 					.map(({ letter, text, score }) => `${letter}) ${text} (${score})`)
 					.join('\n'),
 				answerType: question.answerType,
-				response: encodeAnswer(question, draft.choices),
+				response: encodeAnswer(question, choices),
 				context: isFirstOfIndicator ? (draft.contexts[question.indicatorNumber] ?? '').trim() : '',
 				urls: joinReferences('url'),
 				websiteNames: joinReferences('websiteName'),
@@ -243,6 +284,7 @@ export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft)
 		}),
 		surveyCsvSchema
 	);
+};
 
 const splitLines = (value?: string) => (value ? value.split('\n') : []);
 

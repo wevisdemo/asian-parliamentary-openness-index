@@ -10,6 +10,8 @@
 	import { chambers } from '$lib/constants/chambers';
 	import {
 		createSurveyDraft,
+		applyUnscoredDependencies,
+		findDependency,
 		formatSurveyCsv,
 		groupSurveyQuestions,
 		isAnswered,
@@ -118,6 +120,8 @@
 		}
 	};
 
+	const choices = $derived(applyUnscoredDependencies(data.questions, draft.choices));
+
 	const steps = $derived(
 		dimensions.map(({ name, themes }, index) => {
 			const indicators = themes.flatMap((theme) => theme.indicators);
@@ -126,7 +130,7 @@
 			return {
 				index,
 				name,
-				unanswered: questions.filter((question) => !isAnswered(question, draft.choices)),
+				unanswered: questions.filter((question) => !isAnswered(question, choices)),
 				incompleteReferences: indicators.filter((indicator) =>
 					(draft.references[indicator.number] ?? []).some(
 						(reference) => !isReferenceComplete(reference)
@@ -153,7 +157,7 @@
 				questions.map((question) => ({
 					id: questionElementId(question),
 					label: `${question.number}. ${name}`,
-					done: isAnswered(question, draft.choices)
+					done: isAnswered(question, choices)
 				}))
 			)
 		)
@@ -278,7 +282,11 @@
 							<h4 class="h5 font-bold">{indicator.number}. {indicator.name}</h4>
 
 							{#each indicator.questions as question (question.number)}
-								<SurveyQuestion {question} bind:choices={draft.choices} />
+								<SurveyQuestion
+									{question}
+									dependency={findDependency(question, data.questions)}
+									bind:choices={draft.choices}
+								/>
 							{/each}
 
 							<SurveyEvidence indicatorNumber={indicator.number} bind:draft />

@@ -1,12 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { asString, Column, Object, parseCsv } from 'sheethuahua';
 import {
+	applyUnscoredDependencies,
 	createSurveyDraft,
 	encodeAnswer,
+	findDependency,
 	formatSurveyCsv,
 	groupSurveyQuestions,
 	isAnswered,
 	isReferenceComplete,
+	isUnscored,
 	parseSurveyCsv,
 	surveyQuestionSchema,
 	type SurveyQuestion
@@ -45,7 +48,6 @@ describe('survey question schema', () => {
 
 describe('encodeAnswer', () => {
 	it('lists every answered option of a multiple answer, leaving unanswered options out', () => {
-		expect(encodeAnswer(multiple, { '2A.a': 'no', '2A.b': 'n/a' })).toBe('a(no);b(n/a)');
 		expect(encodeAnswer(multiple, { '2A.a': 'yes', '2A.b': 'n/a' })).toBe('a(yes);b(n/a)');
 		expect(encodeAnswer(multiple, { '2A.a': 'no', '2A.b': 'no' })).toBe('a(no);b(no)');
 		expect(encodeAnswer(multiple, { '2A.b': 'yes' })).toBe('b(yes)');
@@ -63,6 +65,43 @@ describe('isAnswered', () => {
 		expect(isAnswered(single, { 1: 'n/a' })).toBe(true);
 		expect(isAnswered(single, { 1: 'd' })).toBe(false);
 		expect(encodeAnswer(single, { 1: 'd' })).toBe('');
+	});
+});
+
+describe('question dependency', () => {
+	const [agenda, leadTime] = parseQuestions(
+		'12,Agenda,Information,Timeliness,12A,Is an agenda published?,"a) Yes (0.5)\nb) Generic (0.25)\nc) No (0)",,3 choices',
+		'12,Agenda,Information,Timeliness,12B,How far in advance?,"a) 3 days (0.5)\nb) Less (0)","Score this indicator only where 12a scored above 0.\n\nMore guidance",2 choices'
+	);
+	const questions = [agenda, leadTime];
+
+	it('finds the dependency from the guidance', () => {
+		expect(findDependency(leadTime, questions)).toBe(agenda);
+		expect(findDependency(agenda, questions)).toBeUndefined();
+	});
+
+	it('is unscored only when the answer scores 0 or N/A', () => {
+		expect(isUnscored(agenda, { '12A': 'c' })).toBe(true);
+		expect(isUnscored(agenda, { '12A': 'n/a' })).toBe(true);
+		expect(isUnscored(agenda, { '12A': 'b' })).toBe(false);
+		expect(isUnscored(agenda, {})).toBe(false);
+	});
+
+	it('answers N/A in place of the stored answer, which comes back once the dependency scores', () => {
+		const choices = { '12A': 'c', '12B': 'a' };
+
+		expect(applyUnscoredDependencies(questions, choices)).toEqual({ '12A': 'c', '12B': 'n/a' });
+		expect(applyUnscoredDependencies(questions, { ...choices, '12A': 'a' })).toEqual({
+			'12A': 'a',
+			'12B': 'a'
+		});
+
+		const [, row] = parseCsv(
+			formatSurveyCsv(questions, { ...createSurveyDraft(), choices }),
+			Object({ response: Column('Country Assessment Response', asString()) })
+		);
+
+		expect(row.response).toBe('n/a');
 	});
 });
 

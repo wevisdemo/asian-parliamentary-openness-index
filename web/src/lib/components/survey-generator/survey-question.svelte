@@ -1,6 +1,8 @@
 <script lang="ts">
 	import {
 		choiceKey,
+		isAnswered,
+		isUnscored,
 		questionElementId,
 		type SurveyDraft,
 		type SurveyQuestion
@@ -9,9 +11,10 @@
 	interface Props {
 		question: SurveyQuestion;
 		choices: SurveyDraft['choices'];
+		dependency?: SurveyQuestion;
 	}
 
-	let { question, choices = $bindable() }: Props = $props();
+	let { question, choices = $bindable(), dependency }: Props = $props();
 
 	const multipleChoices = [
 		{ label: 'Yes', value: 'yes' },
@@ -30,7 +33,16 @@
 		<p class="b4 text-gray-8">{hint}</p>
 	{/each}
 
-	{#if question.answerType === 'single'}
+	{#if dependency && !isAnswered(dependency, choices)}
+		<p class="b4 text-gray-7 italic">
+			Answer {dependency.number} first, since this question is only scored where {dependency.number}
+			scored above 0.
+		</p>
+	{:else if dependency && isUnscored(dependency, choices)}
+		<p class="b4 text-gray-7 italic">
+			Answered N/A, since this question is only scored where {dependency.number} scored above 0.
+		</p>
+	{:else if question.answerType === 'single'}
 		<div class="flex flex-col gap-2">
 			{#each [...question.answerOptions.options, { letter: 'n/a', text: 'N/A', score: undefined }] as { letter, text, score } (letter)}
 				<label class="flex cursor-pointer items-start gap-2">
