@@ -56,7 +56,7 @@
 			<div class="flex flex-col gap-2">
 				<p class="b4 font-bold">References</p>
 				<p class="b5 text-gray-8">
-					List every source you used to support your answer. Each reference needs a website name, a
+					List every source you used to support your answer. Each reference needs a source name, a
 					URL starting with http:// or https://, and a last accessed date.
 				</p>
 
@@ -69,8 +69,13 @@
 					>
 						<legend class="px-1 b5 text-gray-8">Reference {index + 1}</legend>
 						<label class="flex flex-1 flex-col gap-1">
-							<span class="b5">Website name</span>
-							<input type="text" bind:value={reference.websiteName} class={inputClass} />
+							<span class="b5">Source name</span>
+							<input
+								type="text"
+								bind:value={reference.websiteName}
+								placeholder="Official/public known name of website or document"
+								class={inputClass}
+							/>
 						</label>
 						<label class="flex flex-1 flex-col gap-1">
 							<span class="b5">URL</span>
