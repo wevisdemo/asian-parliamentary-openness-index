@@ -1,6 +1,6 @@
 import { chambers, type ChamberScope } from '$lib/constants/chambers';
 import { dimensions, type Dimension } from '$lib/constants/dimensions';
-import { getScorePercentage, type Answer } from '$lib/data/answers';
+import { getScorePercentage, getScoreTotals, type Answer } from '$lib/data/answers';
 import { indicators } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 
@@ -47,6 +47,7 @@ export const getDimensionScores = (
 
 		return {
 			dimension,
+			totals: getScoreTotals(dimensionAnswers),
 			score: hasApplicableScore(dimensionAnswers) ? getScorePercentage(dimensionAnswers) : undefined
 		};
 	});

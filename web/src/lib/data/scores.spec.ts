@@ -31,9 +31,21 @@ describe('getDimensionScores', () => {
 				dimensionOf
 			)
 		).toEqual([
-			{ dimension: 'Openness on Information', score: 50 },
-			{ dimension: 'Openness on Accountability', score: 100 },
-			{ dimension: 'Openness on Citizen Participation', score: 0 }
+			{
+				dimension: 'Openness on Information',
+				totals: { score: 1, totalApplicableScore: 2 },
+				score: 50
+			},
+			{
+				dimension: 'Openness on Accountability',
+				totals: { score: 1, totalApplicableScore: 1 },
+				score: 100
+			},
+			{
+				dimension: 'Openness on Citizen Participation',
+				totals: { score: 0, totalApplicableScore: 1 },
+				score: 0
+			}
 		]);
 	});
 
@@ -44,9 +56,21 @@ describe('getDimensionScores', () => {
 				dimensionOf
 			)
 		).toEqual([
-			{ dimension: 'Openness on Information', score: 100 },
-			{ dimension: 'Openness on Accountability', score: undefined },
-			{ dimension: 'Openness on Citizen Participation', score: undefined }
+			{
+				dimension: 'Openness on Information',
+				totals: { score: 1, totalApplicableScore: 1 },
+				score: 100
+			},
+			{
+				dimension: 'Openness on Accountability',
+				totals: { score: 0, totalApplicableScore: 0 },
+				score: undefined
+			},
+			{
+				dimension: 'Openness on Citizen Participation',
+				totals: { score: 0, totalApplicableScore: 0 },
+				score: undefined
+			}
 		]);
 	});
 });
@@ -77,9 +101,21 @@ describe('getChamberScore', () => {
 
 	it('scores each dimension across both chambers', () => {
 		expect(getChamberDimensionScores(bicameral, 'Both', dimensionOf)).toEqual([
-			{ dimension: 'Openness on Information', score: 50 },
-			{ dimension: 'Openness on Accountability', score: expect.closeTo(100 / 3) },
-			{ dimension: 'Openness on Citizen Participation', score: undefined }
+			{
+				dimension: 'Openness on Information',
+				totals: { score: 1, totalApplicableScore: 2 },
+				score: 50
+			},
+			{
+				dimension: 'Openness on Accountability',
+				totals: { score: 1, totalApplicableScore: 3 },
+				score: expect.closeTo(100 / 3)
+			},
+			{
+				dimension: 'Openness on Citizen Participation',
+				totals: { score: 0, totalApplicableScore: 0 },
+				score: undefined
+			}
 		]);
 	});
 });

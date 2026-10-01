@@ -120,15 +120,17 @@
 			{/if}
 		</div>
 
-		<div class="grid h-fit grid-cols-1 gap-2 sm:grid-cols-2">
-			{#each data.chamberScores as chamberScore (chamberScore.chamber)}
-				<CountryStatsCard
-					{...chamberScore}
-					class={chamberScore.chamber === 'Both' || data.chamberScores.length === 1
-						? 'sm:col-span-2'
-						: undefined}
-				/>
-			{/each}
+		<div class="@container h-fit">
+			<div class="grid grid-cols-1 gap-2 @lg:grid-cols-2">
+				{#each data.chamberScores as chamberScore (chamberScore.chamber)}
+					<CountryStatsCard
+						{...chamberScore}
+						class={chamberScore.chamber === 'Both' || data.chamberScores.length === 1
+							? '@lg:col-span-2'
+							: undefined}
+					/>
+				{/each}
+			</div>
 		</div>
 	</Hero>
 </section>

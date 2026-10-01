@@ -1,11 +1,11 @@
 import { error } from '@sveltejs/kit';
 import { byChamber, chambers } from '$lib/constants/chambers';
-import { answers } from '$lib/data/answers';
+import { answers, getScoreTotals } from '$lib/data/answers';
 import { countries } from '$lib/data/countries';
 import { indicators, indicatorSummariesByChamber } from '$lib/data/indicators';
 import { questions } from '$lib/data/questions';
 import { respondents } from '$lib/data/respondents';
-import { getChamberDimensionScores, getChamberScore } from '$lib/data/scores';
+import { getChamberDimensionScores, getChamberScore, scopeAnswers } from '$lib/data/scores';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = () => countries.map(({ slug }) => ({ country: slug }));
@@ -45,6 +45,7 @@ export const load: PageServerLoad = ({ params }) => {
 					{
 						chamber,
 						score,
+						totals: getScoreTotals(scopeAnswers(countryAnswers, chamber)),
 						dimensionScores: getChamberDimensionScores(countryAnswers, chamber)
 					}
 				];
