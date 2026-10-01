@@ -24,7 +24,7 @@
 		rank: 'col-start-1 row-start-1',
 		lowerChamber: 'md:col-start-3 md:row-start-1',
 		upperChamber: 'md:col-start-4 md:row-start-1',
-		average: 'md:col-start-5 md:row-start-1',
+		aggregated: 'md:col-start-5 md:row-start-1',
 		chevron: 'col-start-3 row-start-1 justify-self-end md:col-start-6 md:self-center'
 	};
 
@@ -88,7 +88,7 @@
 			<div class={scoresClasses}>
 				<span class={cellClasses.lowerChamber}>Lower chamber</span>
 				<span class={cellClasses.upperChamber}>Upper chamber</span>
-				<span class={cellClasses.average}>Average</span>
+				<span class={cellClasses.aggregated}>Aggregated</span>
 			</div>
 		</div>
 
@@ -106,8 +106,8 @@
 					<span class={[cellClasses.upperChamber, 'font-mono text-gray-8']}>
 						{formatScore(country.upperChamberScore)}
 					</span>
-					<span class={[cellClasses.average, 'font-mono text-gray-8']}>
-						{formatScore(country.averageScore)}
+					<span class={[cellClasses.aggregated, 'font-mono text-gray-8']}>
+						{formatScore(country.aggregatedScore)}
 					</span>
 				</div>
 				<span class={cellClasses.chevron}>

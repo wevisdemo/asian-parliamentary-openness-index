@@ -64,7 +64,7 @@
 
 			<h3>3 dimensions</h3>
 
-			<p>The index consists of three equally weighted dimensions for thematic assessment.</p>
+			<p>The index consists of three dimensions for thematic assessment.</p>
 
 			<DimensionCards detailed />
 
@@ -139,24 +139,26 @@
 			<h3>Assessment framework and scoring</h3>
 
 			<TruncatableParagraph>
-				The APOI framework comprises three dimensions and {data.indicatorCount} assessment items. Dimension
-				One — Openness on Information ({data.indicatorCountByDimension['Openness on Information']} items)
+				The APOI framework comprises three dimensions and {data.indicatorCount} indicators. Dimension
+				One — Openness on Information ({data.indicatorCountByDimension['Openness on Information']} indicators)
 				— examines the proactive disclosure of meeting agendas, session recordings, verbatim transcripts,
 				members' voting records, MP salaries and allowances, draft bills, budget documents, parliamentary
 				expenditure, and the existence of a freedom of information framework. Dimension Two — Openness
-				on Accountability ({data.indicatorCountByDimension['Openness on Accountability']} items) — assesses
-				public disclosure of members' assets, conflicts of interest, pre- and post-legislative scrutiny
-				of laws, and formal channels for tracking public queries. Dimension Three — Openness on Citizen
-				Participation ({data.indicatorCountByDimension['Openness on Citizen Participation']} items) —
-				evaluates formal mechanisms for citizen engagement across the legislative process and the physical
-				and digital accessibility of parliamentary resources.
+				on Accountability ({data.indicatorCountByDimension['Openness on Accountability']} indicators)
+				— assesses public disclosure of members' assets, conflicts of interest, pre- and post-legislative
+				scrutiny of laws, and formal channels for tracking public queries. Dimension Three — Openness
+				on Citizen Participation ({data.indicatorCountByDimension[
+					'Openness on Citizen Participation'
+				]} indicators) — evaluates formal mechanisms for citizen engagement across the legislative process
+				and the physical and digital accessibility of parliamentary resources.
 				<br /><br />
-				Each item is scored on a scale from 0 to 1. A score of 1 is awarded where an item's requirements
-				are fully met; a score of 0 where they are not met at all; and an intermediate score between 0
-				and 1 where requirements are only partially fulfilled. Certain items may include response options
-				that do not apply to a given country's context; in such cases, the item is excluded from calculation
-				and marked as "N/A." This graduated approach captures meaningful distinctions across the full
-				range of openness, generating actionable diagnoses for reform.
+				Each indicator is worth 1 mark, except for one indicator in the Openness on Information dimension,
+				which is worth 3 marks. A full score is awarded when an indicator's requirements are fully met,
+				a score of 0 when they are not met at all, and an intermediate score when they are only partially
+				fulfilled. Certain items may include response options that do not apply to a given country's context;
+				in such cases, the item is excluded from calculation and marked as "N/A." This graduated approach
+				captures meaningful distinctions across the full range of openness, generating actionable diagnoses
+				for reform.
 			</TruncatableParagraph>
 
 			<h3>De facto assessment approach</h3>

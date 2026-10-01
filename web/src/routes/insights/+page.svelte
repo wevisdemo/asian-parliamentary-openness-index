@@ -4,7 +4,6 @@
 	import { resolve } from '$app/paths';
 	import insightHeroImage from '$lib/assets/images/hero/insight.png';
 	import AchievementLegend from '$lib/components/assessment/achievement-legend.svelte';
-	import DimensionCalculation from '$lib/components/assessment/dimension-calculation.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorCard from '$lib/components/assessment/indicator-card.svelte';
 	import ScoreComparison from '$lib/components/assessment/score-comparison.svelte';
@@ -109,7 +108,7 @@
 		</div>
 		<ScoreComparison
 			scores={data.countryScores}
-			scoreLabel={comparedChamber === 'Both' ? 'Average overall score' : 'Overall score'}
+			scoreLabel={comparedChamber === 'Both' ? 'Aggregated overall score' : 'Overall score'}
 			bind:compare={comparedChamber}
 			bind:highlighted={highlightedCountries}
 		/>
@@ -148,16 +147,12 @@
 					{dimensionDescriptions[selectedDimension]}
 					{dimensionKeyIndicators[selectedDimension]}
 				</p>
-				<DimensionCalculation
-					dimension={selectedDimension}
-					indicatorCount={insight?.indicatorCount ?? 0}
-				/>
 			</div>
 		{/key}
 
 		<ScoreComparison
 			scores={insight?.countryScores ?? []}
-			scoreLabel={comparedChamber === 'Both' ? 'Average dimension score' : 'Dimension score'}
+			scoreLabel={comparedChamber === 'Both' ? 'Aggregated dimension score' : 'Dimension score'}
 			bind:compare={comparedChamber}
 			bind:highlighted={highlightedCountries}
 		/>

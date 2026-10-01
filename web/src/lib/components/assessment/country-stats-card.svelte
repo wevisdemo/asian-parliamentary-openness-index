@@ -18,11 +18,9 @@
 
 <div class={['flex flex-col gap-5 bg-black p-7 text-white', className]}>
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h2 class="b3 font-bold">{chamber === 'Both' ? 'Average score' : `${chamber} chamber`}</h2>
+		<h2 class="b3 font-bold">{chamber === 'Both' ? 'Aggregated score' : `${chamber} chamber`}</h2>
 		<p class="b5 text-gray-6">
-			{chamber === 'Both'
-				? 'Average across both chambers'
-				: `Average across ${scoredDimensionCount} dimensions`}
+			{chamber === 'Both' ? 'Across both chambers' : `Across ${scoredDimensionCount} dimensions`}
 		</p>
 		<p class="h4 font-bold">{score.toFixed(2)}%</p>
 	</div>

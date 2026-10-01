@@ -44,7 +44,6 @@ export const load: PageServerLoad = () => {
 
 		return {
 			dimension,
-			indicatorCount: dimensionIndicators.length,
 			topIndicators,
 			countryScores: getCountryScores(
 				answers.filter(({ questionNumber }) => questionNumbers.has(questionNumber))

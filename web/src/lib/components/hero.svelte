@@ -5,7 +5,7 @@
 	import {
 		aboutSections,
 		aboutTheIndexSummary,
-		getMethodologySummary
+		getMethodologyBrief
 	} from '$lib/constants/about-sections';
 	import Breadcrumb from './breadcrumb.svelte';
 	import Button from './button.svelte';
@@ -78,7 +78,11 @@
 	onclose={() => (openModal = undefined)}
 >
 	<p class="whitespace-pre-line">
-		{getMethodologySummary(page.data.indicatorCount, page.data.cycle.year)}
+		{getMethodologyBrief({
+			indicatorCount: page.data.indicatorCount,
+			questionCount: page.data.questionCount,
+			firstCycleYear: page.data.cycle.year
+		})}
 	</p>
 	{@render seeMore(aboutSections[1].id)}
 </Modal>

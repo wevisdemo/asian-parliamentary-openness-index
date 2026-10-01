@@ -188,20 +188,23 @@
 						{/snippet}
 						<strong>How the score is calculated</strong>
 						<br /><br />
-						<strong>1. Overall Score = (Sum of 3 Dimension score) ÷ 3 </strong><br />
-						The overall score is the average of the three dimension scores, giving each dimension equal
-						weight.<br /><br />
+						<strong
+							>1. Overall Score = (Sum of all Dimension Raw Score ÷ Total Applicable Score) × 100</strong
+						><br />
+						The Overall Score aggregates the scores across all applicable questions and converts them
+						into a percentage.<br /><br />
 						<strong>2. Dimension Score = (Raw Score ÷ Total Applicable Score) × 100</strong><br />
-						Because each dimension contains a different number of indicators and questions, each raw score
-						needs to be converted to a percentage. <br /><br />
+						The Dimension Score is calculated in the same way as the Overall Score, but only includes
+						questions within that dimension.<br /><br />
 						The total applicable score may vary between countries because some questions may not apply
 						to certain national contexts. These questions are excluded from the calculation, so each parliament
 						is scored only on the questions relevant to its context.<br /><br />
 						<strong
-							>3. Average overall/dimension score = (Lower chamber score + Upper chamber score) ÷ 2</strong
+							>3. Aggregated overall/dimension score = (Score of Both Chambers ÷ Total Applicable
+							Score of Both Chambers) × 100</strong
 						><br />
-						For bicameral countries, the scores of the two chambers are averaged to produce a single score
-						for the Parliament as a whole.
+						For bicameral countries, the scores of the two chambers are aggregated to produce a single
+						score for the Parliament as a whole.
 					</Tooltip>
 				</span>
 				<span class="hidden md:col-start-3 md:block md:w-18"></span>

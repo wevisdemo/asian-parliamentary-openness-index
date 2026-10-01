@@ -164,7 +164,11 @@
 		>
 			<h2 class="b1 font-bold">Methodology</h2>
 			<p class="whitespace-pre-line">
-				{getMethodologySummary(data.indicatorCount, data.cycle.year)}
+				{getMethodologySummary({
+					indicatorCount: data.indicatorCount,
+					questionCount: data.questionCount,
+					firstCycleYear: data.cycle.year
+				})}
 			</p>
 		</div>
 

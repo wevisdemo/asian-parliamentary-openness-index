@@ -17,65 +17,24 @@ const dimensionByQuestionNumber = new Map(
 
 const questionDimension = (questionNumber: string) => dimensionByQuestionNumber.get(questionNumber);
 
-/**
- * Share of the applicable score achieved, where every dimension contributes equally
- * no matter how many questions it holds. Dimensions without an applicable score are left out
- */
-export const getWeightedScorePercentage = (
-	answers: Answer[],
-	dimensionOf: (questionNumber: string) => Dimension | undefined = questionDimension
-): number => {
-	const percentages = getDimensionScores(answers, dimensionOf)
-		.map(({ score }) => score)
-		.filter((score) => score !== undefined);
+export const scopeAnswers = (answers: Answer[], scope: ChamberScope): Answer[] =>
+	scope === 'Both' ? answers : answers.filter((answer) => answer.chamber === scope);
 
-	return percentages.length
-		? percentages.reduce((sum, percentage) => sum + percentage, 0) / percentages.length
-		: 0;
-};
+/** A scope only scores when every chamber it covers carries an applicable score */
+const isScored = (answers: Answer[], scope: ChamberScope): boolean =>
+	scope === 'Both'
+		? chambers.every((chamber) => isScored(answers, chamber))
+		: hasApplicableScore(scopeAnswers(answers, scope));
 
-const averageOf = (scores: (number | undefined)[]): number | undefined =>
-	scores.every((score): score is number => score !== undefined)
-		? scores.reduce((sum, score) => sum + score, 0) / scores.length
-		: undefined;
-
-export const getChamberScore = (
-	answers: Answer[],
-	scope: ChamberScope,
-	dimensionOf: (questionNumber: string) => Dimension | undefined = questionDimension
-): number | undefined => {
-	if (scope === 'Both') {
-		return averageOf(chambers.map((chamber) => getChamberScore(answers, chamber, dimensionOf)));
-	}
-
-	const chamberAnswers = answers.filter((answer) => answer.chamber === scope);
-
-	return hasApplicableScore(chamberAnswers)
-		? getWeightedScorePercentage(chamberAnswers, dimensionOf)
-		: undefined;
-};
+export const getChamberScore = (answers: Answer[], scope: ChamberScope): number | undefined =>
+	isScored(answers, scope) ? getScorePercentage(scopeAnswers(answers, scope)) : undefined;
 
 export const getChamberDimensionScores = (
 	answers: Answer[],
 	scope: ChamberScope,
 	dimensionOf: (questionNumber: string) => Dimension | undefined = questionDimension
-): ReturnType<typeof getDimensionScores> => {
-	if (scope === 'Both') {
-		const chamberDimensionScores = chambers.map((chamber) =>
-			getChamberDimensionScores(answers, chamber, dimensionOf)
-		);
-
-		return dimensions.map((dimension, index) => ({
-			dimension,
-			score: averageOf(chamberDimensionScores.map((scores) => scores[index].score))
-		}));
-	}
-
-	return getDimensionScores(
-		answers.filter((answer) => answer.chamber === scope),
-		dimensionOf
-	);
-};
+): ReturnType<typeof getDimensionScores> =>
+	getDimensionScores(scopeAnswers(answers, scope), dimensionOf);
 
 export const getDimensionScores = (
 	answers: Answer[],

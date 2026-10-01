@@ -1,6 +1,7 @@
 import { getGlossary } from '$lib/data/glossary';
 import { getCycles } from '$lib/data/cycle';
 import { indicators } from '$lib/data/indicators';
+import { questions } from '$lib/data/questions';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async () => {
@@ -11,5 +12,10 @@ export const load: LayoutServerLoad = async () => {
 		throw new Error('No assessment cycle found in the cycle context sheet');
 	}
 
-	return { glossary, cycle, indicatorCount: indicators.length };
+	return {
+		glossary,
+		cycle,
+		indicatorCount: indicators.length,
+		questionCount: questions.length
+	};
 };
