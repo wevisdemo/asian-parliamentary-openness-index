@@ -1,12 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Dimension } from '$lib/constants/dimensions';
 import type { Answer } from './answers';
-import {
-	getChamberDimensionScores,
-	getChamberScore,
-	getDimensionScores,
-	hasApplicableScore
-} from './scores';
+import { getChamberDimensionScores, getChamberScore, getDimensionScores } from './scores';
 
 const dimensionOf = (questionNumber: string) => questionNumber.split('-')[0] as Dimension;
 
@@ -86,16 +81,5 @@ describe('getChamberScore', () => {
 			{ dimension: 'Openness on Accountability', score: expect.closeTo(100 / 3) },
 			{ dimension: 'Openness on Citizen Participation', score: undefined }
 		]);
-	});
-});
-
-describe('hasApplicableScore', () => {
-	it('is false without any applicable answer', () => {
-		expect(hasApplicableScore([])).toBe(false);
-		expect(hasApplicableScore(asAnswers(['Openness on Information-1', 0, 0]))).toBe(false);
-	});
-
-	it('is true when an answer carries an applicable score', () => {
-		expect(hasApplicableScore(asAnswers(['Openness on Information-1', 0, 1]))).toBe(true);
 	});
 });

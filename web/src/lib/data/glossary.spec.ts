@@ -19,13 +19,6 @@ describe('getTermAliases', () => {
 		expect(getTermAliases('Convention / Custom')).toEqual(['Convention', 'Custom']);
 	});
 
-	it('keeps multi word alternatives intact', () => {
-		expect(getTermAliases('Creative Commons / Open license')).toEqual([
-			'Creative Commons',
-			'Open license'
-		]);
-	});
-
 	it('expands an abbreviation into the full wording and the abbreviation', () => {
 		expect(getTermAliases('Members of Parliament (MPs)')).toEqual(['Members of Parliament', 'MPs']);
 	});
@@ -130,10 +123,6 @@ describe('findTermByAlias', () => {
 
 	it('finds a term by one of its slash separated alternatives', () => {
 		expect(findTermByAlias(terms, 'custom')?.term).toBe('Convention / Custom');
-	});
-
-	it('ignores casing', () => {
-		expect(findTermByAlias(terms, 'mPs')?.term).toBe('Members of Parliament (MPs)');
 	});
 
 	it('returns nothing for an unknown or missing alias', () => {

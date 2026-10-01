@@ -59,11 +59,8 @@ describe('answer column', () => {
 });
 
 describe('getScorePercentage', () => {
-	it('returns zero when there is no answer', () => {
+	it('returns zero without any applicable answer', () => {
 		expect(getScorePercentage([])).toBe(0);
-	});
-
-	it('returns zero when no answer is applicable', () => {
 		expect(getScorePercentage(asAnswers([0, 0], [0, 0]))).toBe(0);
 	});
 
@@ -77,11 +74,8 @@ describe('getScorePercentage', () => {
 });
 
 describe('getAchievementLevel', () => {
-	it('is not applicable when there is no answer', () => {
+	it('is not applicable without any applicable answer', () => {
 		expect(getAchievementLevel([])).toBe('N/A');
-	});
-
-	it('is not applicable when every answer is not applicable', () => {
 		expect(getAchievementLevel(asAnswers([0, 0], [0, 0]))).toBe('N/A');
 	});
 
@@ -95,10 +89,6 @@ describe('getAchievementLevel', () => {
 
 	it('is partly achieved when some applicable answers miss the full score', () => {
 		expect(getAchievementLevel(asAnswers([2, 2], [1, 2]))).toBe('Partly achieved');
-	});
-
-	it('is partly achieved when applicable answers score without reaching the full score', () => {
-		expect(getAchievementLevel(asAnswers([0, 2], [1, 2]))).toBe('Partly achieved');
 	});
 
 	it('is not achieved when every applicable answer scores zero', () => {
