@@ -173,7 +173,13 @@
 						onselect={(chamber) => (comparedChamber = chamber)}
 					/>
 				</div>
-				<AchievementLegend />
+				<AchievementLegend>
+					{#snippet note()}
+						Note: When comparing <strong>both chambers</strong>, all applicable questions across
+						both chambers must meet the above criteria for an indicator to be categorized at each
+						level.
+					{/snippet}
+				</AchievementLegend>
 			</div>
 
 			{#each indicatorGroups as group (group.title)}

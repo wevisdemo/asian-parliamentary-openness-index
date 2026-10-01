@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Information from 'carbon-icons-svelte/lib/Information.svelte';
 	import Tooltip from '$lib/components/tooltip.svelte';
 	import {
@@ -9,10 +10,11 @@
 	} from '$lib/constants/achievements';
 
 	interface Props {
+		note?: Snippet;
 		class?: string;
 	}
 
-	const { class: className }: Props = $props();
+	const { note, class: className }: Props = $props();
 
 	const levels: AchievementLevel[] = [
 		...achievementLevels.filter((level) => level !== 'N/A').toReversed(),
@@ -35,7 +37,7 @@
 			<Information size={16} />
 		{/snippet}
 
-		<dl class="flex flex-col gap-3">
+		<dl class="flex flex-col gap-4">
 			{#each levels as level (level)}
 				<div class={[level === 'N/A' && 'text-gray-6']}>
 					<dt class="inline font-bold">{level}:</dt>
@@ -43,5 +45,9 @@
 				</div>
 			{/each}
 		</dl>
+
+		{#if note}
+			<p class="mt-4 border-t border-gray-2 pt-4">{@render note()}</p>
+		{/if}
 	</Tooltip>
 </div>
