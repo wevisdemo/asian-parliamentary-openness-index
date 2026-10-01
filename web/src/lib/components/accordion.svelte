@@ -27,7 +27,7 @@
 		headerClass,
 		toggleClass,
 		contentClass,
-		iconClass = 'text-purple-5',
+		iconClass = 'size-5 text-purple-5 md:size-6',
 		class: className
 	}: Props = $props();
 
@@ -47,9 +47,9 @@
 		<div class="flex flex-row items-start gap-3 text-left">
 			<span class={['shrink-0', iconClass]}>
 				{#if open}
-					<Subtract size={24} class="size-5 md:size-6" />
+					<Subtract size={24} class="size-full" />
 				{:else}
-					<Add size={24} class="size-5 md:size-6" />
+					<Add size={24} class="size-full" />
 				{/if}
 			</span>
 		</div>

@@ -15,6 +15,13 @@
 
 	const answerOf = (question: Question) =>
 		answers.find(({ questionNumber }) => questionNumber === question.number);
+
+	const accordionProps = {
+		class: 'bg-purple-1',
+		headerClass: 'px-3 py-2 hover:bg-purple-2',
+		contentClass: 'px-3 pb-2 md:pb-4',
+		iconClass: 'size-4 text-purple-5 mt-0.5'
+	};
 </script>
 
 <div class="flex flex-1 flex-col gap-4">
@@ -29,29 +36,21 @@
 		{#if answer?.context || answer?.evidences.length}
 			<div class="flex flex-col gap-2">
 				{#if answer.context}
-					<Accordion
-						class="bg-purple-1"
-						headerClass="p-4 hover:bg-purple-2 md:p-6"
-						contentClass="p-4 pt-0 md:px-6 md:pb-6"
-					>
+					<Accordion {...accordionProps}>
 						{#snippet header()}
 							<h4 class="text-left b4 font-bold">Country context</h4>
 						{/snippet}
 
 						{#snippet content()}
 							{#key answer}
-								<p in:quickFade class="ml-7 flex-1 whitespace-pre-line md:mt-2">{answer.context}</p>
+								<p in:quickFade class="ml-5 flex-1 whitespace-pre-line">{answer.context}</p>
 							{/key}
 						{/snippet}
 					</Accordion>
 				{/if}
 
 				{#if answer.evidences.length}
-					<Accordion
-						class="bg-purple-1"
-						headerClass="p-4 hover:bg-purple-2 md:p-6"
-						contentClass="p-4 pt-0 md:px-6 md:pb-6"
-					>
+					<Accordion {...accordionProps}>
 						{#snippet header()}
 							<h4 class="text-left b4 font-bold">Evidence sources</h4>
 						{/snippet}
@@ -60,7 +59,7 @@
 							{#key answer}
 								<ul
 									in:quickFade
-									class="ml-7 flex flex-1 list-disc flex-col gap-1 pl-4 marker:text-gray-6 md:mt-2"
+									class="ml-5 flex flex-1 list-disc flex-col gap-1 pl-4 marker:text-gray-6"
 								>
 									{#each answer.evidences as evidence (evidence)}
 										<li>

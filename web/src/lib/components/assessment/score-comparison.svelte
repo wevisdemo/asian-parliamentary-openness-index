@@ -215,7 +215,7 @@
 						headerClass="{rowClass} {rowPaddingClass} hover:bg-gray-9"
 						toggleClass={row.score === undefined ? 'opacity-40' : undefined}
 						contentClass="px-4 pt-0 pb-4 md:pb-6"
-						iconClass="text-purple-3 self-start md:self-center -my-0.5 md:my-0"
+						iconClass="size-5 text-purple-3 self-start md:self-center -my-0.5 md:my-0 md:size-6"
 					>
 						{#snippet leading()}
 							<span class={[rankClass, 'font-mono']}>{row.rank ?? '-'}</span>
