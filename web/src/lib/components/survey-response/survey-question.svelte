@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import Information from 'carbon-icons-svelte/lib/Information.svelte';
+	import Tooltip from '$lib/components/tooltip.svelte';
 	import { radioClass } from '$lib/constants/control-styles';
 	import { optionStates, type OptionState } from '$lib/constants/option-states';
 	import {
@@ -24,6 +26,39 @@
 
 	const multipleChoices = optionStates.map((value) => ({ label: optionStateLabels[value], value }));
 </script>
+
+{#snippet naLabel()}
+	<Tooltip>
+		{#snippet trigger()}
+			N/A
+			<Information size={16} class="text-purple-3" />
+		{/snippet}
+		<div class="flex flex-col gap-2">
+			<p class="font-bold">N/A: what it means and how to use it</p>
+			<p>
+				N/A (not applicable) stays on the questions, but it is not a way to score a question when we
+				have no answer option for the situation. It means the thing asked about does not exist in
+				this parliament's system, as with MP allowances or pensions. Where a parliament lacks
+				something it is expected to have or publish, or no option fits cleanly, the assessor selects
+				the most suitable option and explains the choice under Country context.
+			</p>
+			<p class="font-bold">When N/A is wrong</p>
+			<ul class="list-disc pl-5">
+				<li>
+					The information cannot be found, or is not published. Select "Not available" or the lowest
+					option.
+				</li>
+				<li>
+					No option fits exactly. Select the closest one and explain why under Country context.
+				</li>
+			</ul>
+			<p>
+				<span class="font-bold">Reason required.</span> Any N/A needs a one-line reason in the context
+				box.
+			</p>
+		</div>
+	</Tooltip>
+{/snippet}
 
 <div
 	id={questionElementId(question)}
@@ -56,7 +91,11 @@
 						class={['mt-1', radioClass]}
 					/>
 					<span>
-						{answer === 'n/a' ? text : `${answer}) ${text}`}
+						{#if answer === 'n/a'}
+							{@render naLabel()}
+						{:else}
+							{answer}) {text}
+						{/if}
 						{#if score !== undefined}<span class="text-gray-5">({score})</span>{/if}
 					</span>
 				</label>
@@ -67,8 +106,10 @@
 			<thead>
 				<tr class="text-left b4 text-gray-8">
 					<th class="py-1 font-normal">Option</th>
-					{#each multipleChoices as { label } (label)}
-						<th class="w-14 py-1 text-center font-normal">{label}</th>
+					{#each multipleChoices as { label, value } (value)}
+						<th class="w-14 py-1 text-center font-normal">
+							{#if value === 'n/a'}{@render naLabel()}{:else}{label}{/if}
+						</th>
 					{/each}
 				</tr>
 			</thead>

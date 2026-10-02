@@ -41,7 +41,8 @@
 										N/A
 										<Information size={16} class="text-purple-3" />
 									{/snippet}
-									This option is not applicable to the country context.
+									This option is not applicable because the thing asked about does not exist in the country’s
+									parliamentary system.
 								</Tooltip>
 							{/if}</span
 						>

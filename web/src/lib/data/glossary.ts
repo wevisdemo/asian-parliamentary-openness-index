@@ -1,7 +1,7 @@
 import { asString, Column, Object, Spreadsheet, type StaticDecode } from 'sheethuahua';
 import { asMarkdownHtml } from '$lib/data/transformers';
 
-const spreadsheet = Spreadsheet('1udHPvoDQKQ9_ziyqwTObWgI1dEKTVLnm');
+const spreadsheet = Spreadsheet('1Vvxku6c5C7PM5mH6_ApoHFylRbqprE36RuNSeFald3E');
 
 export const glossaryTermSchema = Object({
 	term: Column('Terms', asString()),
