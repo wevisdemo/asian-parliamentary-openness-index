@@ -9,13 +9,13 @@
 		isAnswered,
 		isUnscored,
 		questionElementId,
-		type SurveyDraft,
+		type SurveyAnswers,
 		type SurveyQuestion
 	} from '$lib/data/survey';
 
 	interface Props {
 		question: SurveyQuestion;
-		choices: SurveyDraft['choices'];
+		choices: SurveyAnswers['choices'];
 		dependency?: SurveyQuestion;
 		children?: Snippet;
 	}

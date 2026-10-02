@@ -10,6 +10,11 @@ export const chamberOptions = chambers.map((chamber) => ({
 	value: chamber
 }));
 
+export const surveyChamberOptions: { label: string; value: Chamber }[] = [
+	{ label: 'Lower / sole chamber', value: 'Lower' },
+	{ label: 'Upper chamber', value: 'Upper' }
+];
+
 export const chamberScopes = [...chambers, 'Both'] as const;
 
 export type ChamberScope = (typeof chamberScopes)[number];

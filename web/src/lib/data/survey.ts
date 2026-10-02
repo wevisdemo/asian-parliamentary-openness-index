@@ -10,7 +10,7 @@ import {
 	type StaticDecode
 } from 'sheethuahua';
 import type { AnswerType } from '$lib/constants/answer-types';
-import type { Chamber } from '$lib/constants/chambers';
+import { byChamber, type Chamber } from '$lib/constants/chambers';
 import { isOptionState, optionStates } from '$lib/constants/option-states';
 import { parseAnswerOption, splitNonEmptyLines } from '$lib/data/transformers';
 
@@ -69,23 +69,53 @@ export interface SurveyReference {
 	accessedDate: string;
 }
 
-export interface SurveyDraft {
+export interface SurveyAnswers {
 	/** Keyed by question number for single answer, or `<question number>.<letter>` for each option of multiple answer */
 	choices: Record<string, string>;
 	/** Keyed by question number, as is `references` */
 	contexts: Record<string, string>;
 	references: Record<string, SurveyReference[]>;
-	country: string;
-	chamber: Chamber;
 }
 
-export const createSurveyDraft = (): SurveyDraft => ({
+export interface SurveyDraft {
+	country: string;
+	chamber: Chamber;
+	answers: Record<Chamber, SurveyAnswers>;
+}
+
+export const createSurveyAnswers = (): SurveyAnswers => ({
 	choices: {},
 	contexts: {},
-	references: {},
-	country: '',
-	chamber: 'Lower'
+	references: {}
 });
+
+export const createSurveyDraft = (): SurveyDraft => ({
+	country: '',
+	chamber: 'Lower',
+	answers: byChamber(createSurveyAnswers)
+});
+
+/**
+ * Drafts saved before each chamber had its own answers keep them under the chamber they were saved with
+ */
+export const restoreSurveyDraft = ({
+	choices,
+	contexts,
+	references,
+	...stored
+}: Partial<SurveyDraft & SurveyAnswers>): SurveyDraft => {
+	const draft = { ...createSurveyDraft(), ...stored };
+
+	return choices
+		? {
+				...draft,
+				answers: {
+					...draft.answers,
+					[draft.chamber]: { choices, contexts: contexts ?? {}, references: references ?? {} }
+				}
+			}
+		: draft;
+};
 
 export const choiceKey = (question: SurveyQuestion, option?: string) =>
 	option ? `${question.number}.${option}` : question.number;
@@ -98,7 +128,7 @@ const isSingleChoice = (question: SurveyQuestion, choice?: string) =>
 /**
  * A single answer only counts when it is still an option, since the sheet options may change after it was saved
  */
-export const isAnswered = (question: SurveyQuestion, choices: SurveyDraft['choices']) =>
+export const isAnswered = (question: SurveyQuestion, choices: SurveyAnswers['choices']) =>
 	question.answerType === 'single'
 		? isSingleChoice(question, choices[choiceKey(question)])
 		: question.answerOptions.options.every(({ answer }) => choices[choiceKey(question, answer)]);
@@ -114,7 +144,7 @@ export const findDependency = (question: SurveyQuestion, questions: SurveyQuesti
 	);
 };
 
-export const isUnscored = (question: SurveyQuestion, choices: SurveyDraft['choices']) => {
+export const isUnscored = (question: SurveyQuestion, choices: SurveyAnswers['choices']) => {
 	const choice = choices[choiceKey(question)];
 
 	return (
@@ -128,8 +158,8 @@ export const isUnscored = (question: SurveyQuestion, choices: SurveyDraft['choic
  */
 export const applyUnscoredDependencies = (
 	questions: SurveyQuestion[],
-	choices: SurveyDraft['choices']
-): SurveyDraft['choices'] => ({
+	choices: SurveyAnswers['choices']
+): SurveyAnswers['choices'] => ({
 	...choices,
 	...Object.fromEntries(
 		questions
@@ -154,7 +184,7 @@ export const isReferenceComplete = ({ websiteName, url, accessedDate }: SurveyRe
  * Encodes an answer the same way respondents fill the sheet, e.g. `a`, `n/a` or `a(yes);b(no);c(n/a)`.
  * Unanswered options are left out, so a work in progress survey can be exported
  */
-export const encodeAnswer = (question: SurveyQuestion, choices: SurveyDraft['choices']) =>
+export const encodeAnswer = (question: SurveyQuestion, choices: SurveyAnswers['choices']) =>
 	question.answerType === 'single'
 		? isAnswered(question, choices)
 			? choices[choiceKey(question)]
@@ -225,12 +255,12 @@ const surveyCsvSchema = ObjectSchema({
 	accessedDates: Column('Evidence Sources (last accessed date)', asString().optional())
 });
 
-export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft) => {
-	const choices = applyUnscoredDependencies(questions, draft.choices);
+export const formatSurveyCsv = (questions: SurveyQuestion[], answers: SurveyAnswers) => {
+	const choices = applyUnscoredDependencies(questions, answers.choices);
 
 	return formatToCsv(
 		questions.map((question, index) => {
-			const references = draft.references[question.number] ?? [];
+			const references = answers.references[question.number] ?? [];
 			const joinReferences = (field: keyof SurveyReference) =>
 				references.map((reference) => reference[field].trim()).join('\n');
 
@@ -247,7 +277,7 @@ export const formatSurveyCsv = (questions: SurveyQuestion[], draft: SurveyDraft)
 					.join('\n'),
 				answerType: question.answerType,
 				response: encodeAnswer(question, choices),
-				context: (draft.contexts[question.number] ?? '').trim(),
+				context: (answers.contexts[question.number] ?? '').trim(),
 				urls: joinReferences('url'),
 				websiteNames: joinReferences('websiteName'),
 				accessedDates: joinReferences('accessedDate')
@@ -276,10 +306,7 @@ const splitLines = (value?: string) => (value ? value.split('\n') : []);
 /**
  * Unlisted options stay unanswered, so a work in progress survey restores as it was
  */
-export const parseSurveyCsv = (
-	csv: string,
-	questions: SurveyQuestion[]
-): Omit<SurveyDraft, 'country' | 'chamber'> => {
+export const parseSurveyCsv = (csv: string, questions: SurveyQuestion[]): SurveyAnswers => {
 	const rows = parseCsv(csv, surveyCsvSchema);
 
 	return {

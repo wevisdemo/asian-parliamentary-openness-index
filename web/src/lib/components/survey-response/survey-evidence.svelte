@@ -2,33 +2,33 @@
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
 	import { inputClass } from '$lib/constants/control-styles';
-	import { isReferenceComplete, type SurveyDraft } from '$lib/data/survey';
+	import { isReferenceComplete, type SurveyAnswers } from '$lib/data/survey';
 
 	interface Props {
 		questionNumber: string;
-		draft: SurveyDraft;
+		answers: SurveyAnswers;
 	}
 
-	let { questionNumber, draft = $bindable() }: Props = $props();
+	let { questionNumber, answers = $bindable() }: Props = $props();
 
-	const references = $derived(draft.references[questionNumber] ?? []);
+	const references = $derived(answers.references[questionNumber] ?? []);
 
 	const summary = $derived(
 		[
-			draft.contexts[questionNumber]?.trim() ? 'Context added' : 'No context',
+			answers.contexts[questionNumber]?.trim() ? 'Context added' : 'No context',
 			`${references.length} ${references.length === 1 ? 'reference' : 'references'}`
 		].join(', ')
 	);
 
 	const addReference = () => {
-		draft.references[questionNumber] = [
+		answers.references[questionNumber] = [
 			...references,
 			{ websiteName: '', url: '', accessedDate: '' }
 		];
 	};
 
 	const removeReference = (index: number) => {
-		draft.references[questionNumber] = references.filter((_, i) => i !== index);
+		answers.references[questionNumber] = references.filter((_, i) => i !== index);
 	};
 </script>
 
@@ -49,7 +49,7 @@
 					not familiar with the Parliament or its processes to understand why the response is
 					appropriate.
 				</span>
-				<textarea rows="4" bind:value={draft.contexts[questionNumber]} class={inputClass}
+				<textarea rows="4" bind:value={answers.contexts[questionNumber]} class={inputClass}
 				></textarea>
 			</label>
 

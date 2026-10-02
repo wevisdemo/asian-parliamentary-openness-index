@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { asString, Column, Object, parseCsv } from 'sheethuahua';
 import {
 	applyUnscoredDependencies,
-	createSurveyDraft,
+	createSurveyAnswers,
 	encodeAnswer,
 	findDependency,
 	formatSurveyCsv,
@@ -11,6 +11,7 @@ import {
 	isReferenceComplete,
 	isUnscored,
 	parseSurveyCsv,
+	restoreSurveyDraft,
 	surveyFileName,
 	surveyQuestionSchema,
 	type SurveyQuestion
@@ -98,7 +99,7 @@ describe('question dependency', () => {
 		});
 
 		const [, row] = parseCsv(
-			formatSurveyCsv(questions, { ...createSurveyDraft(), choices }),
+			formatSurveyCsv(questions, { ...createSurveyAnswers(), choices }),
 			Object({ response: Column('Country Assessment Response', asString()) })
 		);
 
@@ -155,7 +156,7 @@ describe('formatSurveyCsv', () => {
 
 	const [first, second] = parseCsv(
 		formatSurveyCsv([multiple, secondOfIndicator], {
-			...createSurveyDraft(),
+			...createSurveyAnswers(),
 			choices: { '2A.a': 'yes', '2A.b': 'n/a', '2B.a': 'no', '2B.b': 'yes' },
 			contexts: { '2A': ' Published as PDF ' },
 			references: {
@@ -205,6 +206,31 @@ describe('surveyFileName', () => {
 	});
 });
 
+describe('restoreSurveyDraft', () => {
+	it('moves answers saved before chambers were separated under their chamber', () => {
+		const answers = { ...createSurveyAnswers(), choices: { 1: 'a' } };
+
+		expect(restoreSurveyDraft({ ...answers, country: 'Japan', chamber: 'Upper' })).toEqual({
+			country: 'Japan',
+			chamber: 'Upper',
+			answers: { Lower: createSurveyAnswers(), Upper: answers }
+		});
+	});
+
+	it('keeps a draft with separated chambers as it is', () => {
+		const draft = {
+			country: 'Japan',
+			chamber: 'Lower' as const,
+			answers: {
+				Lower: { ...createSurveyAnswers(), choices: { 1: 'a' } },
+				Upper: { ...createSurveyAnswers(), choices: { 1: 'b' } }
+			}
+		};
+
+		expect(restoreSurveyDraft(draft)).toEqual(draft);
+	});
+});
+
 describe('parseSurveyCsv', () => {
 	const questions = [single, multiple, secondOfIndicator];
 
@@ -228,20 +254,20 @@ describe('parseSurveyCsv', () => {
 		};
 
 		expect(
-			parseSurveyCsv(formatSurveyCsv(questions, { ...createSurveyDraft(), ...draft }), questions)
+			parseSurveyCsv(formatSurveyCsv(questions, { ...createSurveyAnswers(), ...draft }), questions)
 		).toEqual(draft);
 	});
 
 	it('restores an all no and a partial multiple answer', () => {
 		const choices = { '2A.a': 'no', '2A.b': 'no', '2B.b': 'yes' };
-		const csv = formatSurveyCsv(questions, { ...createSurveyDraft(), choices });
+		const csv = formatSurveyCsv(questions, { ...createSurveyAnswers(), choices });
 
 		expect(parseSurveyCsv(csv, questions).choices).toEqual(choices);
 	});
 
 	it('leaves empty answers, unknown letters and removed questions unanswered', () => {
 		const csv = formatSurveyCsv(questions, {
-			...createSurveyDraft(),
+			...createSurveyAnswers(),
 			choices: { 1: 'b', '2A.a': 'yes' }
 		}).replace(',b,', ',z,');
 

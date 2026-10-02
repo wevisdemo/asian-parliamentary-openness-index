@@ -1,5 +1,10 @@
 import { onMount } from 'svelte';
-import { createSurveyDraft, type SurveyDraft } from '$lib/data/survey';
+import {
+	createSurveyDraft,
+	restoreSurveyDraft,
+	type SurveyAnswers,
+	type SurveyDraft
+} from '$lib/data/survey';
 
 const storageKey = 'apoi-survey-response-draft';
 const saveDelay = 1000;
@@ -10,12 +15,22 @@ const saveDelay = 1000;
 export class SurveyDraftState {
 	draft = $state<SurveyDraft>(createSurveyDraft());
 
+	get answers() {
+		return this.draft.answers[this.draft.chamber];
+	}
+
+	set answers(answers: SurveyAnswers) {
+		this.draft.answers[this.draft.chamber] = answers;
+	}
+
 	#saved = $state<string>();
 	#saveFailed = $state(false);
 	#serialized = $derived(JSON.stringify(this.draft));
 
+	isLoaded = $derived(this.#saved !== undefined);
+
 	status = $derived.by(() => {
-		if (this.#saved === undefined) {
+		if (!this.isLoaded) {
 			return 'Loading saved answers…';
 		}
 
@@ -32,7 +47,7 @@ export class SurveyDraftState {
 
 			try {
 				if (stored) {
-					this.draft = { ...createSurveyDraft(), ...JSON.parse(stored) };
+					this.draft = restoreSurveyDraft(JSON.parse(stored));
 				}
 			} catch {
 				alert('Could not read the saved answers, starting with an empty survey.');

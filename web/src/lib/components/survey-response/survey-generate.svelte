@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/button.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
-	import { chamberOptions } from '$lib/constants/chambers';
-	import { inputClass, radioClass } from '$lib/constants/control-styles';
 	import {
 		formatSurveyCsv,
 		surveyFileBaseName,
@@ -21,15 +19,16 @@
 	interface Props {
 		questions: SurveyQuestion[];
 		draft: SurveyDraft;
+		chamberLabel?: string;
 		incompleteSteps: IncompleteStep[];
 		onstep: (index: number) => void;
 	}
 
-	let { questions, draft = $bindable(), incompleteSteps, onstep }: Props = $props();
+	const { questions, draft, chamberLabel, incompleteSteps, onstep }: Props = $props();
 
 	const download = () => {
 		const url = URL.createObjectURL(
-			new Blob([formatSurveyCsv(questions, draft)], { type: 'text/csv' })
+			new Blob([formatSurveyCsv(questions, draft.answers[draft.chamber])], { type: 'text/csv' })
 		);
 		const link = document.createElement('a');
 
@@ -69,36 +68,11 @@
 </div>
 
 <div class="flex flex-col gap-4 bg-gray-1 p-6">
-	<label class="flex flex-col gap-1">
-		<span class="b4 font-bold">Country</span>
-		<input type="text" bind:value={draft.country} class={[inputClass, 'md:w-96']} />
-	</label>
-
-	<fieldset class="flex flex-col gap-1">
-		<legend class="b4 font-bold">Chamber</legend>
-		<div class="flex gap-6">
-			{#each chamberOptions as { label, value } (value)}
-				<label class="flex cursor-pointer items-center gap-2">
-					<input
-						type="radio"
-						name="chamber"
-						{value}
-						bind:group={draft.chamber}
-						class={radioClass}
-					/>
-					{label}
-				</label>
-			{/each}
-		</div>
-	</fieldset>
-
 	<p class="b4 text-gray-8">
-		File name: {draft.country.trim()
-			? `${surveyFileBaseName(draft)}-<download date and time>.csv`
-			: '-'}
+		File name: {surveyFileBaseName(draft)}-&lt;download date and time&gt;.csv
 	</p>
 
-	<Button class="self-start" disabled={!draft.country.trim()} onclick={download}>
-		Download CSV
+	<Button class="self-start" onclick={download}>
+		Download {chamberLabel?.toLowerCase()} CSV
 	</Button>
 </div>
