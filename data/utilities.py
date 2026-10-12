@@ -23,6 +23,12 @@ def transpose_df(df: pd.DataFrame | None) -> pd.DataFrame | None:
 
 
 def normalize_info_df(df: pd.DataFrame | None):
+
+    if df is None:
+        return pd.DataFrame()
+    elif df.empty:
+        return pd.DataFrame()
+
     _df = transpose_df(df)
     if _df is None:
         return
@@ -37,7 +43,10 @@ def normalize_info_df(df: pd.DataFrame | None):
     return _df
 
 
-def normalize_parliament_type(value) -> str:
+def normalize_parliament_type(value: str | None) -> str:
+    # TODO: set as None and handle later
+    if value is None:
+        return "unicameral".capitalize()
     return str(value).strip().capitalize()
 
 

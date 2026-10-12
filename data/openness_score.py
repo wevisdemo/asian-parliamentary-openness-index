@@ -14,6 +14,7 @@ from constants import (
     PARLIAMENT_TYPE_COLUMN,
     COUNTRIES_DEFAULT_COLUMNS,
     RESPONDENTS_DEFAULT_COLUMNS,
+    EXPERIENCE_COLUMN,
     ANSWERS_TRANSFORM_COLUMNS,
 )
 
@@ -46,7 +47,7 @@ class OpennessScore:
         # Check and Add ParliamentStructuralType with country_context_df
         if self.country_context_df is not None:
             match normalize_parliament_type(
-                self.country_context_df[PARLIAMENT_TYPE_COLUMN].values[0]
+                self.country_context_df.to_dict().get(PARLIAMENT_TYPE_COLUMN, None)
             ):
                 case ParliamentStructuralType.UNICAMERAL.value:
                     self.parliament_type = ParliamentStructuralType.UNICAMERAL
@@ -56,25 +57,12 @@ class OpennessScore:
         self.question_df = question_df
 
     def get_country_data(self) -> pd.DataFrame:
-
+        print(f"Process country data for {self.country}...")
         if self.country_context_df is not None:
-            # Check for `Any remark for unicameral or bicamera?` column
-            if (
-                "Any remark for unicameral or bicamera?"
-                not in self.country_context_df.columns
-            ):
-                self.country_context_df.loc[
-                    :, ["Any remark for unicameral or bicamera?"]
-                ] = ""
-
-            # Check for `Any remark for system of government classified?` column
-            if (
-                "Any remark for system of government classified?"
-                not in self.country_context_df.columns
-            ):
-                self.country_context_df.loc[
-                    :, ["Any remark for system of government classified?"]
-                ] = ""
+            # Normalize columns; fill with empty string if not exist
+            for col in COUNTRIES_DEFAULT_COLUMNS:
+                if col not in self.country_context_df.columns:
+                    self.country_context_df[col] = ""
 
             country_context_df = self.country_context_df[COUNTRIES_DEFAULT_COLUMNS]
             country_context_df["Country"] = self.country
@@ -99,10 +87,14 @@ class OpennessScore:
     def get_respondent_data(self) -> pd.DataFrame:
 
         if self.respondent_info_df is not None:
+            # Normalize columns; fill with empty string if not exist
+            for col in RESPONDENTS_DEFAULT_COLUMNS:
+                if col not in self.respondent_info_df.columns:
+                    self.respondent_info_df[col] = ""
+
             respondent_info_df = self.respondent_info_df[RESPONDENTS_DEFAULT_COLUMNS]
 
-            # Normalize `Years of experience of parliament monitoring by the organization:`
-            col = "Years of experience of parliament monitoring by the organization"
+            col = EXPERIENCE_COLUMN
             respondent_info_df[col] = respondent_info_df[col].apply(
                 lambda x: self.normalize_experience_text(str(x))
             )
@@ -121,6 +113,10 @@ class OpennessScore:
         return get_questions_data(self.lower_chamber_df)
 
     def get_processed_answer(self, df: pd.DataFrame) -> pd.DataFrame:
+
+        if df.empty:
+            return pd.DataFrame()
+
         # A question without its own context or evidences is left empty
         df = df.rename(
             columns={

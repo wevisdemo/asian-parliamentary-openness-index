@@ -13,10 +13,10 @@ def clean_empty_margins(df) -> pd.DataFrame:
     return result_df
 
 
-def get_data_from_google_sheet(sheet_url: str | None) -> pd.DataFrame:
+def get_data_from_google_sheet(sheet_url: str | None) -> pd.DataFrame | None:
 
-    if sheet_url is None:
-        return pd.DataFrame()
+    if sheet_url is None or sheet_url == "":
+        return None
 
     # Extract the unique Sheet ID from the URL
     sheet_id = sheet_url.split("/d/")[1].split("/")[0]
