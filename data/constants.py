@@ -11,12 +11,16 @@ COUNTRIES_DEFAULT_COLUMNS = [
     "Date assessment was sent to Parliament (YYYY-MM-DD)",
 ]
 
+EXPERIENCE_COLUMN = """In what year did the organization begin monitoring Parliament? 
+Please provide the starting year (e.g., 2026). If not applicable, answer “Not applicable.”"""
+
 RESPONDENTS_DEFAULT_COLUMNS = [
-    "Name of respondent",
-    "Email of respondent to correspond with",
+    "Name/s of respondent/s",
+    "Email/s of respondent/s to correspond with",
     "Representative Parliament Monitoring Organization (PMO) of respondent",
-    "Years of experience of parliament monitoring by the organization",
-    "About the Respondent",
+    """In what year did the organization begin monitoring Parliament? 
+Please provide the starting year (e.g., 2026). If not applicable, answer “Not applicable.”""",
+    "Introduction of the PMO (Use 100 words maximum)",
 ]
 
 INDICATORS_DEFAULT_COLUMNS = [
