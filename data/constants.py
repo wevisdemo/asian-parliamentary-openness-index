@@ -7,7 +7,8 @@ COUNTRIES_DEFAULT_COLUMNS = [
     "Any remark for system of government classified?",
     "What is the name of the Parliament you will be assessing?",
     "Provide the link to the Parliament’s official website",
-    "Key findings",
+    "Key findings of the Parliament assessment as relayed by the PMO (Use 200 words maximum)",
+    "Date assessment was sent to Parliament (YYYY-MM-DD)",
 ]
 
 RESPONDENTS_DEFAULT_COLUMNS = [
