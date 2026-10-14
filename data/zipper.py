@@ -10,7 +10,7 @@ def zip_csv_files(target_folder_path, zip_name="all_csv_files.zip"):
     zip_file_path = folder / zip_name
 
     # Find all .csv files in the folder
-    csv_files = list(folder.glob("*.csv"))
+    csv_files = list(folder.glob("*.csv")) + list(folder.glob("*.txt"))
 
     if not csv_files:
         print(f"No CSV files found in {folder}")
