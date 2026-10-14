@@ -16,7 +16,9 @@
 
 {#snippet rawScore({ score, totalApplicableScore }: ReturnType<typeof getScoreTotals>)}
 	<span class="whitespace-nowrap text-gray-4">
-		({score}<span class="text-gray-6">/{totalApplicableScore}</span>)
+		({Number(score.toFixed(2))}<span class="text-gray-6"
+			>/{Number(totalApplicableScore.toFixed(2))}</span
+		>)
 	</span>
 {/snippet}
 
