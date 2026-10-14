@@ -16,6 +16,11 @@ export const splitNonEmptyLines = (value: string) =>
 		.map((line) => line.trim())
 		.filter((line) => line.length > 0);
 
+/**
+ * Transform a column holding one item per line into a list, unlike `asArray` quotes are kept as is
+ */
+export const asLines = createTransformer({ decode: splitNonEmptyLines });
+
 const answerOptionPattern = /^([a-z])\)\s*(.*?)\s*\(([\d.]+)\)$/;
 
 /**

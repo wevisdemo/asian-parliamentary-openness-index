@@ -17,8 +17,8 @@ const asAnswers = (...scores: [score: number, totalApplicableScore: number][]): 
 const parseAnswerColumn = (value: string) =>
 	parseCsv(
 		[
-			'Country,Chamber,Question Number,Answer,Score,Total Applicable Score,Context,Evidences',
-			`Testland,Lower,1,"${value}",1,1,,`
+			'Country,Chamber,Question Number,Answer,Score,Total Applicable Score,Context,Evidences,Evidence Names,Evidence Accessed Dates',
+			`Testland,Lower,1,"${value}",1,1,,,,`
 		].join('\n'),
 		answerSchema
 	)[0].answer;

@@ -51,4 +51,6 @@ ANSWERS_TRANSFORM_COLUMNS = [
     "Total Applicable Score",
     "Context",
     "Evidences",
+    "Evidence Names",
+    "Evidence Accessed Dates",
 ]

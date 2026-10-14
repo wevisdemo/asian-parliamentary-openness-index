@@ -1,5 +1,7 @@
 import answersCsv from '$data/answers.csv?raw';
 import {
+	asArray,
+	asDate,
 	asNumber,
 	asOneOf,
 	asString,
@@ -12,7 +14,7 @@ import {
 import type { AchievementLevel } from '$lib/constants/achievements';
 import { chambers } from '$lib/constants/chambers';
 import { isOptionState, type OptionState } from '$lib/constants/option-states';
-import { asUrlList } from '$lib/data/transformers';
+import { asLines, asUrlList } from '$lib/data/transformers';
 
 /** Decodes `a=yes;b=n/a` into `{ a: 'yes', b: 'n/a' }`, `a` into `{ a: 'yes' }` */
 const asAnswer = createTransformer({
@@ -53,12 +55,33 @@ export const answerSchema = Object({
 	score: Column('Score', asNumber()),
 	totalApplicableScore: Column('Total Applicable Score', asNumber()),
 	context: Column('Context', asString().optional()),
-	evidences: Column('Evidences', asUrlList.optional([]))
+	evidenceUrls: Column('Evidences', asUrlList.optional([])),
+	evidenceNames: Column('Evidence Names', asLines.optional([])),
+	evidenceAccessedDates: Column('Evidence Accessed Dates', asArray(asDate(), '\n').optional([]))
 });
 
-export type Answer = StaticDecode<typeof answerSchema>;
+export interface Evidence {
+	url: string;
+	name?: string;
+	accessedDate?: Date;
+}
 
-export const answers: Answer[] = parseCsv(answersCsv, answerSchema);
+export type Answer = Omit<
+	StaticDecode<typeof answerSchema>,
+	'evidenceUrls' | 'evidenceNames' | 'evidenceAccessedDates'
+> & { evidences: Evidence[] };
+
+/** Names and dates are either empty or one per url, as aligned by the data pipeline */
+export const answers: Answer[] = parseCsv(answersCsv, answerSchema).map(
+	({ evidenceUrls, evidenceNames, evidenceAccessedDates, ...answer }) => ({
+		...answer,
+		evidences: evidenceUrls.map((url, index) => ({
+			url,
+			name: evidenceNames[index],
+			accessedDate: evidenceAccessedDates[index]
+		}))
+	})
+);
 
 export const getScoreTotals = (answers: Answer[]) => ({
 	score: answers.reduce((sum, { score }) => sum + score, 0),

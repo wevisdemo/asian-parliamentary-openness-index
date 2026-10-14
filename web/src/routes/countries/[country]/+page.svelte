@@ -22,6 +22,7 @@
 		type Dimension
 	} from '$lib/constants/dimensions';
 	import { getAchievementLevel } from '$lib/data/answers';
+	import { formatLongDate } from '$lib/utils/date';
 	import { quickFade } from '$lib/utils/transitions';
 
 	const { data } = $props();
@@ -124,9 +125,8 @@
 			{/if}
 			{#if data.country.assessmentSentDate.answer}
 				<p class="b5 text-gray-8">
-					Date assessment was sent to Parliament: {data.country.assessmentSentDate.answer.toLocaleDateString(
-						'en-GB',
-						{ day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }
+					Date assessment was sent to Parliament: {formatLongDate(
+						data.country.assessmentSentDate.answer
 					)}
 					<RemarkTooltip remark={data.country.assessmentSentDate.remark} />
 				</p>

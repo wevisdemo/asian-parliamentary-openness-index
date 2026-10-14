@@ -5,6 +5,7 @@ from utilities import (
     normalize_parliament_type,
     normalize_answer,
     normalize_evidences,
+    align_evidence_lines,
     calculate_score,
     get_indicator_data,
     get_questions_data,
@@ -124,6 +125,16 @@ class OpennessScore:
         )
         df["Context"] = df["Context"].fillna("")
         df["Evidences"] = df["Evidences"].apply(normalize_evidences)
+        for source, column in {
+            "Evidence Sources (website name)": "Evidence Names",
+            "Evidence Sources (last accessed date)": "Evidence Accessed Dates",
+        }.items():
+            df[column] = [
+                align_evidence_lines(evidences, value)
+                for evidences, value in zip(
+                    df["Evidences"], df.get(source, pd.Series("", index=df.index))
+                )
+            ]
 
         answer_df = df.groupby(["Question"], as_index=False).sum()
         answer_df.rename(

@@ -69,6 +69,20 @@ def normalize_evidences(value) -> str:
     return "\n".join(urls)
 
 
+def align_evidence_lines(evidences: str, value) -> str:
+    # Keep the lines only when there is exactly one per evidence url, so none is paired with the wrong url
+    lines = (
+        []
+        if pd.isna(value)
+        else [line.strip() for line in str(value).split("\n") if line.strip()]
+    )
+    return (
+        "\n".join(lines)
+        if evidences and len(lines) == len(evidences.split("\n"))
+        else ""
+    )
+
+
 def clean_answer_options(answer_options_text: str) -> str:
 
     # Check if this is single select question; then return without modify

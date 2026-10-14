@@ -4,6 +4,7 @@
 	import QuestionAnswer from '$lib/components/assessment/question-answer.svelte';
 	import type { Answer } from '$lib/data/answers';
 	import type { Question } from '$lib/data/questions';
+	import { formatLongDate } from '$lib/utils/date';
 	import { quickFade } from '$lib/utils/transitions';
 
 	interface Props {
@@ -15,6 +16,14 @@
 
 	const answerOf = (question: Question) =>
 		answers.find(({ questionNumber }) => questionNumber === question.number);
+
+	const readableUrl = (url: string) => {
+		try {
+			return decodeURI(url);
+		} catch {
+			return url;
+		}
+	};
 
 	const accordionProps = {
 		class: 'bg-purple-1',
@@ -61,11 +70,19 @@
 									in:quickFade
 									class="ml-5 flex flex-1 list-disc flex-col gap-1 pl-4 marker:text-gray-6"
 								>
-									{#each answer.evidences as evidence (evidence)}
-										<li>
-											<Hyperlink href={evidence} target="_blank" color="gray" class="b4 break-all">
-												{evidence}
+									{#each answer.evidences as { url, name, accessedDate } (url)}
+										<li class="b4">
+											<Hyperlink
+												href={url}
+												target="_blank"
+												color="gray"
+												class={name ? 'b4' : 'b4 break-all'}
+											>
+												{name ?? readableUrl(url)}
 											</Hyperlink>
+											{#if accessedDate}
+												<span class="text-gray-6">(Accessed: {formatLongDate(accessedDate)})</span>
+											{/if}
 										</li>
 									{/each}
 								</ul>
