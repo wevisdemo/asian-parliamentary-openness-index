@@ -99,6 +99,17 @@ def main() -> None:
     )
     answers.to_csv(os.path.join(OUTPUT_DIR, "answers.csv"), index=False)
 
+    # Construct readme.txt
+    context_sheet_link = index_sheet_links.get("Context")
+    context_df = get_data_from_google_sheet(context_sheet_link)
+    assert context_df is not None and "Readme" in context_df.columns, (
+        f"Missing Readme sheet at :{context_sheet_link}"
+    )
+
+    readme_content = context_df["Readme"].values[0]
+    with open(OUTPUT_DIR / "readme.txt", "w", encoding="utf-8") as file:
+        file.write(str(readme_content))
+
     # TODO: make zip name dynamic
     zip_file_name = "APOI-2026.zip"
     zip_csv_files(OUTPUT_DIR, zip_file_name)
