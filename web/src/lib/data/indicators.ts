@@ -21,10 +21,12 @@ const dimensionBySheetName: Record<string, Dimension> = {
 	'Citizen Participation': 'Openness on Citizen Participation'
 };
 
-/** Accepts both the sheet's legacy dimension names and the current ones */
+/** Accepts both the sheet's legacy dimension names and the current ones, in any case */
 const asDimension = createTransformer({
 	decode: (value: string): Dimension => {
-		const dimension = dimensionBySheetName[value] ?? dimensions.find((name) => name === value);
+		const dimension =
+			dimensionBySheetName[value] ??
+			dimensions.find((name) => name.toLowerCase() === value.toLowerCase());
 
 		if (!dimension) {
 			throw new Error(`Unknown dimension "${value}"`);
@@ -76,7 +78,9 @@ const sortByAchieved = (summaries: IndicatorSummary[]): IndicatorSummary[] =>
 	);
 
 const bicameralCountries = new Set(
-	countries.filter(({ parliamentType }) => parliamentType === 'Bicameral').map(({ name }) => name)
+	countries
+		.filter(({ parliamentType }) => parliamentType.answer === 'Bicameral')
+		.map(({ name }) => name)
 );
 
 const isInScope = (answer: Answer, scope: ChamberScope) =>

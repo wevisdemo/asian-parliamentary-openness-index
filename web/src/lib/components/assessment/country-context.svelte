@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Hyperlink from '$lib/components/hyperlink.svelte';
-	import Tooltip from '$lib/components/tooltip.svelte';
-	import WarningAlt from 'carbon-icons-svelte/lib/WarningAlt.svelte';
+	import RemarkTooltip from '$lib/components/assessment/remark-tooltip.svelte';
 	import type { Country } from '$lib/data/countries';
 
 	interface Props {
@@ -16,46 +15,43 @@
 		light: 'text-gray-8',
 		dark: 'text-white'
 	};
+
+	const websites = $derived(country.parliamentWebsites.answer);
 </script>
 
-<ul class={['space-y-1 b4', variantClasses[variant], className]}>
+<ul class={['b4', variantClasses[variant], className]}>
 	<li>
 		<strong>Government system:</strong>
-		{country.governmentSystem}
-		{#if country.governmentSystemRemark}
-			{@render remark(country.governmentSystemRemark)}
-		{/if}
+		{country.governmentSystem.answer}
+		<RemarkTooltip remark={country.governmentSystem.remark} />
 	</li>
 	<li>
 		<strong>Parliamentary type:</strong>
-		{country.parliamentType}
-		{#if country.parliamentTypeRemark}
-			{@render remark(country.parliamentTypeRemark)}
-		{/if}
+		{country.parliamentType.answer}
+		<RemarkTooltip remark={country.parliamentType.remark} />
 	</li>
-	<li><strong>Parliament name:</strong> {country.parliamentName}</li>
+	<li>
+		<strong>Parliament name:</strong>
+		{country.parliamentName.answer}
+		<RemarkTooltip remark={country.parliamentName.remark} />
+	</li>
 	<li>
 		<strong>Parliament official website:</strong>
-		{#if country.parliamentWebsites.length > 1}
+		{#if websites.length > 1}
+			<RemarkTooltip remark={country.parliamentWebsites.remark} />
 			<ul class="list-disc pl-4 marker:text-gray-6">
-				{#each country.parliamentWebsites as website (website)}
+				{#each websites as website (website)}
 					<li>{@render websiteLink(website)}</li>
 				{/each}
 			</ul>
-		{:else if country.parliamentWebsites.length}
-			{@render websiteLink(country.parliamentWebsites[0])}
+		{:else}
+			{#if websites.length}
+				{@render websiteLink(websites[0])}
+			{/if}
+			<RemarkTooltip remark={country.parliamentWebsites.remark} />
 		{/if}
 	</li>
 </ul>
-
-{#snippet remark(content: string)}
-	<Tooltip triggerClass="align-middle">
-		{#snippet trigger()}
-			<WarningAlt size={18} class="-translate-y-0.5 text-purple-3 md:ml-0.5" />
-		{/snippet}
-		{content}
-	</Tooltip>
-{/snippet}
 
 {#snippet websiteLink(website: string)}
 	<Hyperlink

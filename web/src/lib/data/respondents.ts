@@ -11,17 +11,17 @@ import { asMarkdownHtml } from '$lib/data/transformers';
 
 export const respondentSchema = ObjectSchema({
 	country: Column('Country', asString()),
-	names: Column('Name of respondent', asArray(asString()).optional()),
-	email: Column('Email of respondent to correspond with', asString().optional()),
+	names: Column('Name/s of respondent/s', asArray(asString()).optional()),
+	email: Column('Email/s of respondent/s to correspond with', asString().optional()),
 	organization: Column(
 		'Representative Parliament Monitoring Organization (PMO) of respondent',
 		asString().optional()
 	),
-	yearsOfExperience: Column(
-		'Years of experience of parliament monitoring by the organization',
+	monitoringSince: Column(
+		'In what year did the organization begin monitoring Parliament? \nPlease provide the starting year (e.g., 2026). If not applicable, answer “Not applicable.”',
 		asString().optional()
 	),
-	about: Column('About the Respondent', asMarkdownHtml.optional())
+	about: Column('Introduction of the PMO (Use 100 words maximum)', asMarkdownHtml.optional())
 });
 
 export type Respondent = StaticDecode<typeof respondentSchema> & {
@@ -45,8 +45,8 @@ const organizationLogos = new Map(
 
 export const respondents: Respondent[] = parseCsv(respondentsCsv, respondentSchema)
 	.filter(
-		({ names, email, organization, yearsOfExperience, about }) =>
-			names || email || organization || yearsOfExperience || about
+		({ names, email, organization, monitoringSince, about }) =>
+			names || email || organization || monitoringSince || about
 	)
 	.map((respondent) => ({
 		...respondent,

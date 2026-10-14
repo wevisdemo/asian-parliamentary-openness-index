@@ -6,6 +6,7 @@
 	import CountryStatsCard from '$lib/components/assessment/country-stats-card.svelte';
 	import DimensionTabs from '$lib/components/assessment/dimension-tabs.svelte';
 	import IndicatorAccordion from '$lib/components/assessment/indicator-accordion.svelte';
+	import RemarkTooltip from '$lib/components/assessment/remark-tooltip.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import ListGroup from '$lib/components/list-group.svelte';
@@ -112,11 +113,23 @@
 		<div class="flex flex-col gap-6">
 			<h1 class="h2 font-bold">{data.country.name}</h1>
 			<CountryContext country={data.country} />
-			{#if data.country.keyFindings}
+			{#if data.country.keyFindings.answer}
 				<div class="flex flex-col gap-2 bg-gray-1 px-5 py-4 whitespace-pre-line">
-					<span class="font-bold">Key findings</span>
-					<p>{data.country.keyFindings}</p>
+					<span class="font-bold">
+						Key findings
+						<RemarkTooltip remark={data.country.keyFindings.remark} />
+					</span>
+					<p>{data.country.keyFindings.answer}</p>
 				</div>
+			{/if}
+			{#if data.country.assessmentSentDate.answer}
+				<p class="b5 text-gray-8">
+					Date assessment was sent to Parliament: {data.country.assessmentSentDate.answer.toLocaleDateString(
+						'en-GB',
+						{ day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }
+					)}
+					<RemarkTooltip remark={data.country.assessmentSentDate.remark} />
+				</p>
 			{/if}
 		</div>
 
@@ -137,7 +150,7 @@
 
 <div class="flex flex-col bg-gray-1">
 	<section class="relative content-container flex flex-col gap-6 md:gap-8">
-		{#if data.country.parliamentType === 'Bicameral'}
+		{#if data.country.parliamentType.answer === 'Bicameral'}
 			<Tabs
 				options={chamberOptions}
 				value={selectedChamber}
@@ -229,12 +242,10 @@
 								</div>
 							{/if}
 
-							{#if respondent.yearsOfExperience}
+							{#if respondent.monitoringSince}
 								<div class="flex flex-col gap-1">
-									<p class="b4 text-gray-6">
-										Years of experience of parliament monitoring by the organization
-									</p>
-									<p>{respondent.yearsOfExperience}</p>
+									<p class="b4 text-gray-6">Year the organization began monitoring Parliament</p>
+									<p>{respondent.monitoringSince}</p>
 								</div>
 							{/if}
 						</div>

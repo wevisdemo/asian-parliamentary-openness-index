@@ -228,7 +228,7 @@
 							{@render scoreRow(
 								row.country.name,
 								row.score,
-								row.country.parliamentType,
+								row.country.parliamentType.answer,
 								highlighted.includes(row.country.slug)
 							)}
 						{/snippet}

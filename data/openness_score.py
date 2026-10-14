@@ -1,5 +1,4 @@
 import pandas as pd
-import re
 from enum import Enum
 from utilities import (
     normalize_info_df,
@@ -47,7 +46,9 @@ class OpennessScore:
         # Check and Add ParliamentStructuralType with country_context_df
         if self.country_context_df is not None:
             match normalize_parliament_type(
-                self.country_context_df.to_dict().get(PARLIAMENT_TYPE_COLUMN, None)
+                next(
+                    iter(self.country_context_df.get(PARLIAMENT_TYPE_COLUMN, [])), None
+                )
             ):
                 case ParliamentStructuralType.UNICAMERAL.value:
                     self.parliament_type = ParliamentStructuralType.UNICAMERAL
@@ -64,25 +65,23 @@ class OpennessScore:
                 if col not in self.country_context_df.columns:
                     self.country_context_df[col] = ""
 
-            country_context_df = self.country_context_df[COUNTRIES_DEFAULT_COLUMNS]
-            country_context_df["Country"] = self.country
+            # First row holds the answers, second row holds the optional remarks
+            answer_df = self.country_context_df.iloc[:1][COUNTRIES_DEFAULT_COLUMNS]
+            remark_df = (
+                self.country_context_df.iloc[1:2][COUNTRIES_DEFAULT_COLUMNS]
+                .add_prefix("Remark: ")
+                .reset_index(drop=True)
+            )
+            country_context_df = pd.concat([answer_df, remark_df], axis=1)
             country_context_df[PARLIAMENT_TYPE_COLUMN] = country_context_df[
                 PARLIAMENT_TYPE_COLUMN
             ].apply(normalize_parliament_type)
-            return country_context_df[["Country"] + COUNTRIES_DEFAULT_COLUMNS]
+            country_context_df.insert(0, "Country", self.country)
+            return country_context_df
 
         return pd.DataFrame(
             [{"Country": self.country}], columns=["Country"] + COUNTRIES_DEFAULT_COLUMNS
         )
-
-    def normalize_experience_text(self, text: str) -> str:
-        normalized_text = text.lower().capitalize().strip()
-        if not re.search(r"year(s)?$", normalized_text):
-            year_rgx_matched = re.search(r"(\d+)$", normalized_text)
-            if year_rgx_matched:
-                year = int(year_rgx_matched.group(1))
-                normalized_text += " year" + ("s" if year > 1 else "")
-        return normalized_text
 
     def get_respondent_data(self) -> pd.DataFrame:
 
@@ -94,9 +93,8 @@ class OpennessScore:
 
             respondent_info_df = self.respondent_info_df[RESPONDENTS_DEFAULT_COLUMNS]
 
-            col = EXPERIENCE_COLUMN
-            respondent_info_df[col] = respondent_info_df[col].apply(
-                lambda x: self.normalize_experience_text(str(x))
+            respondent_info_df[EXPERIENCE_COLUMN] = (
+                respondent_info_df[EXPERIENCE_COLUMN].astype(str).str.strip()
             )
             respondent_info_df["Country"] = self.country
             return respondent_info_df[["Country"] + RESPONDENTS_DEFAULT_COLUMNS]
