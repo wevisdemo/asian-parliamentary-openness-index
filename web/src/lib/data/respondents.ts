@@ -51,6 +51,6 @@ export const respondents: Respondent[] = parseCsv(respondentsCsv, respondentSche
 	.map((respondent) => ({
 		...respondent,
 		organizationLogo: respondent.organization
-			? organizationLogos.get(respondent.organization)
+			? organizationLogos.get(respondent.organization.replaceAll('/', '-'))
 			: undefined
 	}));
