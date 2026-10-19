@@ -6,6 +6,7 @@
 	import DimensionCards from '$lib/components/about/dimension-cards.svelte';
 	import StructureGraphic from '$lib/components/about/structure-graphic.svelte';
 	import OrganizationInfo from '$lib/components/about/organization-info.svelte';
+	import SupportersList from '$lib/components/about/supporters-list.svelte';
 	import Button from '$lib/components/button.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
@@ -286,6 +287,10 @@
 					<OrganizationInfo {...partner} />
 				{/each}
 			</div>
+
+			<h3>Supporters</h3>
+
+			<SupportersList />
 		</div>
 	</div>
 

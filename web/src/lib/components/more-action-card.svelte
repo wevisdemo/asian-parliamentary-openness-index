@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Button from './button.svelte';
 
 	interface ActionLink {
@@ -12,9 +13,10 @@
 		description: string;
 		actions: ActionLink[];
 		variant?: 'purple' | 'gray';
+		children?: Snippet;
 	}
 
-	const { title, description, actions, variant = 'purple' }: Props = $props();
+	const { title, description, actions, variant = 'purple', children }: Props = $props();
 
 	const containerClasses = {
 		purple: 'mt-6 bg-purple-1 md:mt-12',
@@ -35,6 +37,7 @@
 	<div class="flex flex-col gap-1">
 		<p class="b1 font-bold">{title}</p>
 		<p class="b2">{description}</p>
+		{@render children?.()}
 	</div>
 
 	<div class="flex flex-col items-start gap-2 md:shrink-0 md:items-stretch">

@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 	import Download from 'carbon-icons-svelte/lib/Download.svelte';
 	import dataset2026Url from '$data/APOI-2026.zip?url';
+	import AcademicContact from '$lib/components/academic-contact.svelte';
 	import Hero from '$lib/components/hero.svelte';
 	import Metadata from '$lib/components/metadata.svelte';
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
@@ -32,8 +33,10 @@
 			class="w-full shrink-0 self-start md:sticky md:top-28 md:flex md:w-56"
 		/>
 
-		<div class="flex flex-1 flex-col gap-6 md:gap-8">
+		<div class="flex flex-1 flex-col gap-4 md:gap-5">
 			<h2 id={downloadSections[0].id}>Raw Data</h2>
+
+			<AcademicContact class="text-gray-8" />
 
 			{#each data.cycles as cycle (cycle.year)}
 				<div class="flex flex-row items-start justify-between gap-6 bg-gray-1 p-6">

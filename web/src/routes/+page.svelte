@@ -5,6 +5,7 @@
 	import landingAnimation from '$lib/assets/animations/landing.svg';
 	import AudienceCards from '$lib/components/about/audience-cards.svelte';
 	import DimensionCards from '$lib/components/about/dimension-cards.svelte';
+	import SupportersList from '$lib/components/about/supporters-list.svelte';
 	import CountryScoreChart from '$lib/components/assessment/country-score-chart.svelte';
 	import Button from '$lib/components/button.svelte';
 	import Hyperlink from '$lib/components/hyperlink.svelte';
@@ -210,6 +211,9 @@
 			{/each}
 		</div>
 
-		{@render seeMore(aboutSections[2])}
+		<h3 class="border-t-2 pt-5 b3 font-bold text-gray-8">Supporters</h3>
+		<SupportersList />
+
+		{@render seeMore(aboutSections[3])}
 	</div>
 </section>

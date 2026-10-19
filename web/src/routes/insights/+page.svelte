@@ -195,6 +195,8 @@
 				{ label: 'Explore by Country', href: resolve('/countries') },
 				{ label: 'Explore by Indicator', href: resolve('/indicators') }
 			]}
-		/>
+		>
+			{#snippet children()}{/snippet}
+		</MoreActionsSection>
 	</div>
 </section>
