@@ -98,7 +98,10 @@ class OpennessScore:
                 respondent_info_df[EXPERIENCE_COLUMN].astype(str).str.strip()
             )
             respondent_info_df["Country"] = self.country
-            return respondent_info_df[["Country"] + RESPONDENTS_DEFAULT_COLUMNS]
+
+            result_df = respondent_info_df[["Country"] + RESPONDENTS_DEFAULT_COLUMNS]
+            result_df = result_df[result_df["Name/s of respondent/s"] != ""]
+            return result_df
 
         return pd.DataFrame(
             [{"Country": self.country}],
