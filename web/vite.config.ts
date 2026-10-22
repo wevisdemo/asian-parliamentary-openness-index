@@ -25,7 +25,8 @@ export default defineConfig(({ command }) => ({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: adapter(),
+			// Cloudflare Pages treats a site without a top-level 404.html as an SPA and serves index.html for unknown URLs
+			adapter: adapter({ fallback: '404.html' }),
 			paths: {
 				base: (process.env.BASE_PATH ?? '') as '' | `/${string}`
 			},

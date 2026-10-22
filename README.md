@@ -7,7 +7,7 @@ Data pipeline and website for the Asian Parliamentary Openness Index.
 | Environment | URL                                                            | Deploy                                        |
 | ----------- | -------------------------------------------------------------- | --------------------------------------------- |
 | Staging     | https://wevisdemo.github.io/asian-parliamentary-openness-index | GitHub Pages, auto-deployed on push to `main` |
-| Production  | _Pending_                                                      | TBD                                           |
+| Production  | https://aapo-apoi.com                                          | Cloudflare Pages, manual (see below)          |
 
 ## Stack
 
