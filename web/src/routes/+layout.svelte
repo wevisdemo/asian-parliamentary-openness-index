@@ -42,6 +42,8 @@
 	{#if !isStandalone}
 		<Footer />
 
-		<DraftBanner />
+		{#if !isProduction}
+			<DraftBanner />
+		{/if}
 	{/if}
 </div>
