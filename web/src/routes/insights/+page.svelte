@@ -98,12 +98,7 @@
 			<h2 class="h4 font-bold md:px-6">Overall Score</h2>
 			<div class="flex flex-col gap-2 border-l-2 border-gray-6 pl-4 md:pl-8">
 				<span class="font-bold text-gray-10">Key finding:</span>
-				<p>
-					Parliamentary openness varies widely across the Asia-Pacific. <strong
-						>Taiwan, Australia, and South Korea</strong
-					> achieved the highest scores. In several bicameral legislatures, the upper chamber scores noticeably
-					lower than the lower chamber.
-				</p>
+				<p class="whitespace-pre-line">{@html page.data.cycle.overallKeyFindingsFull}</p>
 			</div>
 		</div>
 		<ScoreComparison
@@ -121,15 +116,7 @@
 			<h2 class="h4 font-bold md:px-6">Compare by Dimension</h2>
 			<div class="flex flex-col gap-2 border-l-2 border-gray-4 pl-4 md:pl-8">
 				<span class="font-bold text-gray-8">Key finding:</span>
-				<p>
-					<strong>Openness on Information</strong> is the strongest-performing dimension, with many
-					parliaments publishing meeting agendas, parliamentary proceedings, and session broadcasts.
-					<strong>Openness on Accountability</strong>
-					is the weakest dimension across the region, particularly regarding asset declarations, conflict-of-interest
-					disclosure, and oversight of publicly funded staff.
-					<strong>Openness on Citizen Participation</strong> remains an area for improvement, with no
-					parliament meeting all participation indicators.
-				</p>
+				<p class="whitespace-pre-line">{@html page.data.cycle.dimensionKeyFindings}</p>
 			</div>
 		</div>
 

@@ -40,10 +40,6 @@
 
 	const { data }: PageProps = $props();
 
-	const rankedDimensions = $derived(data.dimensionScores.toSorted((a, b) => b.score - a.score));
-	const leading = $derived(rankedDimensions[0]);
-	const lagging = $derived(rankedDimensions[rankedDimensions.length - 1]);
-
 	const percentage = (score: number) => `${Math.round(score)}%`;
 </script>
 
@@ -84,12 +80,7 @@
 			<h2 class="h5 font-bold">{page.data.cycle.year} Insight</h2>
 			<p class="b5 text-gray-6">Assessment date: {page.data.cycle.assessmentDate}</p>
 		</div>
-		<p>
-			Across {data.countryCount} parliaments assessed this cycle, the regional lower chamber average sits
-			at {percentage(data.averageScore)}. {leading.dimension} leads the way regionally at
-			{percentage(leading.score)}, while {lagging.dimension} lags furthest behind at
-			{percentage(lagging.score)}.
-		</p>
+		<p class="whitespace-pre-line">{@html page.data.cycle.overallKeyFindingsShort}</p>
 		<Button href={resolve('/insights')}>See more</Button>
 	</div>
 	<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
