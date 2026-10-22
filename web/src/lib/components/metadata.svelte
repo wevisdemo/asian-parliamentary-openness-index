@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ogFile from '$lib/assets/og.png';
-	import { siteName, siteTagline, siteUrl } from '$lib/constants/site';
+	import { isProduction, siteName, siteTagline, siteUrl } from '$lib/constants/site';
 
 	interface Props {
 		page?: string;
@@ -15,6 +15,9 @@
 <svelte:head>
 	<title>{title}</title>
 	<meta name="description" content={siteTagline} />
+	{#if !isProduction}
+		<meta name="robots" content="noindex" />
+	{/if}
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={siteTagline} />
 	<meta property="og:site_name" content={siteName} />

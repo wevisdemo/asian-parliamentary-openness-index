@@ -40,6 +40,7 @@ jobs:
         run: pnpm --package=@moonrepo/cli dlx moon run web:build
         env:
           PUBLIC_SITE_URL: https://aapo-apoi.com
+          PUBLIC_ENVIRONMENT: production
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:

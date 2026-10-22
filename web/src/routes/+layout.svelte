@@ -5,6 +5,7 @@
 	import Navbar from '$lib/components/navbar.svelte';
 	import Footer from '$lib/components/footer.svelte';
 	import DraftBanner from '$lib/components/draft-banner.svelte';
+	import { isProduction } from '$lib/constants/site';
 	import { createGlossaryState } from '$lib/components/glossary/glossary-state.svelte';
 
 	let { data, children } = $props();
@@ -22,7 +23,11 @@
 	<link
 		href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&family=Spline+Sans+Mono:wght@400;700&display=swap"
 		rel="stylesheet"
-	/></svelte:head
+	/>
+	{#if isProduction}
+		<script async src="https://analytics.punchup.world/js/pa-ILIRqcARvof3VRWDxI9ym.js"></script>
+		{@html `<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()<\/script>`}
+	{/if}</svelte:head
 >
 
 <div class="flex min-h-screen w-full flex-col">

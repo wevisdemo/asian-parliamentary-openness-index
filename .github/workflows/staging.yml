@@ -44,6 +44,8 @@ jobs:
         run: pnpm --package=@moonrepo/cli dlx moon run web:build
         env:
           BASE_PATH: /${{ github.event.repository.name }}
+          PUBLIC_SITE_URL: https://wevisdemo.github.io
+          PUBLIC_ENVIRONMENT: staging
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
