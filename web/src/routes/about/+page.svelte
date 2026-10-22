@@ -81,7 +81,7 @@
 				</p>
 			</div>
 
-			<h3>Who is this for</h3>
+			<h3>Who this is for</h3>
 
 			<AudienceCards />
 
