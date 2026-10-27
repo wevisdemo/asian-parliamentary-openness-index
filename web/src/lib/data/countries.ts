@@ -45,7 +45,7 @@ export const countrySchema = Object({
 	),
 	assessmentSentDate: AnswerWithRemark(
 		'Date assessment was sent to Parliament (YYYY-MM-DD)',
-		asDate({ emptyValues: ['', '-'] }).optional()
+		asDate({ emptyValues: ['', '-', 'N/A'] }).optional()
 	)
 });
 
