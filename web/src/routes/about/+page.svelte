@@ -200,11 +200,6 @@
 
 			<p>Every 2 years, during July–August.</p>
 
-			<div class="flex flex-row items-center gap-2">
-				<span class="font-bold">Result:</span>
-				<Button size="small" variant="secondary" href={resolve('/insights')}>2026</Button>
-			</div>
-
 			<h2 id={aboutSections[2].id}>Submit Your Feedback</h2>
 
 			<p>

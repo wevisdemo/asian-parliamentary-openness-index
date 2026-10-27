@@ -24,7 +24,6 @@
 	const { glossary }: Props = $props();
 
 	const links: NavLink[] = [
-		{ label: 'Insights', href: resolve('/insights') },
 		{ label: 'Explore by Country', href: resolve('/countries') },
 		{ label: 'Explore by Indicator', href: resolve('/indicators') },
 		{ label: 'Downloads', href: resolve('/downloads') },
