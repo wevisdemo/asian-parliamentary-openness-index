@@ -13,6 +13,7 @@
 	import Metadata from '$lib/components/metadata.svelte';
 	import TocSidebar from '$lib/components/toc-sidebar.svelte';
 	import TruncatableParagraph from '$lib/components/truncatable-paragraph.svelte';
+	import YoutubeEmbed from '$lib/components/youtube-embed.svelte';
 	import { aboutSections } from '$lib/constants/about-sections';
 	import { partners } from '$lib/constants/partners';
 	import { alliance } from '$lib/constants/contributors';
@@ -233,13 +234,14 @@
 
 			<h2 id={aboutSections[3].id}>About Contributors</h2>
 
-			<div class="flex flex-col gap-4 md:flex-row md:gap-8">
-				<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />
-				<div class="flex-1 space-y-2">
+			<div class="grid gap-4 md:grid-cols-2 md:gap-8">
+				<div class="space-y-2">
+					<img src={alliance.logo} alt="" class="w-full max-w-40 object-contain" />
 					<h4 class="b2 font-bold">{alliance.name}</h4>
 					<p>{alliance.description}</p>
 					<Hyperlink href="mailto:contact@aapo-apoi.com">contact@aapo-apoi.com</Hyperlink>
 				</div>
+				<YoutubeEmbed {...alliance.video} />
 			</div>
 
 			<TruncatableParagraph>

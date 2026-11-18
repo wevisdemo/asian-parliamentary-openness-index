@@ -17,6 +17,7 @@
 	import { siteName, siteTagline } from '$lib/constants/site';
 	import type { PageProps } from './$types';
 	import Sharer from '$lib/components/sharer.svelte';
+	import YoutubeEmbed from '$lib/components/youtube-embed.svelte';
 
 	const exploreActions = [
 		{
@@ -121,12 +122,13 @@
 		<h2 class="b2 font-bold text-gray-8">About contributors</h2>
 		<p class="h5 font-bold">{alliance.name}</p>
 
-		<div class="flex flex-col gap-4 md:flex-row md:gap-8">
-			<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />
-			<div class="flex flex-1 flex-col gap-2">
+		<div class="grid gap-4 md:grid-cols-2 md:gap-8">
+			<div class="flex flex-col gap-2">
+				<img src={alliance.logo} alt="" class="w-full max-w-40 self-start object-contain" />
 				<p>{alliance.description}</p>
 				<Hyperlink href="mailto:contact@aapo-apoi.com">contact@aapo-apoi.com</Hyperlink>
 			</div>
+			<YoutubeEmbed {...alliance.video} />
 		</div>
 
 		<h3 class="border-t-2 pt-5 b3 font-bold text-gray-8">Our team</h3>
